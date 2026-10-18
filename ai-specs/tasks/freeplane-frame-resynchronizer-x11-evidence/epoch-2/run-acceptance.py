@@ -1,0 +1,267 @@
+#!/usr/bin/env python3
+"""Compile and run the bounded X11 popup-coordinate acceptance probe."""
+
+from __future__ import annotations
+
+import hashlib
+import os
+from pathlib import Path
+import re
+import shlex
+import signal
+import subprocess
+import sys
+import tempfile
+from typing import Dict, Iterable, List, Optional, Sequence, Tuple
+
+
+EVIDENCE_DIR = Path(__file__).resolve().parent
+REPOSITORY_ROOT = EVIDENCE_DIR.parents[3]
+LOG_DIR = EVIDENCE_DIR / "logs"
+JAVA_HOME_DEFAULT = Path("/home/henry/.sdkman/candidates/java/21.0.8-zulu")
+PROBE_CLASS = "org.freeplane.core.ui.components.PopupCoordinateAcceptanceProbe"
+PRODUCTION_FILES = (
+    REPOSITORY_ROOT / "freeplane/src/main/java/org/freeplane/core/ui/components/FrameResynchronizer.java",
+    REPOSITORY_ROOT / "freeplane/src/main/java/org/freeplane/core/ui/components/PopupCoordinateCalibrator.java",
+    REPOSITORY_ROOT / "freeplane/src/main/java/org/freeplane/core/ui/components/X11PopupFactory.java",
+)
+
+
+def shell_command(command: Sequence[str]) -> str:
+    return shlex.join([str(part) for part in command])
+
+
+def completed(command: Sequence[str], env: Optional[Dict[str, str]] = None) -> subprocess.CompletedProcess:
+    return subprocess.run(
+        [str(part) for part in command],
+        cwd=str(REPOSITORY_ROOT),
+        env=env,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+
+
+def find_files(roots: Iterable[Path], pattern: str) -> List[Path]:
+    existing_roots = [str(root) for root in roots if root.exists()]
+    if not existing_roots:
+        return []
+    result = completed(["find", *existing_roots, "-type", "f", "-name", pattern])
+    if result.returncode not in (0, 1):
+        raise RuntimeError("find failed for " + pattern + ": " + result.stderr.strip())
+    return sorted({Path(line) for line in result.stdout.splitlines() if line.strip()})
+
+
+def first_required(paths: Iterable[Path], description: str) -> Path:
+    candidates = list(paths)
+    if not candidates:
+        raise RuntimeError("could not find " + description)
+    return candidates[0]
+
+
+def command_output(command: Sequence[str], env: Dict[str, str]) -> str:
+    result = completed(command, env)
+    output = result.stdout
+    if result.stderr:
+        output += result.stderr
+    return output.strip()
+
+
+def terminate_process_group(process: subprocess.Popen) -> None:
+    try:
+        os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+    except ProcessLookupError:
+        return
+    try:
+        process.wait(timeout=5)
+    except subprocess.TimeoutExpired:
+        try:
+            os.killpg(os.getpgid(process.pid), signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+        process.wait(timeout=5)
+
+
+def bounded_run(command: Sequence[str], env: Dict[str, str], timeout_seconds: int) -> Tuple[int, str, str, bool]:
+    process = subprocess.Popen(
+        [str(part) for part in command],
+        cwd=str(REPOSITORY_ROOT),
+        env=env,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        start_new_session=True,
+    )
+    try:
+        stdout, stderr = process.communicate(timeout=timeout_seconds)
+        return process.returncode, stdout, stderr, False
+    except subprocess.TimeoutExpired as timeout:
+        partial_stdout = timeout.stdout or ""
+        partial_stderr = timeout.stderr or ""
+        terminate_process_group(process)
+        stdout, stderr = process.communicate()
+        return 124, partial_stdout + stdout, partial_stderr + stderr, True
+
+
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as source:
+        for block in iter(lambda: source.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def write_log(path: Path, content: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content, encoding="utf-8")
+
+
+def display_identity(display: str, env: Dict[str, str]) -> Tuple[str, str, str]:
+    display_env = dict(env)
+    display_env["DISPLAY"] = display
+    xdpyinfo = completed(["xdpyinfo"], display_env)
+    xdpy_output = xdpyinfo.stdout + xdpyinfo.stderr
+    dimensions_match = re.search(r"dimensions:\s+([0-9]+x[0-9]+)\s+pixels", xdpy_output)
+    dimensions = dimensions_match.group(1) if dimensions_match else "UNAVAILABLE"
+    xprop = completed(["xprop", "-root", "_NET_WORKAREA"], display_env)
+    xprop_output = (xprop.stdout + xprop.stderr).strip()
+    workarea_match = re.search(r"_NET_WORKAREA.*?=\s*(.*)", xprop_output)
+    workarea = workarea_match.group(1) if workarea_match else "UNAVAILABLE"
+    return dimensions, workarea, xprop_output or "UNAVAILABLE"
+
+
+def build_runtime_identity(run_env: Dict[str, str], java: Path) -> List[str]:
+    lines = [
+        "DISPLAY=" + run_env.get("DISPLAY", ""),
+        "XDG_SESSION_TYPE=" + run_env.get("XDG_SESSION_TYPE", ""),
+    ]
+    for display in (":1", ":2"):
+        dimensions, workarea, raw_workarea = display_identity(display, run_env)
+        lines.append("display=" + display + " dimensions=" + dimensions)
+        lines.append("display=" + display + " _NET_WORKAREA=" + workarea)
+        lines.append("display=" + display + " _NET_WORKAREA-raw=" + raw_workarea)
+
+    for process_name in ("kwin_wayland", "kwin_x11"):
+        result = completed(["pgrep", "-a", process_name], run_env)
+        process_output = result.stdout.strip() or "NONE"
+        lines.append(process_name + "=" + process_output)
+
+    java_version_command = [java, "--version"]
+    lines.append("java-version-command=" + shell_command(java_version_command))
+    java_version = command_output(java_version_command, run_env) or "UNAVAILABLE"
+    lines.extend("java-version=" + line for line in java_version.splitlines())
+
+    git_head = command_output(["git", "rev-parse", "HEAD"], run_env)
+    lines.append("git-head=" + (git_head or "UNAVAILABLE"))
+    for production_file in PRODUCTION_FILES:
+        relative = production_file.relative_to(REPOSITORY_ROOT)
+        lines.append("source-sha256=" + str(relative) + " " + sha256(production_file))
+    return lines
+
+
+def main() -> int:
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
+    run_env = os.environ.copy()
+    java_home = Path(run_env.get("JAVA_HOME", str(JAVA_HOME_DEFAULT)))
+    if not java_home.is_dir():
+        raise RuntimeError("JAVA_HOME does not exist: " + str(java_home))
+    run_env["JAVA_HOME"] = str(java_home)
+    run_env["PATH"] = str(java_home / "bin") + os.pathsep + run_env.get("PATH", "")
+    run_env["DISPLAY"] = ":1"
+
+    java = java_home / "bin/java"
+    javac = java_home / "bin/javac"
+    if not java.is_file() or not javac.is_file():
+        raise RuntimeError("Java tools are missing under " + str(java_home))
+
+    gradle_cache = Path.home() / ".gradle/caches"
+    flatlaf = first_required(find_files([gradle_cache], "flatlaf-3.7.2.jar"), "flatlaf-3.7.2.jar")
+    jna_candidates = find_files([REPOSITORY_ROOT / "BIN/core", REPOSITORY_ROOT / "BIN", gradle_cache], "jna-*.jar")
+    jna = first_required(
+        [path for path in jna_candidates if re.fullmatch(r"jna-[0-9][^/]*\.jar", path.name)],
+        "a JNA jar",
+    )
+    jna_platform = first_required(
+        [path for path in jna_candidates if re.fullmatch(r"jna-platform-[0-9][^/]*\.jar", path.name)],
+        "a JNA platform jar",
+    )
+
+    build_classes = REPOSITORY_ROOT / "freeplane/build/classes/java/main"
+    if not build_classes.is_dir():
+        raise RuntimeError("built Freeplane classes are missing: " + str(build_classes))
+    probe_source = EVIDENCE_DIR / "PopupCoordinateAcceptanceProbe.java"
+    if not probe_source.is_file():
+        raise RuntimeError("probe source is missing: " + str(probe_source))
+
+    runtime_identity = build_runtime_identity(run_env, java)
+    write_log(LOG_DIR / "runtime-identity.txt", "\n".join(runtime_identity) + "\n")
+
+    classpath = os.pathsep.join(str(path) for path in (build_classes, flatlaf, jna, jna_platform))
+    commands: List[str] = []
+    commands.append("repository-root=" + str(REPOSITORY_ROOT))
+    commands.append("probe-source=" + str(probe_source))
+    commands.append("flatlaf-jar=" + str(flatlaf))
+    commands.append("jna-jar=" + str(jna))
+    commands.append("jna-platform-jar=" + str(jna_platform))
+    commands.append("compile-classpath=" + classpath)
+
+    with tempfile.TemporaryDirectory(prefix="freeplane-popup-acceptance-") as class_directory:
+        compile_command: List[str] = [
+            javac,
+            "--release",
+            "8",
+            "-encoding",
+            "UTF-8",
+            "-cp",
+            classpath,
+            "-d",
+            class_directory,
+            str(probe_source),
+        ]
+        commands.append("compile-command=" + shell_command(compile_command))
+        compile_result = completed(compile_command, run_env)
+        write_log(LOG_DIR / "javac.stdout", compile_result.stdout)
+        write_log(LOG_DIR / "javac.stderr", compile_result.stderr)
+        if compile_result.returncode != 0:
+            write_log(LOG_DIR / "commands.txt", "\n".join(commands) + "\n")
+            print("probe compilation failed with exit code " + str(compile_result.returncode), file=sys.stderr)
+            return compile_result.returncode
+
+        runtime_classpath = os.pathsep.join((class_directory, classpath))
+        probe_command: List[str] = [
+            java,
+            "--add-opens=java.desktop/sun.awt=ALL-UNNAMED",
+            "--add-opens=java.desktop/sun.awt.X11=ALL-UNNAMED",
+            "-cp",
+            runtime_classpath,
+            PROBE_CLASS,
+        ]
+        commands.append("probe-command=" + shell_command(probe_command))
+        write_log(LOG_DIR / "commands.txt", "\n".join(commands) + "\n")
+        exit_code, stdout, stderr, timed_out = bounded_run(probe_command, run_env, 90)
+        write_log(LOG_DIR / "probe.stdout", stdout)
+        write_log(LOG_DIR / "probe.stderr", stderr)
+
+    print("runtime-identity=" + str(LOG_DIR / "runtime-identity.txt"))
+    print("probe-stdout=" + str(LOG_DIR / "probe.stdout"))
+    print("probe-stderr=" + str(LOG_DIR / "probe.stderr"))
+    print("probe-exit-code=" + str(exit_code))
+    print("probe-timeout=" + str(timed_out))
+    if timed_out:
+        print("probe timed out", file=sys.stderr)
+    if exit_code != 0:
+        print("probe failed", file=sys.stderr)
+    return exit_code
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main())
+    except Exception as exception:
+        print("runner-error=" + exception.__class__.__name__ + ": " + str(exception), file=sys.stderr)
+        sys.exit(1)

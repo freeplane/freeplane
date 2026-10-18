@@ -1,0 +1,19 @@
+DISPLAY=:1
+XDG_SESSION_TYPE=wayland
+display=:1 dimensions=5760x1080
+display=:1 _NET_WORKAREA=0, 32, 5760, 1048
+display=:1 _NET_WORKAREA-raw=_NET_WORKAREA(CARDINAL) = 0, 32, 5760, 1048
+display=:2 dimensions=5760x1080
+display=:2 _NET_WORKAREA=0, 32, 5760, 1048
+display=:2 _NET_WORKAREA-raw=_NET_WORKAREA(CARDINAL) = 0, 32, 5760, 1048
+kwin_wayland=93597 /usr/bin/kwin_wayland_wrapper --xwayland
+93604 /usr/bin/kwin_wayland --wayland-fd 7 --socket wayland-1 --xwayland-fd 8 --xwayland-fd 9 --xwayland-display :1 --xwayland-initfd 11 --xwayland-init-display :2 --xwayland-xauthority /run/user/1000/xauth_QkGXlp --xwayland
+kwin_x11=NONE
+java-version-command=/home/henry/.sdkman/candidates/java/21.0.8-zulu/bin/java --version
+java-version=openjdk 21.0.8 2025-07-15 LTS
+java-version=OpenJDK Runtime Environment Zulu21.44+17-CA (build 21.0.8+9-LTS)
+java-version=OpenJDK 64-Bit Server VM Zulu21.44+17-CA (build 21.0.8+9-LTS, mixed mode, sharing)
+git-head=9380a85c212a76531e3e951d22801d7eda158620
+source-sha256=freeplane/src/main/java/org/freeplane/core/ui/components/FrameResynchronizer.java 8e3cfbc2620dadd11c97f56f3f980640c938ba61929c7bc20ae760bfe0b63b7c
+source-sha256=freeplane/src/main/java/org/freeplane/core/ui/components/PopupCoordinateCalibrator.java 793f0b2569e3b44387a3c338c82fc3d6bbc386292ecd76cf21bb57c6ac37080c
+source-sha256=freeplane/src/main/java/org/freeplane/core/ui/components/X11PopupFactory.java 3907eba98e2f384e8a80e1afc9bf9f6063435770bd6a0337e359132b383c8419
