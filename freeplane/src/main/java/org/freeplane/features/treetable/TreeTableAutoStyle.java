@@ -16,6 +16,8 @@ public class TreeTableAutoStyle {
 
 	public static final TreeTableAutoStyle ROW = new TreeTableAutoStyle("TreeNode", PRIORITY, TreeTableNodes::isRow);
 	public static final TreeTableAutoStyle TABLE = new TreeTableAutoStyle("TreeTable", PRIORITY + 1, TreeTableModel::isTreeTableRoot);
+	public static final TreeTableAutoStyle COLUMN = new TreeTableAutoStyle("TreeColumn", PRIORITY + 2,
+		TreeTableHeader::isBelowHeaderRoot);
 
 	private final String name;
 	private final int priority;
@@ -38,6 +40,7 @@ public class TreeTableAutoStyle {
 	static void registerAllIn(final LogicalStyleController logicalStyleController) {
 		ROW.registerIn(logicalStyleController);
 		TABLE.registerIn(logicalStyleController);
+		COLUMN.registerIn(logicalStyleController);
 	}
 
 	private void registerIn(final LogicalStyleController logicalStyleController) {

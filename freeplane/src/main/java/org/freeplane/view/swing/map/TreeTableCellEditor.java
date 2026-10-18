@@ -23,20 +23,12 @@ class TreeTableCellEditor extends MouseAdapter {
 	private static final String CANCEL_EDITING = "treeTableCancelEditing";
 
 	private final MapView mapView;
-	private final TreeTableHeaderMenu headerMenu;
 
 	private JTextField editor;
 	private TreeTableCell editedCell;
 
 	TreeTableCellEditor(final MapView mapView) {
 		this.mapView = mapView;
-		this.headerMenu = new TreeTableHeaderMenu(mapView, this);
-	}
-
-	void startEditingHeader(final TreeTableView treeTable, final int columnIndex) {
-		final String attributeKey = treeTable.getColumns().get(columnIndex).getAttributeKey();
-		startEditing(TreeTableCell.header(treeTable.getTreeTableRoot(), attributeKey,
-			treeTable.getHeaderTextBounds(columnIndex)));
 	}
 
 	@Override
@@ -44,10 +36,6 @@ class TreeTableCellEditor extends MouseAdapter {
 		if (event.isConsumed() || event.getButton() != MouseEvent.BUTTON1)
 			return;
 		final List<TreeTableView> treeTables = TreeTableView.allIn(mapView);
-		if (showHeaderMenuAt(treeTables, event.getX(), event.getY())) {
-			event.consume();
-			return;
-		}
 		final TreeTableCell cell = cellAt(treeTables, event.getX(), event.getY());
 		if (cell == null) {
 			stopEditing(true);
@@ -55,18 +43,6 @@ class TreeTableCellEditor extends MouseAdapter {
 		}
 		event.consume();
 		startEditing(cell);
-	}
-
-	private boolean showHeaderMenuAt(final List<TreeTableView> treeTables, final int x, final int y) {
-		for (final TreeTableView treeTable : treeTables) {
-			final int columnIndex = treeTable.headerMenuColumnAt(x, y);
-			if (columnIndex >= 0) {
-				stopEditing(true);
-				headerMenu.show(treeTable, columnIndex);
-				return true;
-			}
-		}
-		return false;
 	}
 
 	private TreeTableCell cellAt(final List<TreeTableView> treeTables, final int x, final int y) {
@@ -79,7 +55,7 @@ class TreeTableCellEditor extends MouseAdapter {
 	}
 
 	boolean isEditing(final NodeModel node, final String attributeKey) {
-		return editedCell != null && editedCell.getNode() == node
+		return editedCell != null && editedCell.getRow() == node
 			&& editedCell.getAttributeKey().equals(attributeKey);
 	}
 
@@ -132,9 +108,7 @@ class TreeTableCellEditor extends MouseAdapter {
 	}
 
 	private String currentValue(final TreeTableCell cell) {
-		if (cell.isHeader())
-			return cell.getAttributeKey();
-		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(cell.getNode());
+		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(cell.getRow());
 		final int index = attributes.getAttributeIndex(cell.getAttributeKey());
 		if (index < 0)
 			return "";
@@ -145,9 +119,6 @@ class TreeTableCellEditor extends MouseAdapter {
 	private void commitValue(final TreeTableCell cell, final String value) {
 		if (currentValue(cell).equals(value))
 			return;
-		if (cell.isHeader())
-			TreeTableEditing.renameColumn(cell.getNode(), cell.getAttributeKey(), value);
-		else
-			TreeTableEditing.setCellValue(cell.getNode(), cell.getAttributeKey(), value);
+		TreeTableEditing.setCellValue(cell.getRow(), cell.getAttributeKey(), value);
 	}
 }

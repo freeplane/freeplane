@@ -28,17 +28,7 @@ public class TreeTableNodes {
 	}
 
 	public static boolean isRow(final NodeModel node) {
-		return treeTableRootOf(node) != null;
-	}
-
-	public static int rowDepth(final NodeModel node) {
-		int depth = 0;
-		for (NodeModel ancestor = node.getParentNode(); ancestor != null; ancestor = ancestor.getParentNode()) {
-			depth++;
-			if (TreeTableModel.isTreeTableRoot(ancestor))
-				return depth;
-		}
-		return -1;
+		return treeTableRootOf(node) != null && !TreeTableHeader.isInHeader(node);
 	}
 
 	public static List<NodeModel> rowsOf(final NodeModel treeTableRoot) {
@@ -49,15 +39,12 @@ public class TreeTableNodes {
 
 	private static void collectRows(final NodeModel parent, final List<NodeModel> rows) {
 		for (final NodeModel child : parent.getChildren()) {
+			if (TreeTableHeader.isHeaderRoot(child))
+				continue;
 			rows.add(child);
 			if (!TreeTableModel.isTreeTableRoot(child))
 				collectRows(child, rows);
 		}
-	}
-
-	public static TreeTableColumns columnsFor(final NodeModel node) {
-		final NodeModel treeTableRoot = treeTableRootOf(node);
-		return treeTableRoot != null ? TreeTableModel.columnsOf(treeTableRoot) : TreeTableColumns.empty();
 	}
 
 	private TreeTableNodes() {

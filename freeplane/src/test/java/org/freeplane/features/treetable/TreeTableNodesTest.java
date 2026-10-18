@@ -2,10 +2,9 @@ package org.freeplane.features.treetable;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.freeplane.api.LengthUnit;
-import org.freeplane.api.Quantity;
 import org.freeplane.features.map.MapFake;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.LogicalStyleModel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,10 +21,6 @@ public class TreeTableNodesTest {
 		final NodeModel child = mapFake.createNode(text);
 		parent.insert(child);
 		return child;
-	}
-
-	private static TreeTableColumn column(final String attributeKey) {
-		return new TreeTableColumn(attributeKey, new Quantity<LengthUnit>(50, LengthUnit.pt));
 	}
 
 	@Test
@@ -86,32 +81,6 @@ public class TreeTableNodesTest {
 	}
 
 	@Test
-	public void reportsDepthOfDirectChildAsOne() {
-		final NodeModel projects = childOf(mapFake.getRoot(), "Projets");
-		TreeTableModel.createFor(projects);
-		final NodeModel projectA = childOf(projects, "Projet A");
-
-		assertThat(TreeTableNodes.rowDepth(projectA)).isEqualTo(1);
-	}
-
-	@Test
-	public void reportsIncreasingDepthForDeeperRows() {
-		final NodeModel projects = childOf(mapFake.getRoot(), "Projets");
-		TreeTableModel.createFor(projects);
-		final NodeModel projectA = childOf(projects, "Projet A");
-		final NodeModel subTask = childOf(projectA, "Sous-tache");
-
-		assertThat(TreeTableNodes.rowDepth(subTask)).isEqualTo(2);
-	}
-
-	@Test
-	public void reportsNoDepthOutsideTreeTable() {
-		final NodeModel unrelated = childOf(mapFake.getRoot(), "Autre");
-
-		assertThat(TreeTableNodes.rowDepth(unrelated)).isEqualTo(-1);
-	}
-
-	@Test
 	public void attachesRowToNearestEnclosingTreeTable() {
 		final NodeModel outer = childOf(mapFake.getRoot(), "Externe");
 		TreeTableModel.createFor(outer);
@@ -120,7 +89,6 @@ public class TreeTableNodesTest {
 		final NodeModel innerRow = childOf(inner, "Ligne interne");
 
 		assertThat(TreeTableNodes.treeTableRootOf(innerRow)).isSameAs(inner);
-		assertThat(TreeTableNodes.rowDepth(innerRow)).isEqualTo(1);
 	}
 
 	@Test
@@ -188,37 +156,12 @@ public class TreeTableNodesTest {
 	}
 
 	@Test
-	public void readsColumnsOfEnclosingTreeTable() {
-		final NodeModel projects = childOf(mapFake.getRoot(), "Projets");
-		TreeTableModel.createFor(projects).setColumns(TreeTableColumns.of(column("Pour"), column("Contre")));
-		final NodeModel subTask = childOf(childOf(projects, "Projet A"), "Sous-tache");
-
-		assertThat(TreeTableNodes.columnsFor(subTask).size()).isEqualTo(2);
-		assertThat(TreeTableNodes.columnsFor(subTask).indexOfAttributeKey("Contre")).isEqualTo(1);
-	}
-
-	@Test
-	public void readsNoColumnsOutsideTreeTable() {
-		final NodeModel unrelated = childOf(mapFake.getRoot(), "Autre");
-
-		assertThat(TreeTableNodes.columnsFor(unrelated).isEmpty()).isTrue();
-	}
-
-	@Test
 	public void startsTreeTableWithoutColumns() {
 		final NodeModel projects = childOf(mapFake.getRoot(), "Projets");
 
-		assertThat(TreeTableModel.createFor(projects).getColumns().isEmpty()).isTrue();
-	}
+		TreeTableModel.createFor(projects);
 
-	@Test
-	public void keepsExistingModelOnRepeatedCreation() {
-		final NodeModel projects = childOf(mapFake.getRoot(), "Projets");
-		final TreeTableModel model = TreeTableModel.createFor(projects);
-		model.setColumns(TreeTableColumns.of(column("Pour")));
-
-		assertThat(TreeTableModel.createFor(projects)).isSameAs(model);
-		assertThat(TreeTableModel.columnsOf(projects).size()).isEqualTo(1);
+		assertThat(TreeTableModel.columnsOf(projects).isEmpty()).isTrue();
 	}
 
 	@Test
@@ -267,5 +210,20 @@ public class TreeTableNodesTest {
 		assertThat(TreeTableNodes.canDeleteTable(row)).isFalse();
 		assertThat(TreeTableNodes.canDeleteTable(mapFake.getRoot())).isFalse();
 		assertThat(TreeTableNodes.canDeleteTable(null)).isFalse();
+	}
+
+	@Test
+	public void excludesHeaderSubtreeFromRows() {
+		final NodeModel projects = childOf(mapFake.getRoot(), "Projets");
+		TreeTableModel.createFor(projects);
+		final NodeModel header = childOf(projects, "Colonnes");
+		LogicalStyleModel.createExtension(header).setStyle(TreeTableHeader.style());
+		final NodeModel column = childOf(header, "Budget");
+		final NodeModel projectA = childOf(projects, "Projet A");
+
+		assertThat(TreeTableNodes.rowsOf(projects)).containsExactly(projectA);
+		assertThat(TreeTableNodes.isRow(header)).isFalse();
+		assertThat(TreeTableNodes.isRow(column)).isFalse();
+		assertThat(TreeTableModel.columnsOf(projects).containsAttributeKey("Budget")).isTrue();
 	}
 }
