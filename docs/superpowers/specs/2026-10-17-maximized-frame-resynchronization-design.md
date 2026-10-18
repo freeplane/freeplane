@@ -79,6 +79,8 @@ The captured delegate is normally FlatLaf's `FlatPopupFactory`. The adapter does
 
 The adapter must not wrap another instance of itself. If a look-and-feel change replaces the shared factory, the refresh operation wraps the new active factory. If the current shared instance is already the adapter, frame registration is updated without adding another layer.
 
+Swing's `JPopupMenu.showPopup()` stores a popup-type hint through the package-private `PopupFactory.setPopupType(int)` on the object returned by `PopupFactory.getSharedInstance()`. With the adapter installed, that hint is stored on the adapter rather than on the wrapped factory, and no code outside the `javax.swing` package can read or forward it. The adapter therefore must not attempt to reproduce, reflect on, or forward that hint. Instead, the design constrains the observable outcome: the popup window class produced through the adapter must be the same as the class produced without it for a heavyweight menu, a light-weight-enabled menu, and a tooltip. FlatLaf 3.7.2 forces heavyweight popups in these cases through its own properties and overlap checks, so the expected observer result is an unchanged heavyweight popup. A popup-class mismatch is a blocking finding for the epoch, not an invitation to reimplement popup selection.
+
 Only registered Freeplane top-level frames participate. A popup owned by a component in an unrelated window is delegated unchanged. A popup owned by a child window created from an already-created popup is also delegated unchanged unless that child is independently registered; its position was produced by the already-calibrated parent popup.
 
 ### Owner-local native calibration
@@ -157,6 +159,7 @@ Add focused tests around the existing `FrameResynchronizerTest` and the popup ca
 - delegation with corrected coordinates and exactly one delegate call;
 - no frame mutation or retry scheduling from popup calibration;
 - no double wrapping;
+- popup-class parity with the unwrapped factory for a heavyweight menu, a light-weight-enabled menu, and a tooltip;
 - refresh after the shared look-and-feel factory changes;
 - unchanged behavior for non-X11 toolkits;
 - existing normal-window native-coordinate correction, work-area selection, and FlatLaf selection tests.

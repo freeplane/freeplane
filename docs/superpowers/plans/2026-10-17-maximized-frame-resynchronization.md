@@ -213,6 +213,7 @@ Construct `X11PopupFactory` with a mocked delegate, an injected resolver that re
 - A geometry provider that returns `null` or throws passes the original coordinates and still returns the delegate popup.
 - No call is made to frame mutation methods, no timer is created or scheduled, and no second delegate call occurs.
 - An exception thrown by the delegate propagates to the caller.
+- The popup window class produced through the adapter equals the class produced without it for a heavyweight menu, a light-weight-enabled menu, and a tooltip.
 
 Use a `PopupOwnerResolver` functional seam so these tests do not depend on `SwingUtilities.getWindowAncestor` finding a real displayable hierarchy.
 
@@ -225,6 +226,8 @@ return delegate.getPopup(owner, contents, correctedX, correctedY);
 ```
 
 Catch only runtime failures from owner lookup or calibration, restore the original coordinates for those failures, and keep the delegate call outside that failure handler so delegate exceptions are preserved. Do not reference `FlatPopupFactory` from this class and do not override any other `PopupFactory` method.
+
+Swing's `JPopupMenu.showPopup()` sets the package-private `popupType` field on the object returned by `PopupFactory.getSharedInstance()`. That hint therefore lands on this adapter, not on the wrapped delegate; no Java source outside the `javax.swing` package can forward it. Do not attempt to copy or forward the hint with reflection, and do not add a popup-type field, setter, or selection logic to the adapter. Instead, record popup-class parity as evidence: for a heavyweight menu, a light-weight-enabled menu, and a tooltip, the popup window class produced through the adapter must equal the class produced without it. FlatLaf 3.7.2 is expected to force heavyweight popups in all three cases (`Popup.forceHeavyWeight`, visible glass pane, or overlap with a heavyweight component), so the observed parity is `javax.swing.Popup$HeavyWeightWindow` for each. A parity mismatch is a blocker to report, not a reason to reimplement popup selection.
 
 - [ ] **Step 6: Run the popup calibration and adapter tests**
 
@@ -246,7 +249,7 @@ git diff -- freeplane/src/main/java/org/freeplane/core/ui/components/PopupCoordi
 git status --short
 ```
 
-Confirm that the adapter has no frame mutation, timer, retry, FlatLaf subclass, or popup-type-selection logic. Commit:
+Confirm that the adapter has no frame mutation, timer, retry, FlatLaf subclass, popup-type field, or popup-type-selection logic, and that the recorded popup-class parity evidence covers a heavyweight menu, a light-weight-enabled menu, and a tooltip. Commit:
 
 ```bash
 git add freeplane/src/main/java/org/freeplane/core/ui/components/PopupCoordinateCalibrator.java freeplane/src/main/java/org/freeplane/core/ui/components/X11PopupFactory.java freeplane/src/test/java/org/freeplane/core/ui/components/PopupCoordinateCalibratorTest.java freeplane/src/test/java/org/freeplane/core/ui/components/X11PopupFactoryTest.java
