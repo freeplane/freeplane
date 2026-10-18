@@ -33,6 +33,7 @@ class TreeTableCellEditor extends MouseAdapter {
 
 	private JTextField editor;
 	private TreeTableCell editedCell;
+	private boolean editsInDialog;
 
 	TreeTableCellEditor(final MapView mapView) {
 		this.mapView = mapView;
@@ -77,6 +78,13 @@ class TreeTableCellEditor extends MouseAdapter {
 		editor.setOpaque(true);
 		editor.setBackground(UIManager.getColor("TextField.background"));
 		editor.selectAll();
+		editor.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(final MouseEvent e) {
+				if (e.getClickCount() > 1)
+					editInDialog(cell);
+			}
+		});
 		editor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -105,11 +113,15 @@ class TreeTableCellEditor extends MouseAdapter {
 	}
 
 	private void editInDialog(final TreeTableCell cell) {
-		stopEditing(false);
+		if (editsInDialog)
+			return;
+		stopEditing(true);
 		final EditNodeBase dialog = MTextController.getController().createEditor(cell.getRow(), cell.getRow(),
 			currentValue(cell), new CellEditControl(cell), false, true, true);
-		if (dialog != null)
-			dialog.show(SwingUtilities.getWindowAncestor(mapView));
+		if (dialog == null)
+			return;
+		editsInDialog = true;
+		dialog.show(SwingUtilities.getWindowAncestor(mapView));
 	}
 
 	private void stopEditing(final boolean commit) {
@@ -149,10 +161,12 @@ class TreeTableCellEditor extends MouseAdapter {
 
 		@Override
 		public void cancel() {
+			editsInDialog = false;
 		}
 
 		@Override
 		public void ok(final String newText) {
+			editsInDialog = false;
 			commitValue(cell, newText);
 		}
 
