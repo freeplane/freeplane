@@ -13,30 +13,50 @@ correction-assertion=matched-geometry expected=(0,0) actual=(0,0) result=true
 popup-class-parity=heavyweight-menu adapter-class=javax.swing.Popup$HeavyWeightWindow delegate-class=javax.swing.Popup$HeavyWeightWindow equal=true expected=javax.swing.Popup$HeavyWeightWindow
 popup-class-parity=lightweight-enabled-menu adapter-class=javax.swing.Popup$HeavyWeightWindow delegate-class=javax.swing.Popup$HeavyWeightWindow equal=true expected=javax.swing.Popup$HeavyWeightWindow
 popup-class-parity=tooltip adapter-class=javax.swing.Popup$HeavyWeightWindow delegate-class=javax.swing.Popup$HeavyWeightWindow equal=true expected=javax.swing.Popup$HeavyWeightWindow
+popup-persistence scenario=startup-normal duration-ms=911 minimum-ms=800 menu-showing=true
 popup-pointer-target=startup-normal clicked-screen-point=(241,214) menu-screen-bounds=(384,378,194,32) item-screen-bounds=(385,382,192,24)
+menu-showing-before-pointer scenario=startup-normal value=true
 assertion-failure=startup-normal-pointer-event-dispatch timeout-ms=2000
+menu-showing-after-pointer scenario=startup-normal value=false
 assertion-failure=startup-normal popup-pointer-selection-missing
-popup-doClick-fallback-selected=selected-startup-normal
+diagnostic-only doClick-fallback-start scenario=startup-normal
+diagnostic-only popup-doClick-fallback-selected=selected-startup-normal
+menu-showing-after-fallback scenario=startup-normal value=false
 assertion-failure=startup-normal placement-error-exceeds-1px
-scenario=startup-normal owner-awt-screen=(144,174) owner-location-within-frame=(24,54) native-outer-frame-bounds=(120,120,900,600) expected-native-owner-origin=(144,174) correction=(0,0) requested-popup-coordinates=(144,198) popup-local-offset=(0,24) expected-popup-native-origin=(144,198) popup-window-class=javax.swing.Popup$HeavyWeightWindow popup-awt-bounds=(384,378,194,32) popup-native-bounds=(384,378,194,32) popup-menu-screen-bounds=(384,378,194,32) popup-item-screen-bounds=(385,382,192,24) pointer-click-screen-point=(241,214) placement-error=(240,180) placement-error-max=240 persistence-ms=911 menu-showing-before-selection=true menu-showing-after-selection=false pointer-selection=false pointer-selected-text=null doClick-fallback-selection=true doClick-fallback-text=selected-startup-normal frame-correction-setBounds-delta=0
+scenario=startup-normal owner-awt-screen=(144,174) owner-location-within-frame=(24,54) native-outer-frame-bounds=(120,120,900,600) expected-native-owner-origin=(144,174) correction=(0,0) requested-popup-coordinates=(144,198) popup-local-offset=(0,24) expected-popup-native-origin=(144,198) popup-window-class=javax.swing.Popup$HeavyWeightWindow popup-awt-bounds=(384,378,194,32) popup-native-bounds=(384,378,194,32) popup-menu-screen-bounds=(384,378,194,32) popup-item-screen-bounds=(385,382,192,24) pointer-click-screen-point=(241,214) placement-error=(240,180) placement-error-max=240 persistence-ms=911 menu-showing-before-pointer=true menu-showing-after-pointer=false menu-showing-after-fallback=false pointer-selection=false pointer-selected-text=null doClick-fallback-selection=true doClick-fallback-text=selected-startup-normal frame-correction-setBounds-delta=0
+popup-persistence scenario=maximize duration-ms=903 minimum-ms=800 menu-showing=true
 popup-pointer-target=maximize clicked-screen-point=(104,126) menu-screen-bounds=(264,290,160,32) item-screen-bounds=(265,294,158,24)
+menu-showing-before-pointer scenario=maximize value=true
 assertion-failure=maximize-pointer-event-dispatch timeout-ms=2000
+menu-showing-after-pointer scenario=maximize value=false
 assertion-failure=maximize popup-pointer-selection-missing
-popup-doClick-fallback-selected=selected-maximize
+diagnostic-only doClick-fallback-start scenario=maximize
+diagnostic-only popup-doClick-fallback-selected=selected-maximize
+menu-showing-after-fallback scenario=maximize value=false
 assertion-failure=maximize placement-error-exceeds-1px
-scenario=maximize owner-awt-screen=(20,52) owner-location-within-frame=(24,54) native-outer-frame-bounds=(0,32,1920,1048) expected-native-owner-origin=(24,86) correction=(4,34) requested-popup-coordinates=(20,76) popup-local-offset=(0,24) expected-popup-native-origin=(24,110) popup-window-class=javax.swing.Popup$HeavyWeightWindow popup-awt-bounds=(264,290,160,32) popup-native-bounds=(264,290,160,32) popup-menu-screen-bounds=(264,290,160,32) popup-item-screen-bounds=(265,294,158,24) pointer-click-screen-point=(104,126) placement-error=(240,180) placement-error-max=240 persistence-ms=903 menu-showing-before-selection=true menu-showing-after-selection=false pointer-selection=false pointer-selected-text=null doClick-fallback-selection=true doClick-fallback-text=selected-maximize frame-correction-setBounds-delta=0
+scenario=maximize owner-awt-screen=(20,52) owner-location-within-frame=(24,54) native-outer-frame-bounds=(0,32,1920,1048) expected-native-owner-origin=(24,86) correction=(4,34) requested-popup-coordinates=(20,76) popup-local-offset=(0,24) expected-popup-native-origin=(24,110) popup-window-class=javax.swing.Popup$HeavyWeightWindow popup-awt-bounds=(264,290,160,32) popup-native-bounds=(264,290,160,32) popup-menu-screen-bounds=(264,290,160,32) popup-item-screen-bounds=(265,294,158,24) pointer-click-screen-point=(104,126) placement-error=(240,180) placement-error-max=240 persistence-ms=903 menu-showing-before-pointer=true menu-showing-after-pointer=false menu-showing-after-fallback=false pointer-selection=false pointer-selected-text=null doClick-fallback-selection=true doClick-fallback-text=selected-maximize frame-correction-setBounds-delta=0
+popup-persistence scenario=restore duration-ms=901 minimum-ms=800 menu-showing=true
 popup-pointer-target=restore clicked-screen-point=(217,214) menu-screen-bounds=(384,378,146,32) item-screen-bounds=(385,382,144,24)
+menu-showing-before-pointer scenario=restore value=true
 assertion-failure=restore-pointer-event-dispatch timeout-ms=2000
+menu-showing-after-pointer scenario=restore value=true
 assertion-failure=restore popup-pointer-selection-missing
-popup-doClick-fallback-selected=selected-restore
+diagnostic-only doClick-fallback-start scenario=restore
+diagnostic-only popup-doClick-fallback-selected=selected-restore
+menu-showing-after-fallback scenario=restore value=true
 assertion-failure=restore placement-error-exceeds-1px
-scenario=restore owner-awt-screen=(144,174) owner-location-within-frame=(24,54) native-outer-frame-bounds=(120,120,900,600) expected-native-owner-origin=(144,174) correction=(0,0) requested-popup-coordinates=(144,198) popup-local-offset=(0,24) expected-popup-native-origin=(144,198) popup-window-class=javax.swing.Popup$HeavyWeightWindow popup-awt-bounds=(384,378,146,32) popup-native-bounds=(384,378,146,32) popup-menu-screen-bounds=(384,378,146,32) popup-item-screen-bounds=(385,382,144,24) pointer-click-screen-point=(217,214) placement-error=(240,180) placement-error-max=240 persistence-ms=903 menu-showing-before-selection=true menu-showing-after-selection=false pointer-selection=false pointer-selected-text=null doClick-fallback-selection=true doClick-fallback-text=selected-restore frame-correction-setBounds-delta=0
+scenario=restore owner-awt-screen=(144,174) owner-location-within-frame=(24,54) native-outer-frame-bounds=(120,120,900,600) expected-native-owner-origin=(144,174) correction=(0,0) requested-popup-coordinates=(144,198) popup-local-offset=(0,24) expected-popup-native-origin=(144,198) popup-window-class=javax.swing.Popup$HeavyWeightWindow popup-awt-bounds=(384,378,146,32) popup-native-bounds=(384,378,146,32) popup-menu-screen-bounds=(384,378,146,32) popup-item-screen-bounds=(385,382,144,24) pointer-click-screen-point=(217,214) placement-error=(240,180) placement-error-max=240 persistence-ms=901 menu-showing-before-pointer=true menu-showing-after-pointer=true menu-showing-after-fallback=true pointer-selection=false pointer-selected-text=null doClick-fallback-selection=true doClick-fallback-text=selected-restore frame-correction-setBounds-delta=0
+popup-persistence scenario=remaximize duration-ms=903 minimum-ms=800 menu-showing=true
 popup-pointer-target=remaximize clicked-screen-point=(110,126) menu-screen-bounds=(264,290,172,32) item-screen-bounds=(265,294,170,24)
+menu-showing-before-pointer scenario=remaximize value=true
 assertion-failure=remaximize-pointer-event-dispatch timeout-ms=2000
+menu-showing-after-pointer scenario=remaximize value=true
 assertion-failure=remaximize popup-pointer-selection-missing
-popup-doClick-fallback-selected=selected-remaximize
+diagnostic-only doClick-fallback-start scenario=remaximize
+diagnostic-only popup-doClick-fallback-selected=selected-remaximize
+menu-showing-after-fallback scenario=remaximize value=true
 assertion-failure=remaximize placement-error-exceeds-1px
-scenario=remaximize owner-awt-screen=(20,52) owner-location-within-frame=(24,54) native-outer-frame-bounds=(0,32,1920,1048) expected-native-owner-origin=(24,86) correction=(4,34) requested-popup-coordinates=(20,76) popup-local-offset=(0,24) expected-popup-native-origin=(24,110) popup-window-class=javax.swing.Popup$HeavyWeightWindow popup-awt-bounds=(264,290,172,32) popup-native-bounds=(264,290,172,32) popup-menu-screen-bounds=(264,290,172,32) popup-item-screen-bounds=(265,294,170,24) pointer-click-screen-point=(110,126) placement-error=(240,180) placement-error-max=240 persistence-ms=904 menu-showing-before-selection=true menu-showing-after-selection=false pointer-selection=false pointer-selected-text=null doClick-fallback-selection=true doClick-fallback-text=selected-remaximize frame-correction-setBounds-delta=0
+scenario=remaximize owner-awt-screen=(20,52) owner-location-within-frame=(24,54) native-outer-frame-bounds=(0,32,1920,1048) expected-native-owner-origin=(24,86) correction=(4,34) requested-popup-coordinates=(20,76) popup-local-offset=(0,24) expected-popup-native-origin=(24,110) popup-window-class=javax.swing.Popup$HeavyWeightWindow popup-awt-bounds=(264,290,172,32) popup-native-bounds=(264,290,172,32) popup-menu-screen-bounds=(264,290,172,32) popup-item-screen-bounds=(265,294,170,24) pointer-click-screen-point=(110,126) placement-error=(240,180) placement-error-max=240 persistence-ms=903 menu-showing-before-pointer=true menu-showing-after-pointer=true menu-showing-after-fallback=true pointer-selection=false pointer-selected-text=null doClick-fallback-selection=true doClick-fallback-text=selected-remaximize frame-correction-setBounds-delta=0
 probe-result=FAIL
 failure=startup-normal-pointer-event-dispatch timeout-ms=2000
 failure=startup-normal popup-pointer-selection-missing

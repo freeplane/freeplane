@@ -1,0 +1,13 @@
+runner-exit-code=1
+javac-exit-code=0
+probe-exit-code=1
+probe-timeout=false
+probe-result=FAIL
+failure=startup-normal-pointer-event-dispatch timeout-ms=2000
+failure=startup-normal popup-pointer-selection-missing
+failure=maximize-pointer-event-dispatch timeout-ms=2000
+failure=maximize popup-pointer-selection-missing
+failure=restore-pointer-event-dispatch timeout-ms=2000
+failure=restore popup-pointer-selection-missing
+failure=remaximize-pointer-event-dispatch timeout-ms=2000
+failure=remaximize popup-pointer-selection-missing

@@ -517,7 +517,7 @@ public final class PopupCoordinateAcceptanceProbe {
                         else {
                             selection.doClickFallbackSelected = true;
                             selection.doClickFallbackText = item.getText();
-                            log("popup-doClick-fallback-selected=" + item.getText());
+                            log("diagnostic-only popup-doClick-fallback-selected=" + item.getText());
                         }
                     }
                 });
@@ -540,7 +540,7 @@ public final class PopupCoordinateAcceptanceProbe {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
-                    evidence.menuShowingBeforeSelection = menu.isShowing();
+                    evidence.menuShowingAtPersistenceCheckpoint = menu.isShowing();
                     if (evidence.popupWindow == null) {
                         evidence.popupWindow = SwingUtilities.getWindowAncestor(menu);
                     }
@@ -557,11 +557,16 @@ public final class PopupCoordinateAcceptanceProbe {
             evidence.persistenceMillis = (System.nanoTime() - evidence.shownNanos) / 1000000L;
             require(evidence.persistenceMillis >= POPUP_PERSISTENCE_MILLIS,
                 scenario + " persistence-duration-too-short");
-            require(evidence.menuShowingBeforeSelection,
+            require(evidence.menuShowingAtPersistenceCheckpoint,
                 scenario + " menu-not-showing-after-800ms");
+            log("popup-persistence scenario=" + scenario
+                + " duration-ms=" + evidence.persistenceMillis
+                + " minimum-ms=" + POPUP_PERSISTENCE_MILLIS
+                + " menu-showing=" + evidence.menuShowingAtPersistenceCheckpoint);
 
-            selectWithPointer(scenario, item, selection, evidence);
+            selectWithPointer(scenario, menu, item, selection, evidence);
 
+            log("diagnostic-only doClick-fallback-start scenario=" + scenario);
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
@@ -574,9 +579,11 @@ public final class PopupCoordinateAcceptanceProbe {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
-                    evidence.menuShowingAfterSelection = menu.isShowing();
+                    evidence.menuShowingAfterFallback = menu.isShowing();
                 }
             });
+            log("menu-showing-after-fallback scenario=" + scenario
+                + " value=" + evidence.menuShowingAfterFallback);
 
             if (evidence.expectedPopup == null || evidence.popupNativeBounds == null) {
                 require(false, scenario + " native-placement-evidence-unavailable");
@@ -618,8 +625,9 @@ public final class PopupCoordinateAcceptanceProbe {
             + " placement-error=(" + evidence.placementErrorX + "," + evidence.placementErrorY + ")"
             + " placement-error-max=" + evidence.placementError
             + " persistence-ms=" + evidence.persistenceMillis
-            + " menu-showing-before-selection=" + evidence.menuShowingBeforeSelection
-            + " menu-showing-after-selection=" + evidence.menuShowingAfterSelection
+            + " menu-showing-before-pointer=" + evidence.menuShowingBeforePointer
+            + " menu-showing-after-pointer=" + evidence.menuShowingAfterPointer
+            + " menu-showing-after-fallback=" + evidence.menuShowingAfterFallback
             + " pointer-selection=" + evidence.pointerSelected
             + " pointer-selected-text=" + evidence.pointerSelectedText
             + " doClick-fallback-selection=" + evidence.doClickFallbackSelected
@@ -644,7 +652,7 @@ public final class PopupCoordinateAcceptanceProbe {
         }, 5000L);
     }
 
-    private void selectWithPointer(final String scenario, final JMenuItem item,
+    private void selectWithPointer(final String scenario, final JPopupMenu menu, final JMenuItem item,
             final SelectionCapture selection, final ScenarioEvidence evidence) throws Exception {
         evidence.pointerClickScreen = calculateExpectedPointerClick(evidence);
         log("popup-pointer-target=" + scenario
@@ -666,6 +674,15 @@ public final class PopupCoordinateAcceptanceProbe {
             // XTest motion synchronizes that pointer; the button press/release below remain Robot events.
             synchronizeXWaylandPointer(evidence.pointerClickScreen);
             Thread.sleep(100L);
+            SwingUtilities.invokeAndWait(new Runnable() {
+                @Override
+                public void run() {
+                    evidence.menuShowingBeforePointer = menu.isShowing();
+                }
+            });
+            log("menu-showing-before-pointer scenario=" + scenario
+                + " value=" + evidence.menuShowingBeforePointer);
+            require(evidence.menuShowingBeforePointer, scenario + " menu-not-showing-before-pointer");
             robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
             robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
             robot.waitForIdle();
@@ -681,6 +698,14 @@ public final class PopupCoordinateAcceptanceProbe {
                     return selection.pointerEventQueueDrained && selection.pointerSelected;
                 }
             }, POINTER_EVENT_TIMEOUT_MILLIS);
+            SwingUtilities.invokeAndWait(new Runnable() {
+                @Override
+                public void run() {
+                    evidence.menuShowingAfterPointer = menu.isShowing();
+                }
+            });
+            log("menu-showing-after-pointer scenario=" + scenario
+                + " value=" + evidence.menuShowingAfterPointer);
         }
         finally {
             selection.pointerPhase = false;
@@ -838,8 +863,10 @@ public final class PopupCoordinateAcceptanceProbe {
         private int placementError = Integer.MAX_VALUE;
         private long shownNanos;
         private long persistenceMillis;
-        private boolean menuShowingBeforeSelection;
-        private boolean menuShowingAfterSelection;
+        private boolean menuShowingAtPersistenceCheckpoint;
+        private boolean menuShowingBeforePointer;
+        private boolean menuShowingAfterPointer;
+        private boolean menuShowingAfterFallback;
         private boolean pointerSelected;
         private String pointerSelectedText;
         private boolean doClickFallbackSelected;
