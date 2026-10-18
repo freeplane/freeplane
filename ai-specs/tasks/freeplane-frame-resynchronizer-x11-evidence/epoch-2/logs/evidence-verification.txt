@@ -1,0 +1,12 @@
+probe: classifications=NONEx4 exit=0; persistence, geometry, pointer, frame-write and report checkpoints verified
+falsifiability-shift-240-180: classifications=PRODUCTx4 exit=1; persistence, geometry, pointer, frame-write and report checkpoints verified
+falsifiability-frame-writes-11: classifications=PRODUCTx4 exit=1; persistence, geometry, pointer, frame-write and report checkpoints verified
+falsifiability-consuming-item: classifications=PRODUCTx4 exit=1; persistence, geometry, pointer, frame-write and report checkpoints verified
+independent maximized budget: only budget gate fails; popup delta=0 and selection=true x4
+both Python runners: syntax valid; both aggregate runners exited 0
+all three production source hashes match runtime identity and HEAD
+scope: every modified/untracked file is inside epoch-2; production source and tests unchanged
+report: all classification lines/exit codes and required UNVERIFIED statements verified
+cleanup: no started Xvfb/Openbox/Java probe remains; pre-existing :91 PID 4168168 preserved
+evidence-source-sha256.txt records the exact enforced probe and runners
+supplemental patch: zero-context formatting preserves all 11 original added lines; helper syntax and source hashes rechecked

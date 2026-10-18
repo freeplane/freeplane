@@ -1,0 +1,7 @@
+display=:77
+javac-exit-code=0
+probe-exit-code=1
+probe-timeout=False
+probe-result=FAIL
+expected-mutant-failure=true
+independent-budget-validation=True

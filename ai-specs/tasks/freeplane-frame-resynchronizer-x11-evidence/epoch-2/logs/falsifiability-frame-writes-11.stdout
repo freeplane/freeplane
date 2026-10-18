@@ -1,0 +1,90 @@
+probe=PopupCoordinateAcceptanceProbe
+probe-mode=frame-writes-11
+display=:77
+java-version=21.0.8
+toolkit-class=sun.awt.X11.XToolkit
+screen-bounds=(0,0,2240,1400)
+screen-insets=(0,0,0,0)
+screen-size=2240x1400
+frame-active scenario=initial value=true attempt=1
+popup-factory-class=org.freeplane.core.ui.components.X11PopupFactory
+popup-factory-delegate-class=com.formdev.flatlaf.ui.FlatPopupFactory
+popup-factory-delegate-is-flatpopupfactory=true
+correction-assertion=split-cache expected=(-240,-180) actual=(-240,-180) result=true
+correction-assertion=matched-geometry expected=(0,0) actual=(0,0) result=true
+popup-class-parity=heavyweight-menu adapter-class=javax.swing.Popup$HeavyWeightWindow delegate-class=javax.swing.Popup$HeavyWeightWindow equal=true expected=javax.swing.Popup$HeavyWeightWindow
+popup-class-parity=lightweight-enabled-menu adapter-class=javax.swing.Popup$HeavyWeightWindow delegate-class=javax.swing.Popup$HeavyWeightWindow equal=true expected=javax.swing.Popup$HeavyWeightWindow
+popup-class-parity=tooltip adapter-class=javax.swing.Popup$HeavyWeightWindow delegate-class=javax.swing.Popup$HeavyWeightWindow equal=true expected=javax.swing.Popup$HeavyWeightWindow
+frame-active scenario=startup-normal value=true attempt=1
+popup-persistence scenario=startup-normal duration-ms=909 minimum-ms=800 menu-showing=true
+popup-pointer-target=startup-normal clicked-screen-point=(238,202) menu-screen-bounds=(141,186,194,32) item-screen-bounds=(142,190,192,24)
+pointer-click-inside-item-bounds scenario=startup-normal value=true
+menu-showing-before-pointer scenario=startup-normal value=true
+popup-pointer-event scenario=startup-normal id=501 delivered=true consumed=false screen-point=(238,202)
+popup-pointer-event scenario=startup-normal id=502 delivered=true consumed=false screen-point=(238,202)
+popup-pointer-selected=selected-startup-normal
+menu-showing-after-pointer scenario=startup-normal value=false
+diagnostic-only doClick-fallback-start scenario=startup-normal
+diagnostic-only popup-doClick-fallback-selected=selected-startup-normal
+menu-showing-after-fallback scenario=startup-normal value=false
+assertion-failure=popup-triggered frame correction scenario=startup-normal setBounds-delta=11
+maximized-frame-target-budget scenario=startup-normal target=null max-unchanged-target-requests=0 limit=10 within-budget=true
+scenario=startup-normal owner-awt-screen=(141,162) owner-location-within-frame=(21,42) native-outer-frame-bounds=(120,120,900,600) expected-native-owner-origin=(141,162) correction=(0,0) requested-popup-coordinates=(141,186) popup-local-offset=(0,24) expected-popup-native-origin=(141,186) popup-window-class=javax.swing.Popup$HeavyWeightWindow popup-awt-bounds=(141,186,194,32) popup-native-bounds=(141,186,194,32) popup-menu-screen-bounds=(141,186,194,32) popup-item-screen-bounds=(142,190,192,24) pointer-click-screen-point=(238,202) pointer-click-inside-item-bounds=true placement-error=(0,0) placement-error-max=0 persistence-ms=909 menu-showing-before-pointer=true menu-showing-after-pointer=false menu-showing-after-fallback=false pointer-selection=true pointer-selected-text=selected-startup-normal pointer-press-events=1 pointer-release-events=1 doClick-fallback-selection=true doClick-fallback-text=selected-startup-normal frame-correction-setBounds-delta=11 maximized-unchanged-target-max-requests=0
+failure-class=PRODUCT reason=popup-triggered frame correction scenario=startup-normal
+frame-active scenario=maximize value=true attempt=1
+popup-persistence scenario=maximize duration-ms=903 minimum-ms=800 menu-showing=true
+popup-pointer-target=maximize clicked-screen-point=(101,82) menu-screen-bounds=(21,66,160,32) item-screen-bounds=(22,70,158,24)
+pointer-click-inside-item-bounds scenario=maximize value=true
+menu-showing-before-pointer scenario=maximize value=true
+popup-pointer-event scenario=maximize id=501 delivered=true consumed=false screen-point=(101,82)
+popup-pointer-event scenario=maximize id=502 delivered=true consumed=false screen-point=(101,82)
+popup-pointer-selected=selected-maximize
+menu-showing-after-pointer scenario=maximize value=false
+diagnostic-only doClick-fallback-start scenario=maximize
+diagnostic-only popup-doClick-fallback-selected=selected-maximize
+menu-showing-after-fallback scenario=maximize value=false
+assertion-failure=popup-triggered frame correction scenario=maximize setBounds-delta=11
+assertion-failure=maximized frame target budget exceeded scenario=maximize requests=11 limit=10 target=(0,0,2242,1406)
+maximized-frame-target-budget scenario=maximize target=(0,0,2242,1406) max-unchanged-target-requests=11 limit=10 within-budget=false
+scenario=maximize owner-awt-screen=(20,41) owner-location-within-frame=(21,42) native-outer-frame-bounds=(0,0,2240,1400) expected-native-owner-origin=(21,42) correction=(1,1) requested-popup-coordinates=(20,65) popup-local-offset=(0,24) expected-popup-native-origin=(21,66) popup-window-class=javax.swing.Popup$HeavyWeightWindow popup-awt-bounds=(21,66,160,32) popup-native-bounds=(21,66,160,32) popup-menu-screen-bounds=(21,66,160,32) popup-item-screen-bounds=(22,70,158,24) pointer-click-screen-point=(101,82) pointer-click-inside-item-bounds=true placement-error=(0,0) placement-error-max=0 persistence-ms=903 menu-showing-before-pointer=true menu-showing-after-pointer=false menu-showing-after-fallback=false pointer-selection=true pointer-selected-text=selected-maximize pointer-press-events=1 pointer-release-events=1 doClick-fallback-selection=true doClick-fallback-text=selected-maximize frame-correction-setBounds-delta=11 maximized-unchanged-target-max-requests=11
+failure-class=PRODUCT reason=popup-triggered frame correction scenario=maximize
+frame-active scenario=restore value=true attempt=1
+popup-persistence scenario=restore duration-ms=902 minimum-ms=800 menu-showing=true
+popup-pointer-target=restore clicked-screen-point=(214,202) menu-screen-bounds=(141,186,146,32) item-screen-bounds=(142,190,144,24)
+pointer-click-inside-item-bounds scenario=restore value=true
+menu-showing-before-pointer scenario=restore value=true
+popup-pointer-event scenario=restore id=501 delivered=true consumed=false screen-point=(214,202)
+popup-pointer-event scenario=restore id=502 delivered=true consumed=false screen-point=(214,202)
+popup-pointer-selected=selected-restore
+menu-showing-after-pointer scenario=restore value=false
+diagnostic-only doClick-fallback-start scenario=restore
+diagnostic-only popup-doClick-fallback-selected=selected-restore
+menu-showing-after-fallback scenario=restore value=false
+assertion-failure=popup-triggered frame correction scenario=restore setBounds-delta=11
+maximized-frame-target-budget scenario=restore target=null max-unchanged-target-requests=0 limit=10 within-budget=true
+scenario=restore owner-awt-screen=(141,162) owner-location-within-frame=(21,42) native-outer-frame-bounds=(120,120,900,600) expected-native-owner-origin=(141,162) correction=(0,0) requested-popup-coordinates=(141,186) popup-local-offset=(0,24) expected-popup-native-origin=(141,186) popup-window-class=javax.swing.Popup$HeavyWeightWindow popup-awt-bounds=(141,186,146,32) popup-native-bounds=(141,186,146,32) popup-menu-screen-bounds=(141,186,146,32) popup-item-screen-bounds=(142,190,144,24) pointer-click-screen-point=(214,202) pointer-click-inside-item-bounds=true placement-error=(0,0) placement-error-max=0 persistence-ms=902 menu-showing-before-pointer=true menu-showing-after-pointer=false menu-showing-after-fallback=false pointer-selection=true pointer-selected-text=selected-restore pointer-press-events=1 pointer-release-events=1 doClick-fallback-selection=true doClick-fallback-text=selected-restore frame-correction-setBounds-delta=11 maximized-unchanged-target-max-requests=0
+failure-class=PRODUCT reason=popup-triggered frame correction scenario=restore
+frame-active scenario=remaximize value=true attempt=1
+popup-persistence scenario=remaximize duration-ms=903 minimum-ms=800 menu-showing=true
+popup-pointer-target=remaximize clicked-screen-point=(107,82) menu-screen-bounds=(21,66,172,32) item-screen-bounds=(22,70,170,24)
+pointer-click-inside-item-bounds scenario=remaximize value=true
+menu-showing-before-pointer scenario=remaximize value=true
+popup-pointer-event scenario=remaximize id=501 delivered=true consumed=false screen-point=(107,82)
+popup-pointer-event scenario=remaximize id=502 delivered=true consumed=false screen-point=(107,82)
+popup-pointer-selected=selected-remaximize
+menu-showing-after-pointer scenario=remaximize value=false
+diagnostic-only doClick-fallback-start scenario=remaximize
+diagnostic-only popup-doClick-fallback-selected=selected-remaximize
+menu-showing-after-fallback scenario=remaximize value=false
+assertion-failure=popup-triggered frame correction scenario=remaximize setBounds-delta=11
+assertion-failure=maximized frame target budget exceeded scenario=remaximize requests=11 limit=10 target=(0,0,2242,1406)
+maximized-frame-target-budget scenario=remaximize target=(0,0,2242,1406) max-unchanged-target-requests=11 limit=10 within-budget=false
+scenario=remaximize owner-awt-screen=(20,41) owner-location-within-frame=(21,42) native-outer-frame-bounds=(0,0,2240,1400) expected-native-owner-origin=(21,42) correction=(1,1) requested-popup-coordinates=(20,65) popup-local-offset=(0,24) expected-popup-native-origin=(21,66) popup-window-class=javax.swing.Popup$HeavyWeightWindow popup-awt-bounds=(21,66,172,32) popup-native-bounds=(21,66,172,32) popup-menu-screen-bounds=(21,66,172,32) popup-item-screen-bounds=(22,70,170,24) pointer-click-screen-point=(107,82) pointer-click-inside-item-bounds=true placement-error=(0,0) placement-error-max=0 persistence-ms=903 menu-showing-before-pointer=true menu-showing-after-pointer=false menu-showing-after-fallback=false pointer-selection=true pointer-selected-text=selected-remaximize pointer-press-events=1 pointer-release-events=1 doClick-fallback-selection=true doClick-fallback-text=selected-remaximize frame-correction-setBounds-delta=11 maximized-unchanged-target-max-requests=11
+failure-class=PRODUCT reason=popup-triggered frame correction scenario=remaximize
+probe-result=FAIL
+failure=popup-triggered frame correction scenario=startup-normal setBounds-delta=11
+failure=popup-triggered frame correction scenario=maximize setBounds-delta=11
+failure=maximized frame target budget exceeded scenario=maximize requests=11 limit=10 target=(0,0,2242,1406)
+failure=popup-triggered frame correction scenario=restore setBounds-delta=11
+failure=popup-triggered frame correction scenario=remaximize setBounds-delta=11
+failure=maximized frame target budget exceeded scenario=remaximize requests=11 limit=10 target=(0,0,2242,1406)

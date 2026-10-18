@@ -15,6 +15,7 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -52,6 +53,8 @@ public final class PopupCoordinateAcceptanceProbe {
     private static final long POINTER_EVENT_TIMEOUT_MILLIS = 2000L;
     private static final int X11_SCREEN_NUMBER = 0;
     private static final int MAX_PLACEMENT_ERROR = 1;
+    private static final int MAX_UNCHANGED_TARGET_REQUESTS = 10;
+    private final String probeMode = System.getProperty("freeplane.acceptance.mode", "canonical");
 
     private final List<String> failures = new ArrayList<String>();
     private final PopupCoordinateCalibrator.GeometryProvider productionGeometryProvider =
@@ -112,6 +115,9 @@ public final class PopupCoordinateAcceptanceProbe {
     private void run() throws Exception {
         FlatLightLaf.setup();
         log("probe=PopupCoordinateAcceptanceProbe");
+        log("probe-mode=" + probeMode);
+        require("canonical".equals(probeMode) || "frame-writes-11".equals(probeMode)
+                || "consuming-item".equals(probeMode), "unknown-probe-mode=" + probeMode);
         log("display=" + System.getenv("DISPLAY"));
         log("java-version=" + System.getProperty("java.version"));
         log("toolkit-class=" + Toolkit.getDefaultToolkit().getClass().getName());
@@ -451,6 +457,7 @@ public final class PopupCoordinateAcceptanceProbe {
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
+                frame.beginStateTransition();
                 frame.setExtendedState(state);
             }
         });
@@ -476,7 +483,7 @@ public final class PopupCoordinateAcceptanceProbe {
         final SelectionCapture selection = new SelectionCapture();
         final JPopupMenu[] menuHolder = new JPopupMenu[1];
         final JMenuItem[] itemHolder = new JMenuItem[1];
-        evidence.frameCorrectionCountBefore = frame.getRectangleSetBoundsCalls();
+        evidence.frameCorrectionCountBefore = frame.getSetBoundsCalls();
 
         evidence.frameActive = activateFrame(scenario);
         SwingUtilities.invokeAndWait(new Runnable() {
@@ -501,7 +508,32 @@ public final class PopupCoordinateAcceptanceProbe {
                 }
 
                 final JPopupMenu menu = new JPopupMenu();
-                final JMenuItem item = new JMenuItem("selected-" + scenario);
+                final JMenuItem item = new JMenuItem("selected-" + scenario) {
+                    private static final long serialVersionUID = 1L;
+
+                    @Override
+                    protected void processMouseEvent(final MouseEvent event) {
+                        if (selection.pointerPhase && (event.getID() == MouseEvent.MOUSE_PRESSED
+                                || event.getID() == MouseEvent.MOUSE_RELEASED
+                                || event.getID() == MouseEvent.MOUSE_CLICKED)) {
+                            if (event.getID() == MouseEvent.MOUSE_PRESSED) {
+                                selection.pointerPressEvents++;
+                            }
+                            else if (event.getID() == MouseEvent.MOUSE_RELEASED) {
+                                selection.pointerReleaseEvents++;
+                            }
+                            final boolean consume = "consuming-item".equals(probeMode);
+                            log("popup-pointer-event scenario=" + scenario
+                                + " id=" + event.getID() + " delivered=true consumed=" + consume
+                                + " screen-point=" + formatPoint(event.getLocationOnScreen()));
+                            if (consume) {
+                                event.consume();
+                                return;
+                            }
+                        }
+                        super.processMouseEvent(event);
+                    }
+                };
                 item.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(final ActionEvent event) {
@@ -521,6 +553,19 @@ public final class PopupCoordinateAcceptanceProbe {
                 menuHolder[0] = menu;
                 itemHolder[0] = item;
                 menu.show(owner, evidence.popupLocal.x, evidence.popupLocal.y);
+                if ("frame-writes-11".equals(probeMode)) {
+                    final Rectangle unchangedTarget = frame.getBounds();
+                    for (int request = 0; request < 11; request++) {
+                        // Alternate overloads so the control also falsifies incomplete write tracking.
+                        if (request % 2 == 0) {
+                            frame.setBounds(unchangedTarget);
+                        }
+                        else {
+                            frame.setBounds(unchangedTarget.x, unchangedTarget.y,
+                                unchangedTarget.width, unchangedTarget.height);
+                        }
+                    }
+                }
                 evidence.shownNanos = System.nanoTime();
                 evidence.popupWindow = SwingUtilities.getWindowAncestor(menu);
                 if (evidence.popupWindow == frame) {
@@ -599,11 +644,27 @@ public final class PopupCoordinateAcceptanceProbe {
                 @Override
                 public void run() {
                     menu.setVisible(false);
+                    evidence.frameCorrectionCountAfter = frame.getSetBoundsCalls();
+                    evidence.maximizedTargetRequests = frame.getMaximumMaximizedTargetRequests();
+                    evidence.maximizedTarget = frame.getMaximumMaximizedTarget();
                 }
             });
         }
-        evidence.frameCorrectionCountAfter = frame.getRectangleSetBoundsCalls();
         evidence.frameCorrectionCount = evidence.frameCorrectionCountAfter - evidence.frameCorrectionCountBefore;
+        evidence.pointerPressEvents = selection.pointerPressEvents;
+        evidence.pointerReleaseEvents = selection.pointerReleaseEvents;
+        require(evidence.frameCorrectionCount == 0,
+            "popup-triggered frame correction scenario=" + scenario + " setBounds-delta="
+                + evidence.frameCorrectionCount);
+        require(evidence.maximizedTargetRequests <= MAX_UNCHANGED_TARGET_REQUESTS,
+            "maximized frame target budget exceeded scenario=" + scenario + " requests="
+                + evidence.maximizedTargetRequests + " limit=" + MAX_UNCHANGED_TARGET_REQUESTS
+                + " target=" + formatRectangle(evidence.maximizedTarget));
+        log("maximized-frame-target-budget scenario=" + scenario
+            + " target=" + formatRectangle(evidence.maximizedTarget)
+            + " max-unchanged-target-requests=" + evidence.maximizedTargetRequests
+            + " limit=" + MAX_UNCHANGED_TARGET_REQUESTS
+            + " within-budget=" + (evidence.maximizedTargetRequests <= MAX_UNCHANGED_TARGET_REQUESTS));
         log("scenario=" + scenario
             + " owner-awt-screen=" + formatPoint(evidence.ownerScreen)
             + " owner-location-within-frame=" + formatPoint(evidence.ownerWithinFrame)
@@ -619,6 +680,7 @@ public final class PopupCoordinateAcceptanceProbe {
             + " popup-menu-screen-bounds=" + formatRectangle(evidence.menuScreenBounds)
             + " popup-item-screen-bounds=" + formatRectangle(evidence.itemScreenBounds)
             + " pointer-click-screen-point=" + formatPoint(evidence.pointerClickScreen)
+            + " pointer-click-inside-item-bounds=" + evidence.pointerClickInsideItem
             + " placement-error=(" + evidence.placementErrorX + "," + evidence.placementErrorY + ")"
             + " placement-error-max=" + evidence.placementError
             + " persistence-ms=" + evidence.persistenceMillis
@@ -627,16 +689,27 @@ public final class PopupCoordinateAcceptanceProbe {
             + " menu-showing-after-fallback=" + evidence.menuShowingAfterFallback
             + " pointer-selection=" + evidence.pointerSelected
             + " pointer-selected-text=" + evidence.pointerSelectedText
+            + " pointer-press-events=" + evidence.pointerPressEvents
+            + " pointer-release-events=" + evidence.pointerReleaseEvents
             + " doClick-fallback-selection=" + evidence.doClickFallbackSelected
             + " doClick-fallback-text=" + evidence.doClickFallbackText
-            + " frame-correction-setBounds-delta=" + evidence.frameCorrectionCount);
+            + " frame-correction-setBounds-delta=" + evidence.frameCorrectionCount
+            + " maximized-unchanged-target-max-requests=" + evidence.maximizedTargetRequests);
         logScenarioFailureClass(evidence, failureCountBefore);
     }
 
     private void logScenarioFailureClass(final ScenarioEvidence evidence, final int failureCountBefore) {
         final String failureClass;
         final String reason;
-        if (Boolean.FALSE.equals(evidence.pointerClickInsideItem)) {
+        if (evidence.frameCorrectionCount != 0) {
+            failureClass = "PRODUCT";
+            reason = "popup-triggered frame correction";
+        }
+        else if (evidence.maximizedTargetRequests > MAX_UNCHANGED_TARGET_REQUESTS) {
+            failureClass = "PRODUCT";
+            reason = "maximized frame target budget exceeded";
+        }
+        else if (Boolean.FALSE.equals(evidence.pointerClickInsideItem)) {
             failureClass = "PRODUCT";
             reason = "popup misplaced; click landed outside item bounds";
         }
@@ -645,15 +718,16 @@ public final class PopupCoordinateAcceptanceProbe {
             failureClass = "PRODUCT";
             reason = "popup misplaced; placement error exceeds tolerance";
         }
-        else if (!evidence.frameActive) {
+        else if (!evidence.frameActive && evidence.pointerPressEvents == 0 && evidence.pointerReleaseEvents == 0) {
+            // Failure to activate is positive environment evidence; missing selection alone is not.
             failureClass = "ENVIRONMENT";
             reason = "frame could not be activated";
         }
-        else if (Boolean.TRUE.equals(evidence.pointerClickInsideItem) && !evidence.pointerSelected
-                && evidence.menuShowingAtPersistenceCheckpoint && evidence.menuShowingBeforePointer
-                && evidence.expectedPopup != null && evidence.popupNativeBounds != null) {
-            failureClass = "ENVIRONMENT";
-            reason = "pointer dispatch failed although the click landed inside the item";
+        else if (!evidence.pointerSelected) {
+            failureClass = "PRODUCT";
+            reason = evidence.pointerPressEvents > 0 || evidence.pointerReleaseEvents > 0
+                ? "pointer selection missing after delivered click"
+                : "pointer selection missing; event delivery unproven";
         }
         else if (failures.size() > failureCountBefore) {
             failureClass = "PRODUCT";
@@ -893,6 +967,8 @@ public final class PopupCoordinateAcceptanceProbe {
         private volatile boolean pointerEventQueueDrained;
         private volatile boolean pointerSelected;
         private volatile String pointerText;
+        private volatile int pointerPressEvents;
+        private volatile int pointerReleaseEvents;
         private volatile boolean doClickFallbackSelected;
         private volatile String doClickFallbackText;
     }
@@ -928,11 +1004,15 @@ public final class PopupCoordinateAcceptanceProbe {
         private boolean menuShowingAfterFallback;
         private boolean pointerSelected;
         private String pointerSelectedText;
+        private int pointerPressEvents;
+        private int pointerReleaseEvents;
         private boolean doClickFallbackSelected;
         private String doClickFallbackText;
         private int frameCorrectionCountBefore;
         private int frameCorrectionCountAfter;
         private int frameCorrectionCount;
+        private int maximizedTargetRequests;
+        private Rectangle maximizedTarget;
 
         private ScenarioEvidence(final String name) {
             this.name = name;
@@ -942,22 +1022,58 @@ public final class PopupCoordinateAcceptanceProbe {
     private static final class CountingFrame extends JFrame {
         private static final long serialVersionUID = 1L;
         private volatile boolean tracking;
-        private volatile int rectangleSetBoundsCalls;
+        private volatile int setBoundsCalls;
+        private Rectangle maximizedTarget;
+        private int unchangedTargetRequests;
+        private int maximumMaximizedTargetRequests;
+        private Rectangle maximumMaximizedTarget;
 
         @Override
-        public void setBounds(final Rectangle bounds) {
+        public void setBounds(final int x, final int y, final int width, final int height) {
+            // Component.setBounds(Rectangle) dispatches here too: count either overload exactly once.
             if (tracking) {
-                rectangleSetBoundsCalls++;
+                setBoundsCalls++;
+                if ((getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
+                    final Rectangle target = new Rectangle(x, y, width, height);
+                    if (!target.equals(maximizedTarget)) {
+                        maximizedTarget = target;
+                        unchangedTargetRequests = 0;
+                    }
+                    unchangedTargetRequests++;
+                    if (unchangedTargetRequests > maximumMaximizedTargetRequests) {
+                        maximumMaximizedTargetRequests = unchangedTargetRequests;
+                        maximumMaximizedTarget = new Rectangle(target);
+                    }
+                }
+                else {
+                    maximizedTarget = null;
+                    unchangedTargetRequests = 0;
+                }
             }
-            super.setBounds(bounds);
+            super.setBounds(x, y, width, height);
+        }
+
+        private void beginStateTransition() {
+            maximizedTarget = null;
+            unchangedTargetRequests = 0;
+            maximumMaximizedTargetRequests = 0;
+            maximumMaximizedTarget = null;
         }
 
         private void setTracking(final boolean tracking) {
             this.tracking = tracking;
         }
 
-        private int getRectangleSetBoundsCalls() {
-            return rectangleSetBoundsCalls;
+        private int getSetBoundsCalls() {
+            return setBoundsCalls;
+        }
+
+        private int getMaximumMaximizedTargetRequests() {
+            return maximumMaximizedTargetRequests;
+        }
+
+        private Rectangle getMaximumMaximizedTarget() {
+            return maximumMaximizedTarget == null ? null : new Rectangle(maximumMaximizedTarget);
         }
     }
 }

@@ -1,0 +1,16 @@
+runtime-identity=/data/home/henry-arch/.local/state/pi/project-manager/worktrees/0233ff88d3cc54bbd61550c61fa917d6e2a5717f8a03be4e9aa63dcd47dd1cfa/pm-run-20261017-122451-1d0829ed/integration/ai-specs/tasks/freeplane-frame-resynchronizer-x11-evidence/epoch-2/logs/runtime-identity.txt
+probe-stdout=/data/home/henry-arch/.local/state/pi/project-manager/worktrees/0233ff88d3cc54bbd61550c61fa917d6e2a5717f8a03be4e9aa63dcd47dd1cfa/pm-run-20261017-122451-1d0829ed/integration/ai-specs/tasks/freeplane-frame-resynchronizer-x11-evidence/epoch-2/logs/probe.stdout
+probe-stderr=/data/home/henry-arch/.local/state/pi/project-manager/worktrees/0233ff88d3cc54bbd61550c61fa917d6e2a5717f8a03be4e9aa63dcd47dd1cfa/pm-run-20261017-122451-1d0829ed/integration/ai-specs/tasks/freeplane-frame-resynchronizer-x11-evidence/epoch-2/logs/probe.stderr
+probe-exit-code=0
+probe-timeout=False
+canonical-classification-validation=True
+mutant-offset=240,180
+mutant-exit-code=1
+mutant-timeout=False
+mutant-validation=True
+frame-writes-11-exit-code=1
+frame-writes-11-timeout=False
+frame-writes-11-validation=True
+consuming-item-exit-code=1
+consuming-item-timeout=False
+consuming-item-validation=True

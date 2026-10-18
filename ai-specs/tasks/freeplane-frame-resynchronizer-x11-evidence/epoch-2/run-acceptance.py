@@ -43,6 +43,23 @@ def classifications_match(stdout: str, expected_class: str) -> bool:
     )
 
 
+def scenario_records_match(stdout: str, expected: Dict[str, str]) -> bool:
+    records = [dict(re.findall(r"(\S+?)=(\S+)", line))
+               for line in stdout.splitlines() if line.startswith("scenario=")]
+    try:
+        return (
+            len(records) == len(SCENARIOS)
+            and sorted(record.get("scenario", "") for record in records) == sorted(SCENARIOS)
+            and all(
+                all(record.get(key) == value for key, value in expected.items())
+                and int(record.get("persistence-ms", "-1")) >= 800
+                for record in records
+            )
+        )
+    except ValueError:
+        return False
+
+
 def shell_command(command: Sequence[str]) -> str:
     return shlex.join([str(part) for part in command])
 
@@ -301,6 +318,10 @@ def main() -> int:
         "--mutant-offset",
         help="also run a menu.show X,Y offset mutant on the same isolated display",
     )
+    parser.add_argument(
+        "--negative-controls", action="store_true",
+        help="also run the committed frame-writes-11 and consuming-item probe modes",
+    )
     arguments = parser.parse_args()
     mutant_offset = parse_mutant_offset(arguments.mutant_offset)
 
@@ -368,6 +389,7 @@ def main() -> int:
         mutant_timed_out = False
         mutant_stdout = ""
         mutant_compile_code: Optional[int] = None
+        negative_results = {}
 
         with tempfile.TemporaryDirectory(prefix="freeplane-popup-acceptance-") as temporary_directory:
             temporary_root = Path(temporary_directory)
@@ -387,6 +409,8 @@ def main() -> int:
                     raise RuntimeError("could not identify the single menu.show call for mutation")
                 mutant_source.write_text(source_text.replace(original_call, mutant_call), encoding="utf-8")
                 source_variants.append(("mutant", mutant_source))
+            if arguments.negative_controls:
+                source_variants.extend((mode, probe_source) for mode in ("frame-writes-11", "consuming-item"))
 
             for label, source in source_variants:
                 class_directory = temporary_root / (label + "-classes")
@@ -406,20 +430,20 @@ def main() -> int:
                 commands.append(label + "-compile-command=" + shell_command(compile_command))
                 compile_result = completed(compile_command, run_env)
                 mutant_suffix = "-shift-" + str(mutant_offset[0]) + "-" + str(mutant_offset[1]) if mutant_offset else ""
-                if label == "canonical":
-                    stdout_path = LOG_DIR / "javac.stdout"
-                    stderr_path = LOG_DIR / "javac.stderr"
-                    result_path = LOG_DIR / "probe.result.txt"
-                else:
-                    stdout_path = LOG_DIR / ("falsifiability" + mutant_suffix + ".javac.stdout")
-                    stderr_path = LOG_DIR / ("falsifiability" + mutant_suffix + ".javac.stderr")
-                    result_path = LOG_DIR / ("falsifiability" + mutant_suffix + ".result.txt")
+                log_prefix = ("probe" if label == "canonical" else
+                              "falsifiability" + mutant_suffix if label == "mutant" else
+                              "falsifiability-" + label)
+                stdout_path = LOG_DIR / ("javac.stdout" if label == "canonical" else log_prefix + ".javac.stdout")
+                stderr_path = LOG_DIR / ("javac.stderr" if label == "canonical" else log_prefix + ".javac.stderr")
+                result_path = LOG_DIR / (log_prefix + ".result.txt")
                 write_log(stdout_path, compile_result.stdout)
                 write_log(stderr_path, compile_result.stderr)
                 if label == "canonical":
                     canonical_compile_code = compile_result.returncode
-                else:
+                elif label == "mutant":
                     mutant_compile_code = compile_result.returncode
+                else:
+                    negative_results[label] = (compile_result.returncode, None, "", "", False)
                 if compile_result.returncode != 0:
                     write_probe_result(
                         result_path,
@@ -427,7 +451,7 @@ def main() -> int:
                         compile_result.returncode,
                         None,
                         False,
-                        expected_mutant_failure=label == "mutant",
+                        expected_mutant_failure=label != "canonical",
                     )
                     continue
 
@@ -440,20 +464,22 @@ def main() -> int:
                     runtime_classpath,
                     PROBE_CLASS,
                 ]
+                if label not in ("canonical", "mutant"):
+                    probe_command.insert(1, "-Dfreeplane.acceptance.mode=" + label)
                 commands.append(label + "-probe-command=" + shell_command(probe_command))
                 exit_code, stdout, stderr, timed_out = bounded_run(probe_command, run_env, 90)
                 if label == "canonical":
-                    stdout_path = LOG_DIR / "probe.stdout"
-                    stderr_path = LOG_DIR / "probe.stderr"
                     canonical_exit_code = exit_code
                     canonical_timed_out = timed_out
                     canonical_stdout = stdout
-                else:
-                    stdout_path = LOG_DIR / ("falsifiability" + mutant_suffix + ".stdout")
-                    stderr_path = LOG_DIR / ("falsifiability" + mutant_suffix + ".stderr")
+                elif label == "mutant":
                     mutant_exit_code = exit_code
                     mutant_timed_out = timed_out
                     mutant_stdout = stdout
+                else:
+                    negative_results[label] = (compile_result.returncode, exit_code, stdout, stderr, timed_out)
+                stdout_path = LOG_DIR / (log_prefix + ".stdout")
+                stderr_path = LOG_DIR / (log_prefix + ".stderr")
                 write_log(stdout_path, stdout)
                 write_log(stderr_path, stderr)
                 write_probe_result(
@@ -462,7 +488,7 @@ def main() -> int:
                     compile_result.returncode,
                     exit_code,
                     timed_out,
-                    expected_mutant_failure=label == "mutant",
+                    expected_mutant_failure=label != "canonical",
                 )
 
         write_log(LOG_DIR / "commands.txt", "\n".join(commands) + "\n")
@@ -474,7 +500,14 @@ def main() -> int:
         if canonical_exit_code != 0:
             print("probe failed", file=sys.stderr)
             return 1 if canonical_exit_code is None else canonical_exit_code
-        canonical_classifications_valid = classifications_match(canonical_stdout, "NONE")
+        canonical_classifications_valid = (
+            not canonical_timed_out
+            and classifications_match(canonical_stdout, "NONE")
+            and scenario_records_match(canonical_stdout, {
+                "pointer-selection": "true", "placement-error-max": "0",
+                "frame-correction-setBounds-delta": "0", "menu-showing-before-pointer": "true",
+            })
+        )
         print("canonical-classification-validation=" + str(canonical_classifications_valid))
         if not canonical_classifications_valid:
             print("canonical classification validation failed", file=sys.stderr)
@@ -497,7 +530,34 @@ def main() -> int:
             if not mutant_valid:
                 print("mutant validation failed", file=sys.stderr)
                 return 1
-        return 0
+        negative_controls_valid = True
+        for mode, (compile_code, exit_code, stdout, stderr, timed_out) in negative_results.items():
+            expected_records = {
+                "placement-error-max": "0", "menu-showing-before-pointer": "true",
+                "pointer-selection": "true" if mode == "frame-writes-11" else "false",
+                "frame-correction-setBounds-delta": "11" if mode == "frame-writes-11" else "0",
+                "pointer-press-events": "1", "pointer-release-events": "1",
+            }
+            valid = (
+                compile_code == 0 and exit_code is not None and exit_code != 0
+                and not timed_out and not stderr and classifications_match(stdout, "PRODUCT")
+                and scenario_records_match(stdout, expected_records)
+            )
+            if mode == "frame-writes-11":
+                valid = valid and len(re.findall(
+                    r"^failure-class=PRODUCT reason=popup-triggered frame correction scenario=\S+$",
+                    stdout, re.MULTILINE,
+                )) == len(SCENARIOS)
+            else:
+                valid = valid and len(re.findall(
+                    r"^popup-pointer-event scenario=\S+ id=50[12] delivered=true consumed=true ",
+                    stdout, re.MULTILINE,
+                )) == 2 * len(SCENARIOS)
+            print(mode + "-exit-code=" + str(exit_code))
+            print(mode + "-timeout=" + str(timed_out))
+            print(mode + "-validation=" + str(valid))
+            negative_controls_valid = negative_controls_valid and valid
+        return 0 if negative_controls_valid else 1
     finally:
         display_session.close()
 

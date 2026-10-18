@@ -1,0 +1,6 @@
+display=:77
+javac-exit-code=0
+probe-exit-code=0
+probe-timeout=False
+probe-result=PASS
+expected-mutant-failure=true
