@@ -47,7 +47,6 @@ class TreeTableCellPainter {
 		final List<NodeView> rows = treeTable.getRows();
 		for (int i = 0; i < grid.getRowCount(); i++) {
 			useLineStyle(graphics, TreeTableLineStyle.ofBorder(rows.get(i)));
-			drawHorizontalLine(graphics, grid, grid.getRowTopY(i));
 			drawHorizontalLine(graphics, grid, grid.getRowBottomY(i));
 		}
 		useLineStyle(graphics, TreeTableLineStyle.ofBorder(treeTable.getTreeTableRootView()));

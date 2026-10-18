@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.nodestyle.NodeStyleShape;
 import org.freeplane.features.treetable.TreeColumnWidthCalculator;
 import org.freeplane.features.treetable.TreeTableColumns;
 import org.freeplane.features.treetable.TreeTableGeometry;
@@ -93,20 +94,24 @@ class TreeTableView {
 	}
 
 	private TreeTableGrid createGrid() {
-		final int lineCount = rowBounds.size() + 1;
-		final int[] lineTops = new int[lineCount];
-		final int[] lineBottoms = new int[lineCount];
+		final int[] lineBottoms = new int[rowBounds.size() + 1];
 		final int rootBorderWidth = borderWidthOf(treeTableRootView);
-		lineTops[0] = TreeTableGrid.borderLineStart(tableBounds.y, rootBorderWidth);
-		lineBottoms[0] = TreeTableGrid.borderLineEnd(tableBounds.y, tableBounds.height, rootBorderWidth);
-		for (int rowIndex = 0; rowIndex < rowBounds.size(); rowIndex++) {
-			final Rectangle row = rowBounds.get(rowIndex);
-			final int rowBorderWidth = borderWidthOf(rows.get(rowIndex));
-			lineTops[rowIndex + 1] = TreeTableGrid.borderLineStart(row.y, rowBorderWidth);
-			lineBottoms[rowIndex + 1] = TreeTableGrid.borderLineEnd(row.y, row.height, rowBorderWidth);
-		}
-		return new TreeTableGrid(TreeTableGrid.borderLineStart(tableBounds.x, rootBorderWidth), geometry, lineTops,
-			lineBottoms);
+		lineBottoms[0] = bottomBorderLineOf(treeTableRootView, tableBounds);
+		for (int rowIndex = 0; rowIndex < rowBounds.size(); rowIndex++)
+			lineBottoms[rowIndex + 1] = bottomBorderLineOf(rows.get(rowIndex), rowBounds.get(rowIndex));
+		return new TreeTableGrid(TreeTableGrid.borderLineStart(tableBounds.x, rootBorderWidth), geometry,
+			TreeTableGrid.borderLineStart(tableBounds.y, rootBorderWidth), lineBottoms);
+	}
+
+	private static int bottomBorderLineOf(final NodeView view, final Rectangle bounds) {
+		final int borderWidth = borderWidthOf(view);
+		return isUnderlined(view)
+				? TreeTableGrid.underlineY(bounds.y, bounds.height, borderWidth)
+				: TreeTableGrid.borderLineEnd(bounds.y, bounds.height, borderWidth);
+	}
+
+	private static boolean isUnderlined(final NodeView view) {
+		return view.getMainView().getShapeConfiguration().getShape() == NodeStyleShape.fork;
 	}
 
 	private static int borderWidthOf(final NodeView view) {
