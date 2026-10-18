@@ -5,6 +5,7 @@ import org.freeplane.api.Quantity;
 
 public class TreeTableColumn {
 	public static final Quantity<LengthUnit> DEFAULT_WIDTH = new Quantity<LengthUnit>(60, LengthUnit.pt);
+	public static final Quantity<LengthUnit> MINIMAL_WIDTH = new Quantity<LengthUnit>(20, LengthUnit.pt);
 
 	private final String attributeKey;
 	private final Quantity<LengthUnit> width;
@@ -21,6 +22,11 @@ public class TreeTableColumn {
 		width.assertNonNegative();
 		this.attributeKey = attributeKey;
 		this.width = width;
+	}
+
+	public static Quantity<LengthUnit> widthFromZoomedPixels(final int zoomedPixels, final double zoom) {
+		final double width = Math.max(MINIMAL_WIDTH.toBaseUnits(), Math.round(zoomedPixels / zoom));
+		return new Quantity<LengthUnit>(width, LengthUnit.px).in(LengthUnit.pt);
 	}
 
 	public String getAttributeKey() {

@@ -992,6 +992,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         setAutoscrolls(true);
         this.repaintsViewOnSelectionChange = highlightAscendantEdgesEnabled;
         final IUserInputListenerFactory userInputListenerFactory = getModeController().getUserInputListenerFactory();
+        final TreeTableColumnResizer treeTableColumnResizer = new TreeTableColumnResizer(this);
+        addMouseListener(treeTableColumnResizer);
+        addMouseMotionListener(treeTableColumnResizer);
         treeTableCellEditor = new TreeTableCellEditor(this);
         addMouseListener(treeTableCellEditor);
         addMouseListener(userInputListenerFactory.getMapMouseListener());

@@ -59,6 +59,19 @@ public class TreeTableGeometry {
 		return columnPositions[lastIndex] + columnWidths[lastIndex];
 	}
 
+	public int getColumnResizeEdge(final int index) {
+		final int columnEnd = columnPositions[index] + columnWidths[index];
+		return index < columnWidths.length - 1 ? columnEnd + gap / 2 : columnEnd;
+	}
+
+	public int getColumnIndexWithResizeEdgeNear(final int x, final int tolerance) {
+		for (int index = 0; index < columnWidths.length; index++) {
+			if (Math.abs(x - getColumnResizeEdge(index)) <= tolerance)
+				return index;
+		}
+		return -1;
+	}
+
 	public int getColumnIndexAt(final int x) {
 		for (int index = 0; index < columnWidths.length; index++) {
 			if (x >= columnPositions[index] && x < columnPositions[index] + columnWidths[index])

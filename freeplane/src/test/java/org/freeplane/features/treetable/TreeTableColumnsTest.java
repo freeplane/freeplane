@@ -233,4 +233,24 @@ public class TreeTableColumnsTest {
 		assertThatThrownBy(() -> columns.asList().add(column("Contre")))
 			.isInstanceOf(UnsupportedOperationException.class);
 	}
+
+	@Test
+	public void resizesColumnKeepingItsKeyAndPosition() {
+		final TreeTableColumns columns = TreeTableColumns.of(column("Pour"), column("Contre"));
+		final Quantity<LengthUnit> width = new Quantity<LengthUnit>(90, LengthUnit.pt);
+
+		final TreeTableColumns changed = columns.resized("Contre", width);
+
+		assertThat(attributeKeysOf(changed)).containsExactly("Pour", "Contre");
+		assertThat(changed.get(1).getWidth()).isEqualTo(width);
+		assertThat(changed.get(0).getWidth()).isEqualTo(columns.get(0).getWidth());
+	}
+
+	@Test
+	public void rejectsResizingOfUnknownColumn() {
+		final TreeTableColumns columns = TreeTableColumns.of(column("Pour"));
+
+		assertThatThrownBy(() -> columns.resized("Contre", new Quantity<LengthUnit>(90, LengthUnit.pt)))
+			.isInstanceOf(IllegalArgumentException.class);
+	}
 }

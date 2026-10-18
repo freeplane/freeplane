@@ -20,11 +20,15 @@ public class TreeTableGrid {
 		return position + size - borderWidth + borderWidth / 2;
 	}
 
-	public TreeTableGrid(final int tableX, final TreeTableGeometry geometry, final int top,
+	public static int leftOfContent(final int contentX, final TreeTableGeometry geometry, final int textPadding) {
+		return contentX - geometry.getGap() / 2 - textPadding;
+	}
+
+	public TreeTableGrid(final int left, final int tableX, final TreeTableGeometry geometry, final int top,
 			final int[] lineBottoms) {
 		if (lineBottoms.length == 0)
 			throw new IllegalArgumentException("tree table grid requires at least the header line");
-		this.left = tableX;
+		this.left = left;
 		this.right = tableX + geometry.getTotalWidth();
 		this.top = top;
 		this.bottom = lineBottoms[lineBottoms.length - 1];

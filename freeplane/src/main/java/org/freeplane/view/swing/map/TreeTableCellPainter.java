@@ -15,8 +15,6 @@ import org.freeplane.features.treetable.TreeTableColumns;
 import org.freeplane.features.treetable.TreeTableGrid;
 
 class TreeTableCellPainter {
-	private static final int TEXT_PADDING = 4;
-
 	private final MapView mapView;
 	private final TreeTableCellEditor cellEditor;
 
@@ -80,7 +78,7 @@ class TreeTableCellPainter {
 		for (int i = 0; i < columns.size(); i++) {
 			final String attributeKey = columns.get(i).getAttributeKey();
 			if (!cellEditor.isEditing(treeTable.getTreeTableRoot(), attributeKey))
-				paintTextInCell(graphics, attributeKey, treeTable.getHeaderTextBounds(i));
+				paintTextInCell(graphics, attributeKey, treeTable.getHeaderTextBounds(i), treeTable.getTextPadding());
 			paintHeaderMenuButton(graphics, treeTable.getHeaderMenuButtonBounds(i));
 		}
 	}
@@ -105,17 +103,19 @@ class TreeTableCellPainter {
 					continue;
 				final String value = cellValue(attributes, attributeKey);
 				if (value != null)
-					paintTextInCell(graphics, value, treeTable.getCellBounds(rowIndex, columnIndex));
+					paintTextInCell(graphics, value, treeTable.getCellBounds(rowIndex, columnIndex),
+						treeTable.getTextPadding());
 			}
 		}
 	}
 
-	private void paintTextInCell(final Graphics2D graphics, final String text, final Rectangle bounds) {
+	private void paintTextInCell(final Graphics2D graphics, final String text, final Rectangle bounds,
+			final int textPadding) {
 		final FontMetrics metrics = graphics.getFontMetrics();
 		final int baseline = bounds.y + (bounds.height + metrics.getAscent() - metrics.getDescent()) / 2;
 		final Shape previousClip = graphics.getClip();
 		graphics.clipRect(bounds.x, bounds.y, bounds.width, bounds.height);
-		graphics.drawString(text, bounds.x + TEXT_PADDING, baseline);
+		graphics.drawString(text, bounds.x + textPadding, baseline);
 		graphics.setClip(previousClip);
 	}
 

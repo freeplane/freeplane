@@ -7,6 +7,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
+
 public class TreeTableColumns {
 	private static final TreeTableColumns EMPTY = new TreeTableColumns(Collections.<TreeTableColumn> emptyList());
 
@@ -107,6 +110,13 @@ public class TreeTableColumns {
 		if (index < 0)
 			throw new IllegalArgumentException("unknown tree table column key " + oldAttributeKey);
 		return replacedAt(index, columns.get(index).withAttributeKey(newAttributeKey));
+	}
+
+	public TreeTableColumns resized(final String attributeKey, final Quantity<LengthUnit> width) {
+		final int index = indexOfAttributeKey(attributeKey);
+		if (index < 0)
+			throw new IllegalArgumentException("unknown tree table column key " + attributeKey);
+		return replacedAt(index, columns.get(index).withWidth(width));
 	}
 
 	public boolean canRemove() {

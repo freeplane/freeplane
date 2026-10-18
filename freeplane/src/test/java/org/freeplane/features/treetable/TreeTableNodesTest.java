@@ -238,4 +238,34 @@ public class TreeTableNodesTest {
 
 		assertThat(TreeTableModel.isTreeTableRoot(projects)).isFalse();
 	}
+
+	@Test
+	public void allowsConversionOfNodeOutsideTreeTable() {
+		final NodeModel unrelated = childOf(mapFake.getRoot(), "Autre");
+
+		assertThat(TreeTableNodes.canConvertToTable(unrelated)).isTrue();
+	}
+
+	@Test
+	public void refusesConversionOfTreeTableRootAndRows() {
+		final NodeModel projects = childOf(mapFake.getRoot(), "Projets");
+		TreeTableModel.createFor(projects);
+		final NodeModel row = childOf(projects, "Projet A");
+
+		assertThat(TreeTableNodes.canConvertToTable(projects)).isFalse();
+		assertThat(TreeTableNodes.canConvertToTable(row)).isFalse();
+		assertThat(TreeTableNodes.canConvertToTable(null)).isFalse();
+	}
+
+	@Test
+	public void allowsDeletionOnlyOnTreeTableRoot() {
+		final NodeModel projects = childOf(mapFake.getRoot(), "Projets");
+		TreeTableModel.createFor(projects);
+		final NodeModel row = childOf(projects, "Projet A");
+
+		assertThat(TreeTableNodes.canDeleteTable(projects)).isTrue();
+		assertThat(TreeTableNodes.canDeleteTable(row)).isFalse();
+		assertThat(TreeTableNodes.canDeleteTable(mapFake.getRoot())).isFalse();
+		assertThat(TreeTableNodes.canDeleteTable(null)).isFalse();
+	}
 }

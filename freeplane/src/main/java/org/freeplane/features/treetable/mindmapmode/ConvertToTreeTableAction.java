@@ -6,7 +6,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.treetable.TreeTableModel;
+import org.freeplane.features.treetable.TreeTableNodes;
 
 @EnabledAction(checkOnNodeChange = true)
 public class ConvertToTreeTableAction extends AFreeplaneAction {
@@ -20,7 +20,7 @@ public class ConvertToTreeTableAction extends AFreeplaneAction {
 	@Override
 	protected void setEnabled() {
 		final NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
-		super.setEnabled(selected != null && !TreeTableModel.isTreeTableRoot(selected));
+		super.setEnabled(TreeTableNodes.canConvertToTable(selected));
 	}
 
 	@Override

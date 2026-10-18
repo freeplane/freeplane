@@ -9,14 +9,14 @@ public class TreeTableGridTest {
 	private static final TreeTableGeometry GEOMETRY = new TreeTableGeometry(100, new int[] { 50, 60 }, 10);
 
 	private static TreeTableGrid gridWithLines(final int top, final int[] bottoms) {
-		return new TreeTableGrid(1000, GEOMETRY, top, bottoms);
+		return new TreeTableGrid(990, 1000, GEOMETRY, top, bottoms);
 	}
 
 	@Test
 	public void framesTableOnHeaderTopAndLastRowBottom() {
 		final TreeTableGrid grid = gridWithLines(20, new int[] { 40, 70, 100 });
 
-		assertThat(grid.getLeft()).isEqualTo(1000);
+		assertThat(grid.getLeft()).isEqualTo(990);
 		assertThat(grid.getRight()).isEqualTo(1230);
 		assertThat(grid.getTop()).isEqualTo(20);
 		assertThat(grid.getBottom()).isEqualTo(100);
@@ -72,6 +72,11 @@ public class TreeTableGridTest {
 	public void placesUnderlineLikeForkNodeBorder() {
 		assertThat(TreeTableGrid.underlineY(20, 30, 2)).isEqualTo(48);
 		assertThat(TreeTableGrid.underlineY(20, 30, 1)).isEqualTo(49);
+	}
+
+	@Test
+	public void leavesSameSpaceBeforeContentAsBeforeHeaderText() {
+		assertThat(TreeTableGrid.leftOfContent(1000, GEOMETRY, 4)).isEqualTo(991);
 	}
 
 	@Test

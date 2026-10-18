@@ -114,4 +114,34 @@ public class TreeTableGeometryTest {
 		assertThatThrownBy(() -> new TreeTableGeometry(100, new int[] { 50 }, -1))
 			.isInstanceOf(IllegalArgumentException.class);
 	}
+
+	@Test
+	public void placesResizeEdgeInTheMiddleOfTheFollowingGap() {
+		final TreeTableGeometry geometry = new TreeTableGeometry(100, new int[] { 50, 60 }, 10);
+
+		assertThat(geometry.getColumnResizeEdge(0)).isEqualTo(165);
+	}
+
+	@Test
+	public void placesLastResizeEdgeAtTableEnd() {
+		final TreeTableGeometry geometry = new TreeTableGeometry(100, new int[] { 50, 60 }, 10);
+
+		assertThat(geometry.getColumnResizeEdge(1)).isEqualTo(230);
+	}
+
+	@Test
+	public void findsColumnWhoseResizeEdgeIsNear() {
+		final TreeTableGeometry geometry = new TreeTableGeometry(100, new int[] { 50, 60 }, 10);
+
+		assertThat(geometry.getColumnIndexWithResizeEdgeNear(163, 3)).isEqualTo(0);
+		assertThat(geometry.getColumnIndexWithResizeEdgeNear(232, 3)).isEqualTo(1);
+	}
+
+	@Test
+	public void findsNoResizeEdgeFarFromColumnEdges() {
+		final TreeTableGeometry geometry = new TreeTableGeometry(100, new int[] { 50, 60 }, 10);
+
+		assertThat(geometry.getColumnIndexWithResizeEdgeNear(140, 3)).isEqualTo(-1);
+		assertThat(geometry.getColumnIndexWithResizeEdgeNear(100, 3)).isEqualTo(-1);
+	}
 }

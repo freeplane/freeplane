@@ -41,7 +41,7 @@ class TreeTableCellEditor extends MouseAdapter {
 
 	@Override
 	public void mousePressed(final MouseEvent event) {
-		if (event.getButton() != MouseEvent.BUTTON1)
+		if (event.isConsumed() || event.getButton() != MouseEvent.BUTTON1)
 			return;
 		final List<TreeTableView> treeTables = TreeTableView.allIn(mapView);
 		if (showHeaderMenuAt(treeTables, event.getX(), event.getY())) {

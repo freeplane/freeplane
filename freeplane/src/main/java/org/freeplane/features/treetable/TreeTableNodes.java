@@ -19,6 +19,14 @@ public class TreeTableNodes {
 		return TreeTableModel.isTreeTableRoot(node) ? node : treeTableRootOf(node);
 	}
 
+	public static boolean canConvertToTable(final NodeModel node) {
+		return node != null && enclosingTreeTableRoot(node) == null;
+	}
+
+	public static boolean canDeleteTable(final NodeModel node) {
+		return node != null && TreeTableModel.isTreeTableRoot(node);
+	}
+
 	public static boolean isRow(final NodeModel node) {
 		return treeTableRootOf(node) != null;
 	}

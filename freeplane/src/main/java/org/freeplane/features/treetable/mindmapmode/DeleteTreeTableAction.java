@@ -20,7 +20,7 @@ public class DeleteTreeTableAction extends AFreeplaneAction {
 	@Override
 	protected void setEnabled() {
 		final NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
-		super.setEnabled(selected != null && TreeTableNodes.enclosingTreeTableRoot(selected) != null);
+		super.setEnabled(TreeTableNodes.canDeleteTable(selected));
 	}
 
 	@Override

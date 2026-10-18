@@ -2,6 +2,8 @@ package org.freeplane.features.treetable.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
@@ -98,6 +100,19 @@ public class TreeTableEditing {
 		if (!columns.canMoveRight(index))
 			return;
 		setColumns(treeTableRoot, columns.movedFromTo(index, index + 1), "moveTreeTableColumnRight");
+	}
+
+	public static void previewColumnWidth(final NodeModel treeTableRoot, final TreeTableColumns columnsBeforeResize,
+			final String attributeKey, final Quantity<LengthUnit> width) {
+		TreeTableModel.createFor(treeTableRoot).setColumns(columnsBeforeResize.resized(attributeKey, width));
+	}
+
+	public static void resizeColumn(final NodeModel treeTableRoot, final TreeTableColumns columnsBeforeResize,
+			final String attributeKey, final Quantity<LengthUnit> width) {
+		TreeTableModel.createFor(treeTableRoot).setColumns(columnsBeforeResize);
+		final TreeTableColumns resized = columnsBeforeResize.resized(attributeKey, width);
+		if (!resized.equals(columnsBeforeResize))
+			setColumns(treeTableRoot, resized, "resizeTreeTableColumn");
 	}
 
 	public static void convertToTable(final NodeModel node) {
