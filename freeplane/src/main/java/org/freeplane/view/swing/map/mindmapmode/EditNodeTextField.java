@@ -211,6 +211,8 @@ public class EditNodeTextField extends EditNodeBase {
 
 	}
 
+	private static final int TEXT_FIELD_BORDER_WIDTH = 2;
+
 	private int extraWidth;
 	final private boolean layoutMapOnTextChange;
 
@@ -311,7 +313,7 @@ public class EditNodeTextField extends EditNodeBase {
 		}
 
 	    final HTMLDocument document = (HTMLDocument) textfield.getDocument();
-	    document.getStyleSheet().addRule("body { width: " + maxWidth + "}");
+	    document.getStyleSheet().addRule("body { width: " + (maxWidth - 2 * TEXT_FIELD_BORDER_WIDTH) + "}");
 	    // bad hack: call "setEditable" only to update view
 	    textfield.setEditable(false);
 	    textfield.setEditable(true);
@@ -875,7 +877,7 @@ public class EditNodeTextField extends EditNodeBase {
 		SpellCheckerController.getController().enableAutoSpell(textfield, true);
 		mapView.scrollNodeToVisible(nodeView);
 		assert( parent.isValid());
-		final int textFieldBorderWidth = 2;
+		final int textFieldBorderWidth = TEXT_FIELD_BORDER_WIDTH;
 		textfield.setBorder(new MatteBorder(textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth,
 				MapView.drawsRectangleForSelection() ? MapView.getSelectionRectangleColor() : nodeView.getTextBackground()));
 		final Dimension textFieldMinimumSize = textfield.getPreferredSize();
@@ -914,10 +916,15 @@ public class EditNodeTextField extends EditNodeBase {
 		int textFieldX = Math.max(0, textR.x  - textFieldBorderWidth);
 		int textFieldY = Math.max(0, textR.y  - textFieldBorderWidth);
         verticalSpace = Math.max(textFieldY, parent.getHeight() - textFieldMinimumSize.height);
-		final Dimension newParentSize = new Dimension(textFieldX + textFieldMinimumSize.width + parentInsets.right,
+		final int editorBorderSpace = 2 * textFieldBorderWidth;
+		final Dimension newParentSize = new Dimension(
+				Math.max(parent.getWidth(), textFieldX + textFieldMinimumSize.width + parentInsets.right - editorBorderSpace),
 				verticalSpace + textFieldMinimumSize.height);
 		if (parent.getEffectiveHorizontalTextPosition() == SwingConstants.LEFT)
 			newParentSize.width += reservedIconSpace;
+		if (layoutMapOnTextChange)
+			textFieldMinimumSize.width = Math.min(textFieldMinimumSize.width,
+					newParentSize.width - textFieldX - parentInsets.right);
 		horizontalSpace = newParentSize.width - textFieldMinimumSize.width;
 		final Point location = new Point(textFieldX, textFieldY);
 
@@ -936,7 +943,7 @@ public class EditNodeTextField extends EditNodeBase {
 		}
 
         preserveRootNodeLocationOnScreen();
-		parent.preserveLayout(newParentSize);
+		parent.preserveLayout(layoutMapOnTextChange ? newParentSize : parent.getSize());
 		parent.setText("");
         mapView.onEditingStarted(parent);
         if(getEditControl().getEditType() == EditedComponent.TEXT)
