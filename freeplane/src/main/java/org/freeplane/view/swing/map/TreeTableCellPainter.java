@@ -2,15 +2,10 @@ package org.freeplane.view.swing.map;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.Stroke;
 import java.util.List;
 
-import org.freeplane.features.attribute.NodeAttributeTableModel;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.treetable.TreeTableColumns;
 import org.freeplane.features.treetable.TreeTableGrid;
 
@@ -70,45 +65,22 @@ class TreeTableCellPainter {
 		graphics.setStroke(lineStyle.stroke());
 	}
 
-	private void useTextStyle(final Graphics2D graphics, final NodeView view) {
-		graphics.setFont(view.getMainView().getFont());
-		graphics.setColor(view.getTextColor(view.getStyleOption()));
-	}
-
 	private void paintRows(final Graphics2D graphics, final TreeTableView treeTable) {
 		final TreeTableColumns columns = treeTable.getColumns();
 		final List<NodeView> rows = treeTable.getRows();
 		for (int rowIndex = 0; rowIndex < rows.size(); rowIndex++) {
-			final NodeModel row = rows.get(rowIndex).getNode();
-			final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(row);
-			useTextStyle(graphics, rows.get(rowIndex));
+			final NodeView rowView = rows.get(rowIndex);
+			final Font font = TreeTableCellText.zoomedFontOf(rowView);
+			final Color color = rowView.getTextColor(rowView.getStyleOption());
 			for (int columnIndex = 0; columnIndex < columns.size(); columnIndex++) {
 				final String attributeKey = columns.get(columnIndex).getAttributeKey();
-				if (cellEditor.isEditing(row, attributeKey))
+				if (cellEditor.isEditing(rowView.getNode(), attributeKey))
 					continue;
-				final String value = cellValue(attributes, attributeKey);
+				final String value = TreeTableCellText.valueOf(rowView.getNode(), attributeKey);
 				if (value != null)
-					paintTextInCell(graphics, value, treeTable.getCellBounds(rowIndex, columnIndex),
-						treeTable.getTextPadding());
+					TreeTableCellText.paint(graphics, value, font, color, treeTable.getCellBounds(rowIndex, columnIndex),
+						treeTable.getTextPadding(), treeTable.getWrapWidth(columnIndex));
 			}
 		}
-	}
-
-	private void paintTextInCell(final Graphics2D graphics, final String text, final Rectangle bounds,
-			final int textPadding) {
-		final FontMetrics metrics = graphics.getFontMetrics();
-		final int baseline = bounds.y + (bounds.height + metrics.getAscent() - metrics.getDescent()) / 2;
-		final Shape previousClip = graphics.getClip();
-		graphics.clipRect(bounds.x, bounds.y, bounds.width, bounds.height);
-		graphics.drawString(text, bounds.x + textPadding, baseline);
-		graphics.setClip(previousClip);
-	}
-
-	private String cellValue(final NodeAttributeTableModel attributes, final String attributeKey) {
-		final int index = attributes.getAttributeIndex(attributeKey);
-		if (index < 0)
-			return null;
-		final Object value = attributes.getValue(index);
-		return value != null ? value.toString() : null;
 	}
 }

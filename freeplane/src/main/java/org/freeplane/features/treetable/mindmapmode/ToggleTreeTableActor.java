@@ -9,12 +9,14 @@ import org.freeplane.features.treetable.mindmapmode.TreeTableAppearance.NodeAppe
 class ToggleTreeTableActor implements IActor {
 	private final NodeModel node;
 	private final boolean wasTreeTableRoot;
+	private final boolean wasTextWrapped;
 
 	private NodeAppearance replacedAppearance;
 
 	ToggleTreeTableActor(final NodeModel node) {
 		this.node = node;
 		this.wasTreeTableRoot = TreeTableModel.isTreeTableRoot(node);
+		this.wasTextWrapped = TreeTableModel.wrapsText(node);
 	}
 
 	@Override
@@ -31,7 +33,7 @@ class ToggleTreeTableActor implements IActor {
 	@Override
 	public void undo() {
 		if (wasTreeTableRoot)
-			TreeTableModel.createFor(node);
+			TreeTableModel.createFor(node).setTextWrapped(wasTextWrapped);
 		else {
 			TreeTableModel.removeFrom(node);
 			if (replacedAppearance != null) {

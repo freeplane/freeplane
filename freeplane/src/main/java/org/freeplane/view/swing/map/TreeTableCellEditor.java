@@ -13,10 +13,17 @@ import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.text.mindmapmode.EditNodeBase;
+import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
+import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
+import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.features.treetable.TreeTableCellLayout;
 import org.freeplane.features.treetable.mindmapmode.TreeTableEditing;
 
 class TreeTableCellEditor extends MouseAdapter {
@@ -42,7 +49,10 @@ class TreeTableCellEditor extends MouseAdapter {
 			return;
 		}
 		event.consume();
-		startEditing(cell);
+		if (event.getClickCount() > 1 || HtmlUtils.isHtml(currentValue(cell)))
+			editInDialog(cell);
+		else
+			startEditing(cell);
 	}
 
 	private TreeTableCell cellAt(final List<TreeTableView> treeTables, final int x, final int y) {
@@ -94,6 +104,14 @@ class TreeTableCellEditor extends MouseAdapter {
 		mapView.repaint(cell.getBounds());
 	}
 
+	private void editInDialog(final TreeTableCell cell) {
+		stopEditing(false);
+		final EditNodeBase dialog = MTextController.getController().createEditor(cell.getRow(), cell.getRow(),
+			currentValue(cell), new CellEditControl(cell), false, true, true);
+		if (dialog != null)
+			dialog.show(SwingUtilities.getWindowAncestor(mapView));
+	}
+
 	private void stopEditing(final boolean commit) {
 		if (editor == null)
 			return;
@@ -117,8 +135,39 @@ class TreeTableCellEditor extends MouseAdapter {
 	}
 
 	private void commitValue(final TreeTableCell cell, final String value) {
-		if (currentValue(cell).equals(value))
-			return;
-		TreeTableEditing.setCellValue(cell.getRow(), cell.getAttributeKey(), value);
+		final String simplifiedValue = TreeTableCellLayout.simplifiedValue(value);
+		if (!currentValue(cell).equals(simplifiedValue))
+			TreeTableEditing.setCellValue(cell.getRow(), cell.getAttributeKey(), simplifiedValue);
+	}
+
+	private class CellEditControl implements IEditControl {
+		private final TreeTableCell cell;
+
+		CellEditControl(final TreeTableCell cell) {
+			this.cell = cell;
+		}
+
+		@Override
+		public void cancel() {
+		}
+
+		@Override
+		public void ok(final String newText) {
+			commitValue(cell, newText);
+		}
+
+		@Override
+		public void split(final String newText, final int position) {
+		}
+
+		@Override
+		public boolean canSplit() {
+			return false;
+		}
+
+		@Override
+		public EditedComponent getEditType() {
+			return EditedComponent.TEXT;
+		}
 	}
 }

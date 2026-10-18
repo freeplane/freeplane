@@ -810,6 +810,7 @@
 			<Entry name="MoveTreeTableColumnLeftAction" />
 			<Entry name="MoveTreeTableColumnRightAction" />
 			<Entry builder="separator" />
+			<Entry name="ToggleTreeTableTextWrapAction" />
 			<Entry name="TreeTablePropertiesAction" />
 		</Entry>
 		<Entry builder="separator" />

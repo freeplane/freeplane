@@ -13,6 +13,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 class TreeTableBuilder implements IElementDOMHandler {
 	static final String XML_TREE_TABLE = "tree_table";
+	static final String XML_WRAP_TEXT = "WRAP_TEXT";
 
 	@Override
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
@@ -24,7 +25,8 @@ class TreeTableBuilder implements IElementDOMHandler {
 	@Override
 	public void endElement(final Object parent, final String tag, final Object element, final XMLElement dom) {
 		if (XML_TREE_TABLE.equals(tag) && element instanceof NodeModel)
-			TreeTableModel.createFor((NodeModel) element);
+			TreeTableModel.createFor((NodeModel) element)
+				.setTextWrapped(Boolean.parseBoolean(dom.getAttribute(XML_WRAP_TEXT, "false")));
 	}
 
 	void registerBy(final ReadManager readManager, final WriteManager writeManager) {
@@ -33,7 +35,10 @@ class TreeTableBuilder implements IElementDOMHandler {
 			@Override
 			public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
 					throws IOException {
-				writer.addElement(extension, new XMLElement(XML_TREE_TABLE));
+				final XMLElement element = new XMLElement(XML_TREE_TABLE);
+				if (((TreeTableModel) extension).isTextWrapped())
+					element.setAttribute(XML_WRAP_TEXT, "true");
+				writer.addElement(extension, element);
 			}
 		});
 	}

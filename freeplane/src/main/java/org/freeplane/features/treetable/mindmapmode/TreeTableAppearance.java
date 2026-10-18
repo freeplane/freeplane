@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.api.Dash;
+import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.features.edge.EdgeModel;
@@ -13,6 +14,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeSizeModel;
+import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.treetable.TreeTableAutoStyle;
@@ -22,7 +24,9 @@ class TreeTableAppearance {
 	static final ChildNodesLayout CHILD_NODES_LAYOUT = ChildNodesLayout.TOPTOBOTTOM_RIGHT_BOTTOM;
 	static final EdgeStyle ROW_EDGE_STYLE = EdgeStyle.EDGESTYLE_HIDDEN;
 	static final EdgeStyle HEADER_EDGE_STYLE = EdgeStyle.EDGESTYLE_HIDDEN;
-	static final EdgeStyle COLUMN_EDGE_STYLE = EdgeStyle.EDGESTYLE_HORIZONTAL;
+	static final EdgeStyle COLUMN_EDGE_STYLE = EdgeStyle.EDGESTYLE_HIDDEN;
+	static final HorizontalTextAlignment COLUMN_TEXT_ALIGNMENT = HorizontalTextAlignment.CENTER;
+	static final Color COLUMN_BORDER_COLOR = Color.BLACK;
 	static final ChildNodesLayout HEADER_CHILD_NODES_LAYOUT = ChildNodesLayout.LEFTTORIGHT_BOTTOM_CENTERED;
 	static final Quantity<LengthUnit> COLUMN_MIN_WIDTH = new Quantity<LengthUnit>(60, LengthUnit.pt);
 	static final Color TABLE_BORDER_COLOR = Color.GRAY;
@@ -68,6 +72,10 @@ class TreeTableAppearance {
 		EdgeModel.createEdgeModel(styleNode).setStyle(COLUMN_EDGE_STYLE);
 		LayoutModel.createLayoutModel(styleNode).setChildNodesLayout(HEADER_CHILD_NODES_LAYOUT);
 		NodeSizeModel.createNodeSizeModel(styleNode).setMinNodeWidth(COLUMN_MIN_WIDTH);
+		NodeStyleModel.createNodeStyleModel(styleNode).setHorizontalTextAlignment(COLUMN_TEXT_ALIGNMENT);
+		final NodeBorderModel border = NodeBorderModel.createNodeBorderModel(styleNode);
+		border.setBorderColorMatchesEdgeColor(false);
+		border.setBorderColor(COLUMN_BORDER_COLOR);
 	}
 
 	private static void initTableStyle(final NodeModel styleNode) {

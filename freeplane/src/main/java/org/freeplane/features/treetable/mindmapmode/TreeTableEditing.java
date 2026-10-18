@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
@@ -111,6 +112,28 @@ public class TreeTableEditing {
 		final MNodeStyleController styleController = (MNodeStyleController) NodeStyleController.getController();
 		styleController.setMinNodeWidth(columnNode, width);
 		styleController.setMaxNodeWidth(columnNode, width);
+		LogicalStyleController.getController().refreshMapLaterUndoable(columnNode.getMap());
+	}
+
+	public static void toggleTextWrap(final NodeModel treeTableRoot) {
+		final boolean wrapped = TreeTableModel.wrapsText(treeTableRoot);
+		Controller.getCurrentModeController().execute(new IActor() {
+			@Override
+			public void act() {
+				TreeTableModel.createFor(treeTableRoot).setTextWrapped(!wrapped);
+			}
+
+			@Override
+			public void undo() {
+				TreeTableModel.createFor(treeTableRoot).setTextWrapped(wrapped);
+			}
+
+			@Override
+			public String getDescription() {
+				return "toggleTreeTableTextWrap";
+			}
+		}, treeTableRoot.getMap());
+		LogicalStyleController.getController().refreshMapLaterUndoable(treeTableRoot.getMap());
 	}
 
 	public static void convertToTable(final NodeModel node) {

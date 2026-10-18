@@ -1076,7 +1076,7 @@ public class MainView extends ZoomableLabel {
 
 	@Override
 	public Dimension getPreferredSize() {
-		return painter.getPreferredSize();
+		return TreeTableRowSize.preferredSize(this, painter.getPreferredSize());
 	}
 
 	@Override
