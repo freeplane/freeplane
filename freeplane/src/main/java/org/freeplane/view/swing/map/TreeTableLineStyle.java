@@ -8,19 +8,18 @@ import org.freeplane.api.Dash;
 import org.freeplane.core.ui.components.UITools;
 
 class TreeTableLineStyle {
-	static final float MINIMAL_PAINTED_WIDTH = 1f;
-
 	private final Color color;
-	private final float unzoomedWidth;
+	private final int paintedWidth;
 	private final Dash dash;
 
-	static TreeTableLineStyle ofBorder(final MainView mainView) {
-		return new TreeTableLineStyle(mainView.getBorderColor(), mainView.getUnzoomedBorderWidth(), mainView.getDash());
+	static TreeTableLineStyle ofBorder(final NodeView view) {
+		final MainView mainView = view.getMainView();
+		return new TreeTableLineStyle(mainView.getBorderColor(), mainView.getPaintedBorderWidth(), mainView.getDash());
 	}
 
-	TreeTableLineStyle(final Color color, final float unzoomedWidth, final Dash dash) {
+	TreeTableLineStyle(final Color color, final int paintedWidth, final Dash dash) {
 		this.color = color;
-		this.unzoomedWidth = unzoomedWidth;
+		this.paintedWidth = paintedWidth;
 		this.dash = dash;
 	}
 
@@ -28,11 +27,7 @@ class TreeTableLineStyle {
 		return color;
 	}
 
-	float paintedWidth(final float zoom) {
-		return Math.max(unzoomedWidth * zoom, MINIMAL_PAINTED_WIDTH);
-	}
-
-	Stroke stroke(final float zoom) {
-		return UITools.createStroke(paintedWidth(zoom), dash.pattern, BasicStroke.JOIN_MITER);
+	Stroke stroke() {
+		return UITools.createStroke(paintedWidth, dash.pattern, BasicStroke.JOIN_MITER);
 	}
 }

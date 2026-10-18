@@ -11,34 +11,27 @@ import org.junit.Test;
 public class TreeTableLineStyleTest {
 
 	@Test
-	public void scalesWidthWithZoom() {
-		final TreeTableLineStyle style = new TreeTableLineStyle(Color.RED, 2f, Dash.SOLID);
+	public void paintsWithNodeBorderWidth() {
+		final BasicStroke stroke = (BasicStroke) new TreeTableLineStyle(Color.RED, 3, Dash.SOLID).stroke();
 
-		assertThat(style.paintedWidth(1.5f)).isEqualTo(3f);
-	}
-
-	@Test
-	public void neverPaintsLineThinnerThanOnePixel() {
-		final TreeTableLineStyle style = new TreeTableLineStyle(Color.RED, 1f, Dash.SOLID);
-
-		assertThat(style.paintedWidth(0.25f)).isEqualTo(TreeTableLineStyle.MINIMAL_PAINTED_WIDTH);
+		assertThat(stroke.getLineWidth()).isEqualTo(3f);
 	}
 
 	@Test
 	public void keepsColor() {
-		assertThat(new TreeTableLineStyle(Color.BLUE, 1f, Dash.SOLID).getColor()).isEqualTo(Color.BLUE);
+		assertThat(new TreeTableLineStyle(Color.BLUE, 1, Dash.SOLID).getColor()).isEqualTo(Color.BLUE);
 	}
 
 	@Test
 	public void createsSolidStrokeWithoutDashPattern() {
-		final BasicStroke stroke = (BasicStroke) new TreeTableLineStyle(Color.RED, 2f, Dash.SOLID).stroke(1f);
+		final BasicStroke stroke = (BasicStroke) new TreeTableLineStyle(Color.RED, 2, Dash.SOLID).stroke();
 
 		assertThat(stroke.getDashArray()).isNull();
 	}
 
 	@Test
 	public void createsDashedStrokeFromDash() {
-		final BasicStroke stroke = (BasicStroke) new TreeTableLineStyle(Color.RED, 2f, Dash.DASHES).stroke(1f);
+		final BasicStroke stroke = (BasicStroke) new TreeTableLineStyle(Color.RED, 2, Dash.DASHES).stroke();
 
 		assertThat(stroke.getDashArray()).isNotNull();
 	}

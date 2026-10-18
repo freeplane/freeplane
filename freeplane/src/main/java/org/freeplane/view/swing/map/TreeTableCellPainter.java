@@ -44,22 +44,30 @@ class TreeTableCellPainter {
 		final TreeTableGrid grid = treeTable.getGrid();
 		final Stroke previousStroke = graphics.getStroke();
 		final Color previousColor = graphics.getColor();
-		useLineStyle(graphics, TreeTableLineStyle.ofBorder(treeTable.getTreeTableRootView().getMainView()));
-		for (int i = 0; i < grid.getRowSeparatorCount(); i++)
-			graphics.drawLine(grid.getLeft(), grid.getRowSeparatorY(i), grid.getRight(), grid.getRowSeparatorY(i));
+		final List<NodeView> rows = treeTable.getRows();
+		for (int i = 0; i < grid.getRowCount(); i++) {
+			useLineStyle(graphics, TreeTableLineStyle.ofBorder(rows.get(i)));
+			drawHorizontalLine(graphics, grid, grid.getRowTopY(i));
+			drawHorizontalLine(graphics, grid, grid.getRowBottomY(i));
+		}
+		useLineStyle(graphics, TreeTableLineStyle.ofBorder(treeTable.getTreeTableRootView()));
 		graphics.drawRect(grid.getLeft(), grid.getTop(), grid.getRight() - grid.getLeft(),
 			grid.getBottom() - grid.getTop());
 		if (grid.hasHeaderSeparator())
-			graphics.drawLine(grid.getLeft(), grid.getHeaderSeparatorY(), grid.getRight(), grid.getHeaderSeparatorY());
+			drawHorizontalLine(graphics, grid, grid.getHeaderSeparatorY());
 		for (int i = 0; i < grid.getColumnSeparatorCount(); i++)
 			graphics.drawLine(grid.getColumnSeparatorX(i), grid.getTop(), grid.getColumnSeparatorX(i), grid.getBottom());
 		graphics.setStroke(previousStroke);
 		graphics.setColor(previousColor);
 	}
 
-	private void useLineStyle(final Graphics2D graphics, final TreeTableLineStyle lineStyle) {
+	private static void drawHorizontalLine(final Graphics2D graphics, final TreeTableGrid grid, final int y) {
+		graphics.drawLine(grid.getLeft(), y, grid.getRight(), y);
+	}
+
+	private static void useLineStyle(final Graphics2D graphics, final TreeTableLineStyle lineStyle) {
 		graphics.setColor(lineStyle.getColor());
-		graphics.setStroke(lineStyle.stroke(mapView.getZoom()));
+		graphics.setStroke(lineStyle.stroke());
 	}
 
 	private void useTextStyle(final Graphics2D graphics, final NodeView view) {

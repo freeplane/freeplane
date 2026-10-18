@@ -19,7 +19,6 @@ import org.freeplane.features.treetable.TreeTableModel;
 
 class TreeTableView {
 	static final int COLUMN_GAP = 6;
-	static final int GRID_PADDING = 3;
 
 	private final NodeView treeTableRootView;
 	private final NodeModel treeTableRoot;
@@ -77,34 +76,41 @@ class TreeTableView {
 		this.treeTableRoot = treeTableRoot.getNode();
 		this.columns = columns;
 		this.rows = Collections.unmodifiableList(rows);
-		this.tableBounds = contentBoundsInMap(mapView, treeTableRoot);
+		this.tableBounds = mainViewBoundsInMap(mapView, treeTableRoot);
 		this.rowBounds = new ArrayList<Rectangle>(rows.size());
 
 		final TreeColumnWidthCalculator treeColumnWidth = new TreeColumnWidthCalculator();
 		treeColumnWidth.addRow(0, tableBounds.width);
 		for (final NodeView row : rows) {
-			final Rectangle bounds = contentBoundsInMap(mapView, row);
+			final Rectangle bounds = mainViewBoundsInMap(mapView, row);
 			rowBounds.add(bounds);
 			treeColumnWidth.addRow(Math.max(0, bounds.x - tableBounds.x), bounds.width);
 		}
 		this.geometry = new TreeTableGeometry(treeColumnWidth.getWidth(), zoomedColumnWidths(mapView, columns),
 			mapView.getZoomed(COLUMN_GAP));
-		this.grid = createGrid(mapView);
+		this.grid = createGrid();
 		this.buttonSize = mapView.getZoomed(TreeTableHeaderButton.SIZE);
 	}
 
-	private TreeTableGrid createGrid(final MapView mapView) {
+	private TreeTableGrid createGrid() {
 		final int lineCount = rowBounds.size() + 1;
 		final int[] lineTops = new int[lineCount];
 		final int[] lineBottoms = new int[lineCount];
-		lineTops[0] = tableBounds.y;
-		lineBottoms[0] = tableBounds.y + tableBounds.height;
+		final int rootBorderWidth = borderWidthOf(treeTableRootView);
+		lineTops[0] = TreeTableGrid.borderLineStart(tableBounds.y, rootBorderWidth);
+		lineBottoms[0] = TreeTableGrid.borderLineEnd(tableBounds.y, tableBounds.height, rootBorderWidth);
 		for (int rowIndex = 0; rowIndex < rowBounds.size(); rowIndex++) {
 			final Rectangle row = rowBounds.get(rowIndex);
-			lineTops[rowIndex + 1] = row.y;
-			lineBottoms[rowIndex + 1] = row.y + row.height;
+			final int rowBorderWidth = borderWidthOf(rows.get(rowIndex));
+			lineTops[rowIndex + 1] = TreeTableGrid.borderLineStart(row.y, rowBorderWidth);
+			lineBottoms[rowIndex + 1] = TreeTableGrid.borderLineEnd(row.y, row.height, rowBorderWidth);
 		}
-		return new TreeTableGrid(tableBounds.x, geometry, lineTops, lineBottoms, mapView.getZoomed(GRID_PADDING));
+		return new TreeTableGrid(TreeTableGrid.borderLineStart(tableBounds.x, rootBorderWidth), geometry, lineTops,
+			lineBottoms);
+	}
+
+	private static int borderWidthOf(final NodeView view) {
+		return view.getMainView().getPaintedBorderWidth();
 	}
 
 	private static int[] zoomedColumnWidths(final MapView mapView, final TreeTableColumns columns) {
@@ -116,8 +122,8 @@ class TreeTableView {
 		return widths;
 	}
 
-	private static Rectangle contentBoundsInMap(final MapView mapView, final NodeView view) {
-		final JComponent content = view.getContent();
+	private static Rectangle mainViewBoundsInMap(final MapView mapView, final NodeView view) {
+		final JComponent content = view.getMainView();
 		final Rectangle bounds = new Rectangle(0, 0, content.getWidth(), content.getHeight());
 		return SwingUtilities.convertRectangle(content, bounds, mapView);
 	}
