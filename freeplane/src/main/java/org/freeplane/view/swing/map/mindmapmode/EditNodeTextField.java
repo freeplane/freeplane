@@ -918,10 +918,11 @@ public class EditNodeTextField extends EditNodeBase {
         verticalSpace = Math.max(textFieldY, parent.getHeight() - textFieldMinimumSize.height);
 		final int editorBorderSpace = 2 * textFieldBorderWidth;
 		final Dimension newParentSize = new Dimension(
-				Math.max(parent.getWidth(), textFieldX + textFieldMinimumSize.width + parentInsets.right - editorBorderSpace),
+				textFieldX + textFieldMinimumSize.width + parentInsets.right - editorBorderSpace,
 				verticalSpace + textFieldMinimumSize.height);
 		if (parent.getEffectiveHorizontalTextPosition() == SwingConstants.LEFT)
 			newParentSize.width += reservedIconSpace;
+		newParentSize.width = Math.max(parent.getWidth(), newParentSize.width);
 		if (layoutMapOnTextChange)
 			textFieldMinimumSize.width = Math.min(textFieldMinimumSize.width,
 					newParentSize.width - textFieldX - parentInsets.right);
