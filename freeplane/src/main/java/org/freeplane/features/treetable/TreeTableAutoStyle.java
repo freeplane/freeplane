@@ -12,16 +12,18 @@ import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.StyleFactory;
 
 public class TreeTableAutoStyle {
-	public static final TreeTableAutoStyle ROW = new TreeTableAutoStyle("TreeNode", TreeTableNodes::isRow);
-	public static final TreeTableAutoStyle TABLE = new TreeTableAutoStyle("TreeTable", TreeTableModel::isTreeTableRoot);
-
 	private static final int PRIORITY = (IPropertyHandler.STYLE + IPropertyHandler.AUTO) / 2;
 
+	public static final TreeTableAutoStyle ROW = new TreeTableAutoStyle("TreeNode", PRIORITY, TreeTableNodes::isRow);
+	public static final TreeTableAutoStyle TABLE = new TreeTableAutoStyle("TreeTable", PRIORITY + 1, TreeTableModel::isTreeTableRoot);
+
 	private final String name;
+	private final int priority;
 	private final Predicate<NodeModel> appliesTo;
 
-	private TreeTableAutoStyle(final String name, final Predicate<NodeModel> appliesTo) {
+	private TreeTableAutoStyle(final String name, final int priority, final Predicate<NodeModel> appliesTo) {
 		this.name = name;
+		this.priority = priority;
 		this.appliesTo = appliesTo;
 	}
 
@@ -39,7 +41,7 @@ public class TreeTableAutoStyle {
 	}
 
 	private void registerIn(final LogicalStyleController logicalStyleController) {
-		logicalStyleController.addStyleGetter(PRIORITY, new IPropertyHandler<Collection<IStyle>, NodeModel>() {
+		logicalStyleController.addStyleGetter(priority, new IPropertyHandler<Collection<IStyle>, NodeModel>() {
 			@Override
 			public Collection<IStyle> getProperty(final NodeModel node, final StyleOption option,
 					final Collection<IStyle> currentValue) {

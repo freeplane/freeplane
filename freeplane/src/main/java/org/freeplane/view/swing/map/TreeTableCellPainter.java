@@ -44,11 +44,9 @@ class TreeTableCellPainter {
 		final TreeTableGrid grid = treeTable.getGrid();
 		final Stroke previousStroke = graphics.getStroke();
 		final Color previousColor = graphics.getColor();
-		final TreeTableLineStyle rowLines = TreeTableLineStyle.ofEdge(treeTable.getRows().get(0));
-		useLineStyle(graphics, rowLines);
+		useLineStyle(graphics, TreeTableLineStyle.ofBorder(treeTable.getTreeTableRootView().getMainView()));
 		for (int i = 0; i < grid.getRowSeparatorCount(); i++)
 			graphics.drawLine(grid.getLeft(), grid.getRowSeparatorY(i), grid.getRight(), grid.getRowSeparatorY(i));
-		useLineStyle(graphics, TreeTableLineStyle.ofBorder(treeTable.getTreeTableRootView().getMainView()));
 		graphics.drawRect(grid.getLeft(), grid.getTop(), grid.getRight() - grid.getLeft(),
 			grid.getBottom() - grid.getTop());
 		if (grid.hasHeaderSeparator())

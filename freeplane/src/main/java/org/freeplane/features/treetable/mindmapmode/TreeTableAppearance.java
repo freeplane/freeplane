@@ -19,9 +19,6 @@ import org.freeplane.features.treetable.TreeTableAutoStyle;
 class TreeTableAppearance {
 	static final ChildNodesLayout CHILD_NODES_LAYOUT = ChildNodesLayout.TOPTOBOTTOM_RIGHT_BOTTOM;
 	static final EdgeStyle ROW_EDGE_STYLE = EdgeStyle.EDGESTYLE_HIDDEN;
-	static final Color ROW_LINE_COLOR = Color.GRAY;
-	static final int ROW_LINE_WIDTH = 1;
-	static final Dash ROW_LINE_DASH = Dash.SOLID;
 	static final Color TABLE_BORDER_COLOR = Color.GRAY;
 	static final Quantity<LengthUnit> TABLE_BORDER_WIDTH = new Quantity<LengthUnit>(2, LengthUnit.px);
 	static final Dash TABLE_BORDER_DASH = Dash.SOLID;
@@ -51,9 +48,6 @@ class TreeTableAppearance {
 	private static void initRowStyle(final NodeModel styleNode) {
 		final EdgeModel edge = EdgeModel.createEdgeModel(styleNode);
 		edge.setStyle(ROW_EDGE_STYLE);
-		edge.setColor(ROW_LINE_COLOR);
-		edge.setWidth(ROW_LINE_WIDTH);
-		edge.setDash(ROW_LINE_DASH);
 	}
 
 	private static void initTableStyle(final NodeModel styleNode) {

@@ -18,10 +18,6 @@ class TreeTableLineStyle {
 		return new TreeTableLineStyle(mainView.getBorderColor(), mainView.getUnzoomedBorderWidth(), mainView.getDash());
 	}
 
-	static TreeTableLineStyle ofEdge(final NodeView nodeView) {
-		return new TreeTableLineStyle(nodeView.getEdgeColor(), nodeView.getEdgeWidth(), nodeView.getEdgeDash());
-	}
-
 	TreeTableLineStyle(final Color color, final float unzoomedWidth, final Dash dash) {
 		this.color = color;
 		this.unzoomedWidth = unzoomedWidth;
