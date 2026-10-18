@@ -1,165 +1,96 @@
-# Maximized-Frame Resynchronization Implementation Plan
+# X11 Popup Coordinate Calibration and Convergent Frame Resynchronization Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use the deterministic
 > subagent-driven-development controller to implement this plan task-by-task.
 > Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Make Freeplane's X11/XWayland maximized-frame resynchronization converge on WM work-area bounds without changing PR #2983's normal-window popup correction.
+**Goal:** Make Freeplane heavyweight popup menus persist at the correct screen position and remain selectable on Linux native X11 and XWayland when a panel or dock reserves screen space, while retaining convergent maximized-frame synchronization and unchanged non-X11 behavior.
 
-**Architecture:** Keep the existing X11 toolkit gate and normal-window native-geometry path. Add a work-area resolver that derives usable monitor rectangles from `GraphicsConfiguration` bounds and screen insets, then use a maximized-only per-target guard and conditional retry policy so repeated WM feedback cannot loop indefinitely.
+**Architecture:** Retain the approved work-area target resolver and bounded maximized-frame guard already present in the integration branch. Add a package-private owner-local calibration module and a delegating `PopupFactory` adapter that adjusts only the coordinates passed to the active shared factory; `FlatPopupFactory` remains the delegate and continues to own popup type selection, tooltip handling, reuse, borders, and platform behavior. Register Freeplane frames through `FrameResynchronizer.install(JFrame)`, keep the registry weak, and refresh the adapter after successful look-and-feel replacement so the current shared factory is always wrapped once.
 
-**Tech Stack:** Java 8 language target, Swing/AWT, JUnit 4, AssertJ, Gradle.
+**Tech Stack:** Java 8 language target, Swing/AWT, JUnit 4, AssertJ, Mockito, FlatLaf 3.7.2, JNA X11 geometry access, and Gradle.
 
 ## Global Constraints
 
 - Use `gradle`, not `gradlew` or Maven.
 - Run Gradle with Java from `~/.sdkman/candidates/java/21.0.8-zulu`.
-- Preserve the existing `isX11Toolkit()` gate and do not add `XDG_SESSION_TYPE` branching.
-- Preserve `FlatPopupFactory` selection and the normal-window native-coordinate correction from PR #2983.
-- Do not broaden the shared `needsFrameResynchronization` predicate; the full-rectangle comparison belongs only to maximized-frame comparison.
-- Valid zero screen insets mean the complete screen rectangle; unavailable or invalid work-area data means no maximized correction, never a full-screen fallback.
-- A real native-X11 window manager is unavailable in this environment; report that runtime verification limitation explicitly.
-- Every task must leave the integration worktree with focused tests and a commit.
+- Preserve the existing exact `sun.awt.X11.XToolkit` check in `isX11Toolkit()` and do not add `XDG_SESSION_TYPE` branching.
+- Runtime corrective behavior is Linux-only behind the exact X11 toolkit gate; native X11 and XWayland use the same path, while macOS, Windows, and other toolkits retain pass-through behavior.
+- Preserve `FlatPopupFactory` as the active shared factory delegate. Do not subclass it, replace its implementation, reproduce its heavyweight-selection logic, or change popup-factory selection for non-X11 toolkits.
+- Preserve the PR #2983 normal-window native-coordinate correction and do not broaden the shared origin-only `needsFrameResynchronization` predicate.
+- Maximized targets use monitor work areas derived as `screen.x + insets.left`, `screen.y + insets.top`, `screen.width - insets.left - insets.right`, and `screen.height - insets.top - insets.bottom`; zero insets preserve the complete screen, and missing or invalid work-area data produces no target rather than a full-screen fallback.
+- Maximized resynchronization permits at most ten `setBounds` requests for one unchanged target, counts before requesting, resets on convergence, target change, or leaving maximized state, and does not restart a deferred timer after exhaustion or stable convergence.
+- Popup calibration computes one owner-local translation from native outer-frame bounds, owner location within the frame, and owner screen location. It never calls `setBounds`, schedules a timer, mutates the owner or frame, or retries after delegation.
+- Registered frames are weak keys. A current `X11PopupFactory` adapter is reused instead of wrapped again, and a look-and-feel change wraps the newly active shared factory exactly once.
+- Calibration failures, unavailable native geometry, unavailable owner geometry, non-registered owners, and non-X11 execution delegate with the original popup coordinates; delegate exceptions propagate unchanged.
+- Unit tests must be desktop-free for integer geometry and use injected native/AWT geometry providers. Native runtime acceptance is a separate evidence task.
+- The epoch-1 frame-resynchronization branches and worktrees remain quarantined historical artifacts; this plan uses the retained frame behavior already on the integration branch and does not resume, delete, merge, or push those artifacts.
+- Do not merge to the delivery target or push. Delivery remains a separate explicit user choice after implementation and verification.
+- Each task ends with focused verification, `git diff --check`, and a commit in the integration worktree.
 
-## Task 1: Add Work-Area Target Resolution
+## Task 1: Lock the Retained Work-Area and Maximized-Guard Contract
 
-**Implementer tier:** Advanced
+**Implementer tier:** Standard
 
 **Files:**
 
-- Modify: `freeplane/src/main/java/org/freeplane/core/ui/components/FrameResynchronizer.java:46-139,283-299`
-- Test: `freeplane/src/test/java/org/freeplane/core/ui/components/FrameResynchronizerTest.java:1-263`
+- Modify: `freeplane/src/test/java/org/freeplane/core/ui/components/FrameResynchronizerTest.java:390-420`
 
 **Interfaces:**
 
-- Consumes: existing `findTargetScreenBounds(Rectangle frameBounds, Rectangle[] screenBounds)` and `needsFrameResynchronization(boolean isX11Toolkit, int windowState, Rectangle frameBounds, Rectangle targetBounds)`.
-- Produces: package-visible `getWorkAreaBounds(Rectangle screenBounds, Insets insets)`, returning a copied work-area rectangle or `null` for missing inputs or non-positive derived dimensions.
-- Produces: package-visible `findTargetMaximizedBounds(Rectangle nativeBounds, Rectangle normalBounds, Rectangle[] workAreaBounds, Rectangle fallbackWorkArea)`, selecting native intersection first, normal-bounds intersection second, and a copied fallback work area last.
-- Produces: a maximized predicate that requires X11, `Frame.MAXIMIZED_BOTH`, non-null bounds, and full `Rectangle.equals` inequality; the shared `needsFrameResynchronization` remains origin-only.
+- Consumes: `FrameResynchronizer.findTargetMaximizedBounds(Rectangle nativeBounds, Rectangle normalBounds, Rectangle[] workAreaBounds, Rectangle fallbackWorkArea)`, which returns the native-intersection target first, the normal-bounds target second, and a copied fallback last.
+- Consumes: `FrameResynchronizer.MaximizedResynchronizationGuard.shouldRequest(Rectangle currentBounds, Rectangle targetBounds)`, `isExhausted()`, and `reset()`.
+- Produces: regression assertions for copied fallback rectangles, target-change budget reset, the exact ten-request boundary, stable unavailable-target behavior, and the existing top-panel, zero-inset, normal-window, and non-X11 contracts.
 
-- [ ] **Step 1: Write the failing work-area and target-resolution tests**
+- [ ] **Step 1: Add the missing boundary assertions without changing the retained frame implementation**
 
-Add `java.awt.Insets` to `FrameResynchronizerTest` and add tests with these exact fixtures and expectations:
+Add these tests beside the existing target-resolution and guard tests. They make the epoch-2 foundation explicit without reviving the quarantined epoch-1 branch:
 
 ```java
-private static final Rectangle FULL_SCREEN = new Rectangle(0, 0, 1920, 1080);
-private static final Rectangle TOP_PANEL_WORK_AREA = new Rectangle(0, 32, 1920, 1048);
-
 @Test
-public void getWorkAreaBounds_withTopInset_returnsUsableArea() {
-    assertThat(FrameResynchronizer.getWorkAreaBounds(FULL_SCREEN, new Insets(32, 0, 0, 0)))
-        .isEqualTo(TOP_PANEL_WORK_AREA);
-}
-
-@Test
-public void getWorkAreaBounds_withZeroInsets_preservesFullScreen() {
-    assertThat(FrameResynchronizer.getWorkAreaBounds(FULL_SCREEN, new Insets(0, 0, 0, 0)))
-        .isEqualTo(FULL_SCREEN);
-}
-
-@Test
-public void findTargetMaximizedBounds_withNativeGeometry_selectsInsetWorkArea() {
-    assertThat(FrameResynchronizer.findTargetMaximizedBounds(
-        new Rectangle(0, 32, 1920, 1048), null,
-        new Rectangle[] { TOP_PANEL_WORK_AREA }, null))
-        .isEqualTo(TOP_PANEL_WORK_AREA);
-}
-
-@Test
-public void findTargetMaximizedBounds_withDisjointNativeGeometry_usesNormalBoundsThenFallback() {
-    final Rectangle normalBounds = new Rectangle(0, 32, 1920, 1048);
+public void findTargetMaximizedBounds_withFallback_returnsIndependentRectangle() {
     final Rectangle fallback = new Rectangle(1920, 0, 1920, 1080);
 
-    assertThat(FrameResynchronizer.findTargetMaximizedBounds(
-        new Rectangle(4000, 0, 100, 100), normalBounds,
-        new Rectangle[] { TOP_PANEL_WORK_AREA }, fallback))
-        .isEqualTo(TOP_PANEL_WORK_AREA);
-    assertThat(FrameResynchronizer.findTargetMaximizedBounds(
+    final Rectangle target = FrameResynchronizer.findTargetMaximizedBounds(
         new Rectangle(4000, 0, 100, 100), null,
-        new Rectangle[] { TOP_PANEL_WORK_AREA }, fallback))
-        .isEqualTo(fallback);
+        new Rectangle[] { null }, fallback);
+
+    assertThat(target).isEqualTo(fallback).isNotSameAs(fallback);
+    target.x = 0;
+    assertThat(fallback).isEqualTo(new Rectangle(1920, 0, 1920, 1080));
 }
 
 @Test
-public void findTargetMaximizedBounds_withoutAnyWorkArea_returnsNull() {
-    assertThat(FrameResynchronizer.findTargetMaximizedBounds(
-        null, null, new Rectangle[] { null }, null)).isNull();
-}
+public void maximizedGuard_targetChange_resetsTheTenRequestBudget() {
+    final FrameResynchronizer.MaximizedResynchronizationGuard guard =
+        new FrameResynchronizer.MaximizedResynchronizationGuard();
+    final Rectangle current = new Rectangle(0, 0, 1920, 1080);
+    final Rectangle firstTarget = new Rectangle(0, 32, 1920, 1048);
+    final Rectangle secondTarget = new Rectangle(1920, 32, 1920, 1048);
 
-@Test
-public void needsMaximizedFrameResynchronization_withTopInsetFrame_isStable() {
-    assertThat(FrameResynchronizer.needsMaximizedFrameResynchronization(
-        true, Frame.MAXIMIZED_BOTH, TOP_PANEL_WORK_AREA, TOP_PANEL_WORK_AREA)).isFalse();
-    assertThat(FrameResynchronizer.needsMaximizedFrameResynchronization(
-        true, Frame.MAXIMIZED_BOTH, FULL_SCREEN, TOP_PANEL_WORK_AREA)).isTrue();
-}
-
-@Test
-public void needsMaximizedFrameResynchronization_withSizeOnlyDifference_returnsTrue() {
-    assertThat(FrameResynchronizer.needsMaximizedFrameResynchronization(
-        true, Frame.MAXIMIZED_BOTH,
-        new Rectangle(0, 32, 1920, 1047), TOP_PANEL_WORK_AREA)).isTrue();
+    for (int attempt = 1; attempt <= 10; attempt++) {
+        assertThat(guard.shouldRequest(current, firstTarget)).isTrue();
+    }
+    assertThat(guard.shouldRequest(current, firstTarget)).isFalse();
+    assertThat(guard.shouldRequest(current, secondTarget)).isTrue();
+    assertThat(guard.shouldRequest(current, firstTarget)).isTrue();
 }
 ```
 
-Keep the existing zero-origin, non-X11, iconified, maximize-state, normal-window, and largest-intersection tests unchanged.
+Keep the existing assertions that a top panel produces `(0,32,1920,1048)`, zero insets preserve `(0,0,1920,1080)`, an unavailable target performs no correction or retry, a size-only maximized mismatch is corrected, the shared normal predicate remains origin-only, and the listener stops at ten requests.
 
-- [ ] **Step 2: Run the focused test and confirm the new contract fails**
+- [ ] **Step 2: Run the focused frame test against the retained foundation**
 
 Run:
 
 ```bash
-cd /data/home/henry-arch/.local/state/pi/project-manager/worktrees/0233ff88d3cc54bbd61550c61fa917d6e2a5717f8a03be4e9aa63dcd47dd1cfa/pm-run-20261017-122451-1d0829ed/integration
+cd /home/henry-arch/.local/state/pi/project-manager/worktrees/0233ff88d3cc54bbd61550c61fa917d6e2a5717f8a03be4e9aa63dcd47dd1cfa/pm-run-20261017-122451-1d0829ed/integration
 JAVA_HOME="$HOME/.sdkman/candidates/java/21.0.8-zulu" PATH="$JAVA_HOME/bin:$PATH" gradle :freeplane:test --tests "org.freeplane.core.ui.components.FrameResynchronizerTest"
 ```
 
-Expected: FAIL at compilation because the new work-area and target-resolution methods do not exist, and the existing maximized predicate does not reject a size-only mismatch.
+Expected: the complete `FrameResynchronizerTest` class passes. If a new assertion fails, make the smallest source correction that preserves the work-area formula, fallback order, exact maximized comparison, normal-window correction, and ten-request guard, then rerun the same command.
 
-- [ ] **Step 3: Implement the minimal work-area resolver and maximized comparison**
-
-Import `java.awt.Insets`. Add this package-visible helper before the native-window methods:
-
-```java
-static Rectangle getWorkAreaBounds(final Rectangle screenBounds, final Insets insets) {
-    if (screenBounds == null || insets == null) {
-        return null;
-    }
-    final int width = screenBounds.width - insets.left - insets.right;
-    final int height = screenBounds.height - insets.top - insets.bottom;
-    if (width <= 0 || height <= 0) {
-        return null;
-    }
-    return new Rectangle(screenBounds.x + insets.left, screenBounds.y + insets.top, width, height);
-}
-```
-
-Add the target resolver using `findTargetScreenBounds` twice, then copy the fallback rectangle so callers cannot mutate a stored graphics rectangle:
-
-```java
-static Rectangle findTargetMaximizedBounds(final Rectangle nativeBounds, final Rectangle normalBounds,
-        final Rectangle[] workAreaBounds, final Rectangle fallbackWorkArea) {
-    Rectangle targetBounds = findTargetScreenBounds(nativeBounds, workAreaBounds);
-    if (targetBounds == null) {
-        targetBounds = findTargetScreenBounds(normalBounds, workAreaBounds);
-    }
-    if (targetBounds != null) {
-        return targetBounds;
-    }
-    return fallbackWorkArea == null ? null : new Rectangle(fallbackWorkArea);
-}
-```
-
-Change only `needsMaximizedFrameResynchronization` so it keeps its X11, maximize, iconified, and null checks while using `!frameBounds.equals(targetBounds)`. Leave `needsFrameResynchronization` and all normal-window predicates unchanged.
-
-Replace the full-screen `getScreenBounds()` result with a work-area array: enumerate the existing `GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()`, obtain each default `GraphicsConfiguration`, call `Toolkit.getDefaultToolkit().getScreenInsets(configuration)`, pass the configuration bounds and insets through `getWorkAreaBounds`, and retain `null` for missing/failed/invalid entries. Catch a runtime inset-lookup failure and leave that entry unavailable.
-
-In `resynchronizeMaximizedFrame`, resolve the target from the work-area array using native bounds, normal bounds, and then the frame graphics configuration's own derived work area. If no target exists, return stable without calling `setBounds`. Do not use `graphicsConfiguration.getBounds()` directly as a fallback. Keep the normal-window path untouched.
-
-- [ ] **Step 4: Run the focused tests and confirm they pass**
-
-Run the focused Gradle command from Step 2. Expected: PASS for the new work-area, target-resolution, full-rectangle maximized comparison, and all existing `FrameResynchronizerTest` tests.
-
-- [ ] **Step 5: Inspect the scoped diff and commit**
+- [ ] **Step 3: Inspect the frame synchronization diff and verify the protected seams**
 
 Run:
 
@@ -169,168 +100,396 @@ git diff -- freeplane/src/main/java/org/freeplane/core/ui/components/FrameResync
 git status --short
 ```
 
-Confirm that `needsFrameResynchronization`, `needsNormalWindowResynchronization`, `FlatPopupFactory` code, and non-X11 gates were not broadened or removed. Commit:
+Confirm that the shared `needsFrameResynchronization` predicate remains origin-only, the normal-window native-coordinate path is intact, the exact X11 gate remains in force, and no popup-factory code is introduced in this task.
+
+- [ ] **Step 4: Commit the contract pinning tests**
 
 ```bash
-git add freeplane/src/main/java/org/freeplane/core/ui/components/FrameResynchronizer.java freeplane/src/test/java/org/freeplane/core/ui/components/FrameResynchronizerTest.java
-git commit -m "Use monitor work areas for maximized frame sync"
+git add freeplane/src/test/java/org/freeplane/core/ui/components/FrameResynchronizerTest.java
+git commit -m "Pin frame resynchronization target and guard boundaries"
 ```
 
-## Task 2: Bound Maximized Feedback and Preserve Lifecycle Behavior
+## Task 2: Implement Owner-Local Popup Calibration and the Delegating Adapter
+
+**Implementer tier:** Advanced
+
+**Files:**
+
+- Create: `freeplane/src/main/java/org/freeplane/core/ui/components/PopupCoordinateCalibrator.java`
+- Create: `freeplane/src/main/java/org/freeplane/core/ui/components/X11PopupFactory.java`
+- Create: `freeplane/src/test/java/org/freeplane/core/ui/components/PopupCoordinateCalibratorTest.java`
+- Create: `freeplane/src/test/java/org/freeplane/core/ui/components/X11PopupFactoryTest.java`
+
+**Interfaces:**
+
+- Consumes: `java.awt.Component`, `java.awt.Point`, `java.awt.Rectangle`, `javax.swing.JFrame`, `javax.swing.Popup`, and `javax.swing.PopupFactory`.
+- Produces: package-private `PopupCoordinateCalibrator.GeometryProvider` with `getNativeFrameBounds(JFrame frame)`, `getOwnerLocationWithinFrame(Component owner, JFrame frame)`, and `getOwnerLocationOnScreen(Component owner)`.
+- Produces: package-private `PopupCoordinateCalibrator.calculateCorrection(Component owner, JFrame frame, GeometryProvider geometryProvider)`, returning a `Point` translation or `null` when calibration is unavailable.
+- Produces: package-private `PopupOwnerResolver` with `findFrame(Component owner)`, allowing the factory tests to resolve a registered frame without a displayable Swing hierarchy.
+- Produces: package-private `X11PopupFactory` extending `javax.swing.PopupFactory`, with an injected `PopupOwnerResolver` and `GeometryProvider`; its public `getPopup(Component owner, Component contents, int x, int y)` delegates exactly once.
+
+- [ ] **Step 1: Write the owner-local calibration tests**
+
+Create tests using mocked `JFrame` and `Component` objects plus an injected `GeometryProvider`; do not construct or show a native desktop frame. Pin these cases:
+
+```java
+@Test
+public void calculateCorrection_withSplitCacheDelta_returnsNegativePlacementError() {
+    final JFrame frame = mock(JFrame.class);
+    final Component owner = mock(Component.class);
+    final PopupCoordinateCalibrator.GeometryProvider geometry = mock(PopupCoordinateCalibrator.GeometryProvider.class);
+    when(geometry.getNativeFrameBounds(frame)).thenReturn(new Rectangle(0, 0, 2240, 1400));
+    when(geometry.getOwnerLocationWithinFrame(owner, frame)).thenReturn(new Point(1035, 5));
+    when(geometry.getOwnerLocationOnScreen(owner)).thenReturn(new Point(1275, 185));
+
+    assertThat(PopupCoordinateCalibrator.calculateCorrection(owner, frame, geometry))
+        .isEqualTo(new Point(-240, -180));
+}
+
+@Test
+public void calculateCorrection_whenOwnerAlreadyAgrees_returnsZero() {
+    final JFrame frame = mock(JFrame.class);
+    final Component owner = mock(Component.class);
+    final PopupCoordinateCalibrator.GeometryProvider geometry = mock(PopupCoordinateCalibrator.GeometryProvider.class);
+    when(geometry.getNativeFrameBounds(frame)).thenReturn(new Rectangle(240, 180, 960, 600));
+    when(geometry.getOwnerLocationWithinFrame(owner, frame)).thenReturn(new Point(10, 20));
+    when(geometry.getOwnerLocationOnScreen(owner)).thenReturn(new Point(250, 200));
+
+    assertThat(PopupCoordinateCalibrator.calculateCorrection(owner, frame, geometry))
+        .isEqualTo(new Point(0, 0));
+}
+```
+
+Add a negative-delta case, a `null` result case for each unavailable geometry value, a non-positive native width or height case, and a provider-exception case. Verify that a failure returns `null` instead of escaping to popup creation.
+
+- [ ] **Step 2: Run the new tests and confirm the calibration classes are absent**
+
+Run:
+
+```bash
+JAVA_HOME="$HOME/.sdkman/candidates/java/21.0.8-zulu" PATH="$JAVA_HOME/bin:$PATH" gradle :freeplane:test --tests "org.freeplane.core.ui.components.PopupCoordinateCalibratorTest"
+```
+
+Expected: compilation fails because the two new production classes do not yet exist.
+
+- [ ] **Step 3: Implement the single owner-local correction calculation**
+
+Implement `PopupCoordinateCalibrator` as a final package-private class. The calculation must follow this exact sequence:
+
+```java
+static Point calculateCorrection(final Component owner, final JFrame frame,
+        final GeometryProvider geometryProvider) {
+    if (owner == null || frame == null || geometryProvider == null) {
+        return null;
+    }
+    try {
+        final Rectangle nativeFrameBounds = geometryProvider.getNativeFrameBounds(frame);
+        final Point ownerLocationWithinFrame = geometryProvider.getOwnerLocationWithinFrame(owner, frame);
+        final Point ownerLocationOnScreen = geometryProvider.getOwnerLocationOnScreen(owner);
+        if (nativeFrameBounds == null || nativeFrameBounds.width <= 0 || nativeFrameBounds.height <= 0
+                || ownerLocationWithinFrame == null || ownerLocationOnScreen == null) {
+            return null;
+        }
+        final int expectedX = nativeFrameBounds.x + ownerLocationWithinFrame.x;
+        final int expectedY = nativeFrameBounds.y + ownerLocationWithinFrame.y;
+        return new Point(expectedX - ownerLocationOnScreen.x, expectedY - ownerLocationOnScreen.y);
+    }
+    catch (RuntimeException unavailableGeometry) {
+        return null;
+    }
+}
+```
+
+Do not call `setBounds`, `validate`, `Timer.start`, `Timer.stop`, `invokeLater`, or any other retry mechanism from this class.
+
+- [ ] **Step 4: Write the delegating factory tests**
+
+Construct `X11PopupFactory` with a mocked delegate, an injected resolver that returns a registered frame, and the geometry provider from the preceding tests. Pin these behaviors:
+
+- A correction of `(-240,-180)` changes a request `(1000,400)` to `(760,220)`.
+- The delegate receives the original owner and contents, the corrected coordinates, and exactly one `getPopup` call.
+- A zero correction passes the original coordinates unchanged.
+- A resolver that returns no registered frame passes the original coordinates and does not query geometry.
+- A geometry provider that returns `null` or throws passes the original coordinates and still returns the delegate popup.
+- No call is made to frame mutation methods, no timer is created or scheduled, and no second delegate call occurs.
+- An exception thrown by the delegate propagates to the caller.
+
+Use a `PopupOwnerResolver` functional seam so these tests do not depend on `SwingUtilities.getWindowAncestor` finding a real displayable hierarchy.
+
+- [ ] **Step 5: Implement the delegating adapter without reproducing FlatLaf behavior**
+
+Implement `X11PopupFactory` as a direct subclass of `PopupFactory`, with a captured `PopupFactory delegate`. Its `getPopup` method may calculate a correction and change only the two integer arguments before making this one call:
+
+```java
+return delegate.getPopup(owner, contents, correctedX, correctedY);
+```
+
+Catch only runtime failures from owner lookup or calibration, restore the original coordinates for those failures, and keep the delegate call outside that failure handler so delegate exceptions are preserved. Do not reference `FlatPopupFactory` from this class and do not override any other `PopupFactory` method.
+
+- [ ] **Step 6: Run the popup calibration and adapter tests**
+
+Run:
+
+```bash
+JAVA_HOME="$HOME/.sdkman/candidates/java/21.0.8-zulu" PATH="$JAVA_HOME/bin:$PATH" gradle :freeplane:test --tests "org.freeplane.core.ui.components.PopupCoordinateCalibratorTest" --tests "org.freeplane.core.ui.components.X11PopupFactoryTest"
+```
+
+Expected: all geometry and delegation tests pass, including the split-cache correction `(-240,-180)` and the unchanged-coordinate failure paths.
+
+- [ ] **Step 7: Inspect and commit the popup seam**
+
+Run:
+
+```bash
+git diff --check
+git diff -- freeplane/src/main/java/org/freeplane/core/ui/components/PopupCoordinateCalibrator.java freeplane/src/main/java/org/freeplane/core/ui/components/X11PopupFactory.java freeplane/src/test/java/org/freeplane/core/ui/components/PopupCoordinateCalibratorTest.java freeplane/src/test/java/org/freeplane/core/ui/components/X11PopupFactoryTest.java
+git status --short
+```
+
+Confirm that the adapter has no frame mutation, timer, retry, FlatLaf subclass, or popup-type-selection logic. Commit:
+
+```bash
+git add freeplane/src/main/java/org/freeplane/core/ui/components/PopupCoordinateCalibrator.java freeplane/src/main/java/org/freeplane/core/ui/components/X11PopupFactory.java freeplane/src/test/java/org/freeplane/core/ui/components/PopupCoordinateCalibratorTest.java freeplane/src/test/java/org/freeplane/core/ui/components/X11PopupFactoryTest.java
+git commit -m "Calibrate X11 popup coordinates at creation"
+```
+
+## Task 3: Register Frames and Refresh the Adapter Across Look-and-Feel Changes
 
 **Implementer tier:** Capable
 
 **Files:**
 
-- Modify: `freeplane/src/main/java/org/freeplane/core/ui/components/FrameResynchronizer.java:109-139,301-425`
-- Test: `freeplane/src/test/java/org/freeplane/core/ui/components/FrameResynchronizerTest.java:1-263`
+- Modify: `freeplane/src/main/java/org/freeplane/core/ui/components/FrameResynchronizer.java:1-55,130-180`
+- Modify: `freeplane/src/main/java/org/freeplane/features/ui/FrameController.java:630-757`
+- Create: `freeplane/src/test/java/org/freeplane/core/ui/components/FrameResynchronizerPopupFactoryTest.java`
 
 **Interfaces:**
 
-- Consumes: Task 1's `findTargetMaximizedBounds(Rectangle, Rectangle, Rectangle[], Rectangle)` and full-rectangle `needsMaximizedFrameResynchronization(boolean, int, Rectangle, Rectangle)`.
-- Produces: package-visible `MaximizedResynchronizationGuard` with `shouldRequest(Rectangle currentBounds, Rectangle targetBounds)`, `isExhausted()`, and `reset()`; first request is count `1`, and no more than ten requests are permitted for one unchanged target.
-- Produces: package-visible `shouldScheduleDeferredResynchronization(boolean maximized, boolean stable)`, returning `false` only for a stable maximized result and `true` for normal/non-maximized paths.
-- Preserves: `needsNormalWindowResynchronization`, normal-window deferred scheduling, `resynchronizeFrame` usage during maximize-to-normal restoration, and the existing `isX11Toolkit()` behavior.
+- Consumes: `X11PopupFactory(PopupFactory delegate, PopupOwnerResolver ownerResolver, PopupCoordinateCalibrator.GeometryProvider geometryProvider)` and its one-call `getPopup` delegation from Task 2.
+- Consumes: the existing `FrameResynchronizer.install(JFrame)` listener registration and the existing `FrameResynchronizer.getNativeWindowBounds(Component)` native query.
+- Produces: `FrameResynchronizer.install(JFrame)` registration of the Freeplane frame in a `WeakHashMap`-backed frame set before the adapter refresh.
+- Produces: public `FrameResynchronizer.refreshPopupFactory()`, which is a no-op outside the exact X11 toolkit gate and wraps the current shared factory only when a registered frame exists.
+- Produces: package-visible `FrameResynchronizer.ensurePopupFactory(boolean isX11Toolkit, PopupFactory currentFactory, Set<JFrame> registeredFrames, PopupCoordinateCalibrator.GeometryProvider geometryProvider)` for desktop-free lifecycle tests.
+- Produces: package-visible `X11PopupFactory.getDelegate()` for identity tests; it returns the captured active delegate without exposing or mutating the registry.
+- Produces: `FrameController.setLookAndFeel(String)` refresh calls after every successful `UIManager.setLookAndFeel(...)` path, including direct class-name, instantiated look-and-feel, fallback, and helper-method success paths.
 
-- [ ] **Step 1: Write the failing guard and retry-policy tests**
+- [ ] **Step 1: Add tests for registration-independent factory refresh decisions**
 
-Add tests for the package-visible guard and scheduling policy:
+Create `FrameResynchronizerPopupFactoryTest` with a `WeakHashMap`-backed `Set<JFrame>` and mocked factories/providers. Pin this decision table:
 
 ```java
 @Test
-public void maximizedGuard_allowsExactlyTenRequestsForOneTarget() {
-    final FrameResynchronizer.MaximizedResynchronizationGuard guard =
-        new FrameResynchronizer.MaximizedResynchronizationGuard();
-    final Rectangle current = new Rectangle(0, 0, 1920, 1080);
-    final Rectangle target = new Rectangle(0, 32, 1920, 1048);
+public void ensurePopupFactory_onX11WrapsCurrentFactoryWhenAFrameIsRegistered() {
+    final Set<JFrame> frames = Collections.newSetFromMap(new WeakHashMap<JFrame, Boolean>());
+    frames.add(mock(JFrame.class));
+    final PopupFactory delegate = mock(PopupFactory.class);
 
-    for (int attempt = 1; attempt <= 10; attempt++) {
-        assertThat(guard.shouldRequest(current, target)).isTrue();
-    }
-    assertThat(guard.isExhausted()).isTrue();
-    assertThat(guard.shouldRequest(current, target)).isFalse();
+    final PopupFactory result = FrameResynchronizer.ensurePopupFactory(
+        true, delegate, frames, mock(PopupCoordinateCalibrator.GeometryProvider.class));
+
+    assertThat(result).isInstanceOf(X11PopupFactory.class);
+    assertThat(((X11PopupFactory) result).getDelegate()).isSameAs(delegate);
 }
 
 @Test
-public void maximizedGuard_reachingTarget_resetsSameTargetBudget() {
-    final FrameResynchronizer.MaximizedResynchronizationGuard guard =
-        new FrameResynchronizer.MaximizedResynchronizationGuard();
-    final Rectangle current = new Rectangle(0, 0, 1920, 1080);
-    final Rectangle target = new Rectangle(0, 32, 1920, 1048);
+public void ensurePopupFactory_doesNotWrapAnExistingAdapterAgain() {
+    final Set<JFrame> frames = Collections.newSetFromMap(new WeakHashMap<JFrame, Boolean>());
+    frames.add(mock(JFrame.class));
+    final PopupFactory adapter = new X11PopupFactory(mock(PopupFactory.class),
+        owner -> mock(JFrame.class), mock(PopupCoordinateCalibrator.GeometryProvider.class));
 
-    assertThat(guard.shouldRequest(current, target)).isTrue();
-    assertThat(guard.shouldRequest(target, target)).isFalse();
-    assertThat(guard.shouldRequest(current, target)).isTrue();
+    assertThat(FrameResynchronizer.ensurePopupFactory(true, adapter, frames,
+        mock(PopupCoordinateCalibrator.GeometryProvider.class))).isSameAs(adapter);
 }
 
 @Test
-public void maximizedGuard_reset_allowsARequestAfterLeavingAndReenteringMaximized() {
-    final FrameResynchronizer.MaximizedResynchronizationGuard guard =
-        new FrameResynchronizer.MaximizedResynchronizationGuard();
-    final Rectangle current = new Rectangle(0, 0, 1920, 1080);
-    final Rectangle target = new Rectangle(0, 32, 1920, 1048);
+public void ensurePopupFactory_outsideX11ReturnsTheActiveFactoryUnchanged() {
+    final PopupFactory delegate = mock(PopupFactory.class);
+    final Set<JFrame> frames = Collections.newSetFromMap(new WeakHashMap<JFrame, Boolean>());
 
-    for (int attempt = 1; attempt <= 10; attempt++) {
-        guard.shouldRequest(current, target);
-    }
-    guard.reset();
-    assertThat(guard.shouldRequest(current, target)).isTrue();
-}
-
-@Test
-public void shouldScheduleDeferredResynchronization_stopsOnlyStableMaximizedRetries() {
-    assertThat(FrameResynchronizer.shouldScheduleDeferredResynchronization(true, false)).isTrue();
-    assertThat(FrameResynchronizer.shouldScheduleDeferredResynchronization(true, true)).isFalse();
-    assertThat(FrameResynchronizer.shouldScheduleDeferredResynchronization(false, true)).isTrue();
+    assertThat(FrameResynchronizer.ensurePopupFactory(false, delegate, frames,
+        mock(PopupCoordinateCalibrator.GeometryProvider.class))).isSameAs(delegate);
 }
 ```
 
-The first guard test is the falsifiable event/timer boundary: each permitted request represents one immediate or deferred `setBounds` cycle, and the eleventh same-target event must be stable with no retry request.
+Add a test that replacing the active delegate creates a new adapter whose `getDelegate()` is the replacement, while the registered-frame set remains the same weak-key set. Add a test that an empty registry leaves the active factory unchanged.
 
-- [ ] **Step 2: Run the focused test and confirm the guard API fails**
-
-Run the same focused Gradle command used in Task 1. Expected: FAIL at compilation because the guard and retry-policy seam do not yet exist.
-
-- [ ] **Step 3: Implement the maximized-only guard and conditional scheduling**
-
-Add an instance-local guard with this behavior:
-
-```java
-static final class MaximizedResynchronizationGuard {
-    private static final int MAX_ATTEMPTS = 10;
-    private Rectangle targetBounds;
-    private int attempts;
-
-    boolean shouldRequest(final Rectangle currentBounds, final Rectangle targetBounds) {
-        if (currentBounds == null || targetBounds == null || currentBounds.equals(targetBounds)) {
-            reset();
-            return false;
-        }
-        if (!targetBounds.equals(this.targetBounds)) {
-            this.targetBounds = new Rectangle(targetBounds);
-            attempts = 0;
-        }
-        if (attempts >= MAX_ATTEMPTS) {
-            return false;
-        }
-        attempts++;
-        return true;
-    }
-
-    boolean isExhausted() {
-        return attempts >= MAX_ATTEMPTS;
-    }
-
-    void reset() {
-        targetBounds = null;
-        attempts = 0;
-    }
-}
-```
-
-Add `maximizedResynchronizationGuard` as an instance field. Make `resynchronizeMaximizedFrame` instance-scoped and use Task 1's target resolver. For a null target, a full-rectangle match, or an exhausted guard, return `true` without setting bounds. For an allowed request, call `frame.setBounds(targetBounds)` and `frame.validate()` directly so a size-only mismatch is corrected; do not route maximized requests through the origin-only `resynchronizeFrame` helper. Return `false` only after an allowed correction request that may produce a later WM event.
-
-Add:
-
-```java
-static boolean shouldScheduleDeferredResynchronization(final boolean maximized, final boolean stable) {
-    return !maximized || !stable;
-}
-```
-
-In `handleComponentGeometryChanged` and `windowOpened`, retain the current normal/non-maximized scheduling behavior, but for maximized windows call `scheduleDeferredResynchronization()` only when `shouldScheduleDeferredResynchronization(true, stable)` is true. This makes an exhausted or no-target maximized result stable and prevents a same-target component event from restarting the timer. Do not reset the maximized guard from `scheduleDeferredResynchronization`; its state is independent of the existing deferred-timer attempt counter.
-
-Reset the maximized guard on a maximize-to-normal transition before the existing normal-bounds restoration path. Re-entering maximized mode then starts a fresh per-target sequence. Leave `resynchronizeFrame` and `needsNormalFrameResynchronization` unchanged.
-
-- [ ] **Step 4: Run the focused tests and the module test suite**
+- [ ] **Step 2: Run the lifecycle tests and confirm the production seam is absent**
 
 Run:
 
 ```bash
-cd /data/home/henry-arch/.local/state/pi/project-manager/worktrees/0233ff88d3cc54bbd61550c61fa917d6e2a5717f8a03be4e9aa63dcd47dd1cfa/pm-run-20261017-122451-1d0829ed/integration
-JAVA_HOME="$HOME/.sdkman/candidates/java/21.0.8-zulu" PATH="$JAVA_HOME/bin:$PATH" gradle :freeplane:test --tests "org.freeplane.core.ui.components.FrameResynchronizerTest"
-JAVA_HOME="$HOME/.sdkman/candidates/java/21.0.8-zulu" PATH="$JAVA_HOME/bin:$PATH" gradle :freeplane:test
+JAVA_HOME="$HOME/.sdkman/candidates/java/21.0.8-zulu" PATH="$JAVA_HOME/bin:$PATH" gradle :freeplane:test --tests "org.freeplane.core.ui.components.FrameResynchronizerPopupFactoryTest"
 ```
 
-Expected: both commands pass. The focused test must include the exact ten-request boundary, no-target behavior, size-only maximized correction, maximize-to-normal reset coverage, normal-window size gating, and non-X11 no-op coverage.
+Expected: compilation fails until the package-visible factory decision seam and adapter delegate accessor exist.
 
-- [ ] **Step 5: Perform available runtime and diff verification**
+- [ ] **Step 3: Add the weak registry and production geometry provider**
 
-Run the existing Freeplane development build under the available Wayland/XWayland session and exercise a maximized frame with the observed top-panel geometry. Confirm that the EDT no longer enters the repeated `componentMoved -> resynchronizeMaximizedFrame -> setBounds` cycle, that a normal window moved between monitors still aligns its popup, and that maximize-to-normal restores the saved normal bounds.
+In `FrameResynchronizer`, add a static registry whose values do not retain frames:
 
-Record that this environment has no native X11 window manager (`kwin_x11` or equivalent), so native-X11 runtime behavior remains unverified. The shared `sun.awt.X11.XToolkit` code path and unit tests are evidence for the common geometry contract, not proof of native-X11 WM-specific behavior.
+```java
+private static final Set<JFrame> REGISTERED_FRAMES =
+    Collections.newSetFromMap(new WeakHashMap<JFrame, Boolean>());
+```
+
+Create one default `GeometryProvider` whose methods call `getNativeWindowBounds(frame)`, `SwingUtilities.convertPoint(owner, 0, 0, frame)`, and `owner.getLocationOnScreen()`. The provider must return the same logical screen coordinate space used by `getNativeWindowBounds` and let the calibrator convert runtime failures into a no-op.
+
+Implement `ensurePopupFactory` with this order:
+
+1. Return `currentFactory` when `isX11Toolkit` is false, the factory is unavailable, the registry is empty, or the current factory is already `X11PopupFactory`.
+2. Otherwise create one `X11PopupFactory` around the current factory, using a resolver that finds the `JFrame` owner itself or the nearest window ancestor and accepts it only when it is present in `REGISTERED_FRAMES`.
+3. Preserve the registry as weak keys and pass the current active factory as the captured delegate.
+
+Add a package-visible `getDelegate()` only for tests; it must return the captured delegate and must not expose or mutate the registry.
+
+- [ ] **Step 4: Wire `install(JFrame)` and the public refresh method**
+
+Keep the existing window, window-state, and component listener registration. Add the frame to `REGISTERED_FRAMES` and call `refreshPopupFactory()` from the same `install(JFrame)` entry point. Do not add another installation call to `ApplicationViewController`; its existing call after stored bounds is the lifecycle point.
+
+Implement:
+
+```java
+public static void refreshPopupFactory() {
+    if (!isX11Toolkit()) {
+        return;
+    }
+    final PopupFactory currentFactory = PopupFactory.getSharedInstance();
+    final PopupFactory refreshedFactory = ensurePopupFactory(true, currentFactory,
+        REGISTERED_FRAMES, DEFAULT_POPUP_GEOMETRY_PROVIDER);
+    if (refreshedFactory != currentFactory) {
+        PopupFactory.setSharedInstance(refreshedFactory);
+    }
+}
+```
+
+The method must leave non-X11 shared-factory state untouched, must not wrap a wrapper, and must do nothing when no registered Freeplane frame exists.
+
+- [ ] **Step 5: Refresh after every successful look-and-feel replacement**
+
+In `FrameController.setLookAndFeel` and `tryToSetLookAndFeel`, call `FrameResynchronizer.refreshPopupFactory()` immediately after each successful `UIManager.setLookAndFeel(...)` return:
+
+- after the default system look-and-feel call;
+- after the installed look-and-feel helper succeeds;
+- after the user-library look-and-feel instance succeeds;
+- after the fallback system look-and-feel call in the recovery branch; and
+- inside both successful branches of `tryToSetLookAndFeel`.
+
+Do not call refresh after a failed attempt, do not alter `OSKeyBindingManager`, and do not change the existing `FlatLaf` setup or the current `FrameResynchronizer.install(frame)` call in `ApplicationViewController`.
+
+- [ ] **Step 6: Run focused lifecycle tests and compile the application sources**
+
+Run:
+
+```bash
+JAVA_HOME="$HOME/.sdkman/candidates/java/21.0.8-zulu" PATH="$JAVA_HOME/bin:$PATH" gradle :freeplane:test --tests "org.freeplane.core.ui.components.FrameResynchronizerPopupFactoryTest" --tests "org.freeplane.core.ui.components.PopupCoordinateCalibratorTest" --tests "org.freeplane.core.ui.components.X11PopupFactoryTest"
+JAVA_HOME="$HOME/.sdkman/candidates/java/21.0.8-zulu" PATH="$JAVA_HOME/bin:$PATH" gradle :freeplane:compileJava
+```
+
+Expected: all popup/lifecycle tests pass and the application compiles with the Java 8 source target. The compile verifies that `FrameController` can call the refresh method without changing behavior on other platforms.
+
+- [ ] **Step 7: Inspect and commit the lifecycle wiring**
+
+Run:
+
+```bash
+git diff --check
+git diff -- freeplane/src/main/java/org/freeplane/core/ui/components/FrameResynchronizer.java freeplane/src/main/java/org/freeplane/features/ui/FrameController.java freeplane/src/test/java/org/freeplane/core/ui/components/FrameResynchronizerPopupFactoryTest.java
+git status --short
+```
+
+Confirm that the only popup-factory change is the delegating X11 adapter, the registry has weak keys, `FlatPopupFactory` remains the captured delegate, and `install(JFrame)` remains the sole frame-registration call site. Commit:
+
+```bash
+git add freeplane/src/main/java/org/freeplane/core/ui/components/FrameResynchronizer.java freeplane/src/main/java/org/freeplane/features/ui/FrameController.java freeplane/src/test/java/org/freeplane/core/ui/components/FrameResynchronizerPopupFactoryTest.java
+git commit -m "Refresh X11 popup calibration with frame lifecycle"
+```
+
+## Task 4: Run Full Regression Checks and Capture Native-X11 Acceptance Evidence
+
+**Implementer tier:** Frontier
+
+**Files:**
+
+- Create: `ai-specs/tasks/freeplane-frame-resynchronizer-x11-evidence/epoch-2/PopupCoordinateAcceptanceProbe.java`
+- Create: `ai-specs/tasks/freeplane-frame-resynchronizer-x11-evidence/epoch-2/run-acceptance.py`
+- Create: `ai-specs/tasks/freeplane-frame-resynchronizer-x11-evidence/epoch-2/acceptance-report.md`
+
+**Interfaces:**
+
+- Consumes: the compiled `FrameResynchronizer`, `PopupCoordinateCalibrator`, and `X11PopupFactory` classes from Tasks 2 and 3; the existing JNA X11 dependency; and the existing disposable popup-probe conventions under `ai-specs/tasks/freeplane-frame-resynchronizer-x11-evidence/`.
+- Consumes: the baseline source identity `0734fb23db6873f4ec64c3e3e29fc8c3e17edc7a` and the patched integration build identity recorded when this task runs.
+- Produces: bounded baseline and patched logs for saved-maximized, normal-then-maximize, external-maximize where `wmctrl` is available, restore, and remaximize sequences.
+- Produces: an acceptance report containing toolkit class, active popup factory and delegate class, owner-local calibration values, popup placement error, menu persistence, successful menu-item selection, frame correction count, and any explicit runtime limitation.
+
+- [ ] **Step 1: Add a disposable probe that records the approved evidence fields**
+
+Base the probe on the existing popup-coordinate and popup-selection probes, but compile it against the current integration classes without changing production source. The probe must:
+
+- log `Toolkit.getDefaultToolkit().getClass().getName()` and require the exact `sun.awt.X11.XToolkit` value for native acceptance;
+- log `PopupFactory.getSharedInstance()` and, when it is `X11PopupFactory`, its delegate class, proving that the active delegate remains FlatLaf's factory;
+- create a heavyweight `JPopupMenu` with selectable items from a button or menu owner inside a registered `JFrame`;
+- record owner AWT screen location, owner location within the frame, native outer-frame bounds, expected owner screen location, calculated correction, popup request coordinates, popup AWT/native bounds, and integer placement error;
+- use a real pointer click or equivalent input path that exercises menu-item selection and log `popup-item-selected` only from the item action listener;
+- run maximize, restore, and remaximize transitions and record every frame correction request, including whether opening each popup adds a new correction loop; and
+- exit with a nonzero status when the popup disappears before selection, selection is absent, the native-X11 toolkit identity is wrong for a native acceptance run, or placement error exceeds the agreed integer-pixel tolerance.
+
+The probe must not modify the production `FrameResynchronizer` source, must not use panel auto-hide, and must not treat a missing native X11 display as a passing result.
+
+- [ ] **Step 2: Add a bounded runner for baseline and patched executions**
+
+Implement `run-acceptance.py` to compile the probe with `javac --release 8`, run each scenario with a bounded timeout, retain stdout and stderr in separate baseline/patched log directories, and record the source SHA-256 and runtime identity. Use the existing evidence convention of preserving a prior log before replacing it. The runner must stop after a failed compilation, nonzero probe exit, or timeout and must not leave a background Freeplane process running.
+
+Run the Gradle build before the probe with:
+
+```bash
+cd /home/henry-arch/.local/state/pi/project-manager/worktrees/0233ff88d3cc54bbd61550c61fa917d6e2a5717f8a03be4e9aa63dcd47dd1cfa/pm-run-20261017-122451-1d0829ed/integration
+JAVA_HOME="$HOME/.sdkman/candidates/java/21.0.8-zulu" PATH="$JAVA_HOME/bin:$PATH" gradle :freeplane:test :freeplane:compileJava
+```
+
+The runner may use the existing native X11 display and `XAUTHORITY`; it must record `DISPLAY`, toolkit identity, output geometry, screen insets, and panel-strut work area. It must not branch on `XDG_SESSION_TYPE`.
+
+- [ ] **Step 3: Execute the native-X11 baseline and patched measurements**
+
+Run the baseline against the recorded baseline source identity and the patched probe against the current integration build. On the native X11 session with the Plasma panel strut, require these patched observations:
+
+- screen bounds `(0,0,2240,1400)` and work area `(0,32,2240,1368)` or the equivalent values reported by the active display;
+- the exact `sun.awt.X11.XToolkit` class;
+- an active `X11PopupFactory` whose delegate is the current FlatLaf shared factory;
+- an owner-local correction matching the injected split-cache witness, `(-240,-180)`, when that fault scenario is enabled;
+- popup native placement error equal to zero within integer-pixel tolerance;
+- a heavyweight popup that remains visible long enough for a real pointer selection and a `popup-item-selected` record;
+- frame correction requests bounded at ten for one unchanged maximized target, with no new frame correction loop caused by opening a popup; and
+- successful restore and remaximize popup selection with the same owner-local calibration contract.
+
+Retain the baseline evidence showing the prior split-cache placement error `(240,180)` where available. If the native-X11 or XWayland display is unavailable, write that exact verification limitation into the report, include the completed desktop-free test results, and leave the acceptance status explicitly unverified rather than converting the limitation into a pass.
+
+- [ ] **Step 4: Run non-X11 and full automated regression checks**
+
+Run the complete focused vector and the application compile again:
+
+```bash
+JAVA_HOME="$HOME/.sdkman/candidates/java/21.0.8-zulu" PATH="$JAVA_HOME/bin:$PATH" gradle :freeplane:test --tests "org.freeplane.core.ui.components.FrameResynchronizerTest" --tests "org.freeplane.core.ui.components.PopupCoordinateCalibratorTest" --tests "org.freeplane.core.ui.components.X11PopupFactoryTest" --tests "org.freeplane.core.ui.components.FrameResynchronizerPopupFactoryTest"
+JAVA_HOME="$HOME/.sdkman/candidates/java/21.0.8-zulu" PATH="$JAVA_HOME/bin:$PATH" gradle :freeplane:compileJava
+```
+
+Use the injected `false` toolkit tests to verify unchanged non-X11 behavior. Record that macOS and Windows require pass-through source behavior; do not claim native runtime results for platforms that were not exercised.
+
+- [ ] **Step 5: Write the acceptance report and inspect the final diff**
+
+Write `acceptance-report.md` with the actual commit identities, commands, test counts, runtime/toolkit identity, work-area values, correction values, popup persistence and selection records, frame correction counts, baseline comparison, and any unavailable-runtime limitation. Do not omit a failed or unavailable acceptance run.
 
 Run:
 
 ```bash
 git diff --check
 git status --short
-git log --oneline --decorate -3
+git log -6 --oneline --decorate
 ```
 
-Confirm only the two scoped Java files changed after the design commits. Commit:
+Confirm that no generated class files, auxiliary logs outside the evidence directory, or delivery-target changes are staged. Commit the probe, bounded runner, and report:
 
 ```bash
-git add freeplane/src/main/java/org/freeplane/core/ui/components/FrameResynchronizer.java freeplane/src/test/java/org/freeplane/core/ui/components/FrameResynchronizerTest.java
-git commit -m "Bound maximized frame resynchronization"
+git add ai-specs/tasks/freeplane-frame-resynchronizer-x11-evidence/epoch-2
+git commit -m "Record X11 popup calibration acceptance evidence"
 ```
