@@ -413,8 +413,14 @@ public class FrameResynchronizerTest {
             assertThat(guard.shouldRequest(current, firstTarget)).isTrue();
         }
         assertThat(guard.shouldRequest(current, firstTarget)).isFalse();
-        assertThat(guard.shouldRequest(current, secondTarget)).isTrue();
-        assertThat(guard.shouldRequest(current, firstTarget)).isTrue();
+        for (int attempt = 1; attempt <= 10; attempt++) {
+            assertThat(guard.shouldRequest(current, secondTarget)).isTrue();
+        }
+        assertThat(guard.shouldRequest(current, secondTarget)).isFalse();
+        for (int attempt = 1; attempt <= 10; attempt++) {
+            assertThat(guard.shouldRequest(current, firstTarget)).isTrue();
+        }
+        assertThat(guard.shouldRequest(current, firstTarget)).isFalse();
     }
 
     @Test
