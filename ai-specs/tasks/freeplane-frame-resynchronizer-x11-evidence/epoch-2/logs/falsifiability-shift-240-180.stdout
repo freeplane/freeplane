@@ -15,75 +15,79 @@ popup-class-parity=heavyweight-menu adapter-class=javax.swing.Popup$HeavyWeightW
 popup-class-parity=lightweight-enabled-menu adapter-class=javax.swing.Popup$HeavyWeightWindow delegate-class=javax.swing.Popup$HeavyWeightWindow equal=true expected=javax.swing.Popup$HeavyWeightWindow
 popup-class-parity=tooltip adapter-class=javax.swing.Popup$HeavyWeightWindow delegate-class=javax.swing.Popup$HeavyWeightWindow equal=true expected=javax.swing.Popup$HeavyWeightWindow
 frame-active scenario=startup-normal value=true attempt=1
-popup-persistence scenario=startup-normal duration-ms=905 minimum-ms=800 menu-showing=true
+popup-persistence scenario=startup-normal duration-ms=910 minimum-ms=800 menu-showing=true
+assertion-failure=popup misplaced scenario=startup-normal placement-error=(240,180)
 popup-pointer-target=startup-normal clicked-screen-point=(238,202) menu-screen-bounds=(381,366,194,32) item-screen-bounds=(382,370,192,24)
 pointer-click-inside-item-bounds scenario=startup-normal value=false
 assertion-failure=startup-normal pointer-click-outside-item-bounds
 menu-showing-before-pointer scenario=startup-normal value=true
-assertion-failure=ENVIRONMENT: pointer event dispatch or selection failed scenario=startup-normal timeout-ms=2000
+assertion-failure=pointer event dispatch or selection failed scenario=startup-normal timeout-ms=2000
 menu-showing-after-pointer scenario=startup-normal value=false
-assertion-failure=ENVIRONMENT: pointer selection missing scenario=startup-normal
+assertion-failure=pointer selection missing scenario=startup-normal
 diagnostic-only doClick-fallback-start scenario=startup-normal
 diagnostic-only popup-doClick-fallback-selected=selected-startup-normal
 menu-showing-after-fallback scenario=startup-normal value=false
-assertion-failure=PRODUCT: popup misplaced scenario=startup-normal placement-error=(240,180)
-scenario=startup-normal owner-awt-screen=(141,162) owner-location-within-frame=(21,42) native-outer-frame-bounds=(120,120,900,600) expected-native-owner-origin=(141,162) correction=(0,0) requested-popup-coordinates=(141,186) popup-local-offset=(0,24) expected-popup-native-origin=(141,186) popup-window-class=javax.swing.Popup$HeavyWeightWindow popup-awt-bounds=(381,366,194,32) popup-native-bounds=(381,366,194,32) popup-menu-screen-bounds=(381,366,194,32) popup-item-screen-bounds=(382,370,192,24) pointer-click-screen-point=(238,202) placement-error=(240,180) placement-error-max=240 persistence-ms=905 menu-showing-before-pointer=true menu-showing-after-pointer=false menu-showing-after-fallback=false pointer-selection=false pointer-selected-text=null doClick-fallback-selection=true doClick-fallback-text=selected-startup-normal frame-correction-setBounds-delta=0
+scenario=startup-normal owner-awt-screen=(141,162) owner-location-within-frame=(21,42) native-outer-frame-bounds=(120,120,900,600) expected-native-owner-origin=(141,162) correction=(0,0) requested-popup-coordinates=(141,186) popup-local-offset=(0,24) expected-popup-native-origin=(141,186) popup-window-class=javax.swing.Popup$HeavyWeightWindow popup-awt-bounds=(381,366,194,32) popup-native-bounds=(381,366,194,32) popup-menu-screen-bounds=(381,366,194,32) popup-item-screen-bounds=(382,370,192,24) pointer-click-screen-point=(238,202) placement-error=(240,180) placement-error-max=240 persistence-ms=910 menu-showing-before-pointer=true menu-showing-after-pointer=false menu-showing-after-fallback=false pointer-selection=false pointer-selected-text=null doClick-fallback-selection=true doClick-fallback-text=selected-startup-normal frame-correction-setBounds-delta=0
+failure-class=PRODUCT reason=popup misplaced; click landed outside item bounds scenario=startup-normal
 frame-active scenario=maximize value=true attempt=1
 popup-persistence scenario=maximize duration-ms=902 minimum-ms=800 menu-showing=true
+assertion-failure=popup misplaced scenario=maximize placement-error=(240,180)
 popup-pointer-target=maximize clicked-screen-point=(101,82) menu-screen-bounds=(261,246,160,32) item-screen-bounds=(262,250,158,24)
 pointer-click-inside-item-bounds scenario=maximize value=false
 assertion-failure=maximize pointer-click-outside-item-bounds
 menu-showing-before-pointer scenario=maximize value=true
-assertion-failure=ENVIRONMENT: pointer event dispatch or selection failed scenario=maximize timeout-ms=2000
+assertion-failure=pointer event dispatch or selection failed scenario=maximize timeout-ms=2000
 menu-showing-after-pointer scenario=maximize value=false
-assertion-failure=ENVIRONMENT: pointer selection missing scenario=maximize
+assertion-failure=pointer selection missing scenario=maximize
 diagnostic-only doClick-fallback-start scenario=maximize
 diagnostic-only popup-doClick-fallback-selected=selected-maximize
 menu-showing-after-fallback scenario=maximize value=false
-assertion-failure=PRODUCT: popup misplaced scenario=maximize placement-error=(240,180)
 scenario=maximize owner-awt-screen=(20,41) owner-location-within-frame=(21,42) native-outer-frame-bounds=(0,0,2240,1400) expected-native-owner-origin=(21,42) correction=(1,1) requested-popup-coordinates=(20,65) popup-local-offset=(0,24) expected-popup-native-origin=(21,66) popup-window-class=javax.swing.Popup$HeavyWeightWindow popup-awt-bounds=(261,246,160,32) popup-native-bounds=(261,246,160,32) popup-menu-screen-bounds=(261,246,160,32) popup-item-screen-bounds=(262,250,158,24) pointer-click-screen-point=(101,82) placement-error=(240,180) placement-error-max=240 persistence-ms=902 menu-showing-before-pointer=true menu-showing-after-pointer=false menu-showing-after-fallback=false pointer-selection=false pointer-selected-text=null doClick-fallback-selection=true doClick-fallback-text=selected-maximize frame-correction-setBounds-delta=0
+failure-class=PRODUCT reason=popup misplaced; click landed outside item bounds scenario=maximize
 frame-active scenario=restore value=true attempt=1
 popup-persistence scenario=restore duration-ms=903 minimum-ms=800 menu-showing=true
+assertion-failure=popup misplaced scenario=restore placement-error=(240,180)
 popup-pointer-target=restore clicked-screen-point=(214,202) menu-screen-bounds=(381,366,146,32) item-screen-bounds=(382,370,144,24)
 pointer-click-inside-item-bounds scenario=restore value=false
 assertion-failure=restore pointer-click-outside-item-bounds
 menu-showing-before-pointer scenario=restore value=true
-assertion-failure=ENVIRONMENT: pointer event dispatch or selection failed scenario=restore timeout-ms=2000
+assertion-failure=pointer event dispatch or selection failed scenario=restore timeout-ms=2000
 menu-showing-after-pointer scenario=restore value=false
-assertion-failure=ENVIRONMENT: pointer selection missing scenario=restore
+assertion-failure=pointer selection missing scenario=restore
 diagnostic-only doClick-fallback-start scenario=restore
 diagnostic-only popup-doClick-fallback-selected=selected-restore
 menu-showing-after-fallback scenario=restore value=false
-assertion-failure=PRODUCT: popup misplaced scenario=restore placement-error=(240,180)
 scenario=restore owner-awt-screen=(141,162) owner-location-within-frame=(21,42) native-outer-frame-bounds=(120,120,900,600) expected-native-owner-origin=(141,162) correction=(0,0) requested-popup-coordinates=(141,186) popup-local-offset=(0,24) expected-popup-native-origin=(141,186) popup-window-class=javax.swing.Popup$HeavyWeightWindow popup-awt-bounds=(381,366,146,32) popup-native-bounds=(381,366,146,32) popup-menu-screen-bounds=(381,366,146,32) popup-item-screen-bounds=(382,370,144,24) pointer-click-screen-point=(214,202) placement-error=(240,180) placement-error-max=240 persistence-ms=903 menu-showing-before-pointer=true menu-showing-after-pointer=false menu-showing-after-fallback=false pointer-selection=false pointer-selected-text=null doClick-fallback-selection=true doClick-fallback-text=selected-restore frame-correction-setBounds-delta=0
+failure-class=PRODUCT reason=popup misplaced; click landed outside item bounds scenario=restore
 frame-active scenario=remaximize value=true attempt=1
 popup-persistence scenario=remaximize duration-ms=903 minimum-ms=800 menu-showing=true
+assertion-failure=popup misplaced scenario=remaximize placement-error=(240,180)
 popup-pointer-target=remaximize clicked-screen-point=(107,82) menu-screen-bounds=(261,246,172,32) item-screen-bounds=(262,250,170,24)
 pointer-click-inside-item-bounds scenario=remaximize value=false
 assertion-failure=remaximize pointer-click-outside-item-bounds
 menu-showing-before-pointer scenario=remaximize value=true
-assertion-failure=ENVIRONMENT: pointer event dispatch or selection failed scenario=remaximize timeout-ms=2000
+assertion-failure=pointer event dispatch or selection failed scenario=remaximize timeout-ms=2000
 menu-showing-after-pointer scenario=remaximize value=false
-assertion-failure=ENVIRONMENT: pointer selection missing scenario=remaximize
+assertion-failure=pointer selection missing scenario=remaximize
 diagnostic-only doClick-fallback-start scenario=remaximize
 diagnostic-only popup-doClick-fallback-selected=selected-remaximize
 menu-showing-after-fallback scenario=remaximize value=false
-assertion-failure=PRODUCT: popup misplaced scenario=remaximize placement-error=(240,180)
 scenario=remaximize owner-awt-screen=(20,41) owner-location-within-frame=(21,42) native-outer-frame-bounds=(0,0,2240,1400) expected-native-owner-origin=(21,42) correction=(1,1) requested-popup-coordinates=(20,65) popup-local-offset=(0,24) expected-popup-native-origin=(21,66) popup-window-class=javax.swing.Popup$HeavyWeightWindow popup-awt-bounds=(261,246,172,32) popup-native-bounds=(261,246,172,32) popup-menu-screen-bounds=(261,246,172,32) popup-item-screen-bounds=(262,250,170,24) pointer-click-screen-point=(107,82) placement-error=(240,180) placement-error-max=240 persistence-ms=903 menu-showing-before-pointer=true menu-showing-after-pointer=false menu-showing-after-fallback=false pointer-selection=false pointer-selected-text=null doClick-fallback-selection=true doClick-fallback-text=selected-remaximize frame-correction-setBounds-delta=0
+failure-class=PRODUCT reason=popup misplaced; click landed outside item bounds scenario=remaximize
 probe-result=FAIL
+failure=popup misplaced scenario=startup-normal placement-error=(240,180)
 failure=startup-normal pointer-click-outside-item-bounds
-failure=ENVIRONMENT: pointer event dispatch or selection failed scenario=startup-normal timeout-ms=2000
-failure=ENVIRONMENT: pointer selection missing scenario=startup-normal
-failure=PRODUCT: popup misplaced scenario=startup-normal placement-error=(240,180)
+failure=pointer event dispatch or selection failed scenario=startup-normal timeout-ms=2000
+failure=pointer selection missing scenario=startup-normal
+failure=popup misplaced scenario=maximize placement-error=(240,180)
 failure=maximize pointer-click-outside-item-bounds
-failure=ENVIRONMENT: pointer event dispatch or selection failed scenario=maximize timeout-ms=2000
-failure=ENVIRONMENT: pointer selection missing scenario=maximize
-failure=PRODUCT: popup misplaced scenario=maximize placement-error=(240,180)
+failure=pointer event dispatch or selection failed scenario=maximize timeout-ms=2000
+failure=pointer selection missing scenario=maximize
+failure=popup misplaced scenario=restore placement-error=(240,180)
 failure=restore pointer-click-outside-item-bounds
-failure=ENVIRONMENT: pointer event dispatch or selection failed scenario=restore timeout-ms=2000
-failure=ENVIRONMENT: pointer selection missing scenario=restore
-failure=PRODUCT: popup misplaced scenario=restore placement-error=(240,180)
+failure=pointer event dispatch or selection failed scenario=restore timeout-ms=2000
+failure=pointer selection missing scenario=restore
+failure=popup misplaced scenario=remaximize placement-error=(240,180)
 failure=remaximize pointer-click-outside-item-bounds
-failure=ENVIRONMENT: pointer event dispatch or selection failed scenario=remaximize timeout-ms=2000
-failure=ENVIRONMENT: pointer selection missing scenario=remaximize
-failure=PRODUCT: popup misplaced scenario=remaximize placement-error=(240,180)
+failure=pointer event dispatch or selection failed scenario=remaximize timeout-ms=2000
+failure=pointer selection missing scenario=remaximize

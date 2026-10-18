@@ -2,7 +2,7 @@
 
 ## Status
 
-The canonical four-scenario pointer acceptance **passes on the isolated Xvfb/Openbox display described below**. The probe compiled with `javac --release 8`, exited `0`, and recorded active-frame, persistence, in-bounds pointer-click, pointer-selection, dismissal, correction, and placement checkpoints for every scenario.
+The canonical four-scenario pointer acceptance **passes on the isolated Xvfb/Openbox display described below**. The probe compiled with `javac --release 8`, exited `0`, and recorded `failure-class=NONE`, active-frame, persistence, in-bounds pointer-click, pointer-selection, dismissal, correction, and placement checkpoints for every scenario. The `(240,180)` mutant exited `1` and recorded `failure-class=PRODUCT` for all four scenarios.
 
 This is not a native KWin runtime claim. The host session is Wayland with XWayland available on `DISPLAY=:1` and `:2`; the isolated acceptance display is Xvfb. **XWayland-only runtime acceptance and native X11 KWin runtime acceptance remain UNVERIFIED.**
 
@@ -12,7 +12,7 @@ The canonical run and the `(240,180)` falsifiability mutant were run sequentiall
 
 ```bash
 JAVA_HOME=/home/henry/.sdkman/candidates/java/21.0.8-zulu \
-PATH="$JAVA_HOME/bin:$PATH" \
+PATH="/home/henry/.sdkman/candidates/java/21.0.8-zulu/bin:$PATH" \
 python3 ai-specs/tasks/freeplane-frame-resynchronizer-x11-evidence/epoch-2/run-acceptance.py \
   --mutant-offset 240,180
 ```
@@ -22,6 +22,7 @@ The runner reported:
 ```text
 probe-exit-code=0
 probe-timeout=False
+canonical-classification-validation=True
 mutant-offset=240,180
 mutant-exit-code=1
 mutant-timeout=False
@@ -51,16 +52,19 @@ This isolated display provides a deterministic active frame and a window manager
 
 ## Probe Gates and Failure Classification
 
-The probe now:
+The probe emits exactly one authoritative `failure-class=<PRODUCT|ENVIRONMENT|NONE> reason=<short> scenario=<name>` line per scenario. It classifies by the physical cause, in this order:
 
-- retries frame activation for a bounded five-second interval and logs `frame-active` for the initial frame and every scenario;
-- reports `ENVIRONMENT: frame could not be activated ...` when the frame cannot become active;
-- requires the computed Robot click to be inside the recorded item screen bounds and logs `pointer-click-inside-item-bounds`;
-- keeps pointer selection separate from the later diagnostic `JMenuItem.doClick()` fallback;
-- reports pointer dispatch or selection failures as `ENVIRONMENT:` failures; and
-- reports placement-gate failures as `PRODUCT: popup misplaced ... placement-error=(X,Y)`.
+- If the intended click falls outside the actual `popup-item-screen-bounds`, the classification is `PRODUCT`, with reason `popup misplaced; click landed outside item bounds`. The containment check compares the logged `pointer-click-screen-point` with the item's actual screen rectangle; it does not move the target to follow a displaced popup.
+- If the native placement error exceeds the unchanged one-pixel tolerance on either axis, the classification is `PRODUCT`, with reason `popup misplaced; placement error exceeds tolerance`, even if the click fits inside a large item.
+- If the frame could not be activated and there is no measured misplacement, the classification is `ENVIRONMENT`, with reason `frame could not be activated`.
+- A missing pointer selection is classified as `ENVIRONMENT: pointer dispatch failed although the click landed inside the item` only when the frame was active, the click was inside the actual item bounds, native placement evidence was available and within tolerance, and the menu was showing at both the persistence checkpoint and immediately before the click.
+- Other failed scenario gates remain failures and are conservatively classified as `PRODUCT`; a scenario whose gates all passed is `NONE`.
 
-The actual button press and release remain `java.awt.Robot` events. XTest is used only to synchronize pointer motion before the Robot click, so the test does not replace pointer selection with `doClick()`.
+The earlier mutant log labelled pointer dispatch/selection failures `ENVIRONMENT` solely because selection was missing. That label was wrong: the logged `(240,180)` placement error put the actual item away from the intended click, so the Robot clicked outside the popup and dismissed it without selecting an entry. The product misplacement caused the miss. Those downstream selection diagnostics therefore cannot establish an environment problem.
+
+Assertion and final failure records retain the individual gate diagnostics without competing `PRODUCT:` or `ENVIRONMENT:` labels; the single `failure-class` line supplies the classification. The runner also requires exactly four classification lines, one for each expected scenario: all `NONE` for canonical and all `PRODUCT` for the mutant.
+
+No exit gate was weakened. Misplacement, an out-of-bounds click, missing selection, an inactive frame, unavailable placement evidence, insufficient persistence, wrong toolkit or popup factory/delegate, failed correction assertions, and popup-class parity mismatches still make the probe exit nonzero. The actual button press and release remain `java.awt.Robot` events. XTest synchronizes pointer motion before the Robot click, and the later diagnostic `JMenuItem.doClick()` fallback cannot satisfy the pointer-selection gate.
 
 ## Canonical Run
 
@@ -68,10 +72,19 @@ Every scenario became active on the first activation attempt. Each popup stayed 
 
 | Scenario | Frame active | Persistence | Click inside item bounds | Pointer selection | Placement error | Before pointer | After pointer | After fallback |
 | --- | --- | ---: | --- | --- | --- | --- | --- |
-| `startup-normal` | true, attempt 1 | 908 ms | true | `selected-startup-normal` | `(0,0)` | showing | hidden | hidden |
-| `maximize` | true, attempt 1 | 903 ms | true | `selected-maximize` | `(0,0)` | showing | hidden | hidden |
+| `startup-normal` | true, attempt 1 | 912 ms | true | `selected-startup-normal` | `(0,0)` | showing | hidden | hidden |
+| `maximize` | true, attempt 1 | 904 ms | true | `selected-maximize` | `(0,0)` | showing | hidden | hidden |
 | `restore` | true, attempt 1 | 903 ms | true | `selected-restore` | `(0,0)` | showing | hidden | hidden |
-| `remaximize` | true, attempt 1 | 904 ms | true | `selected-remaximize` | `(0,0)` | showing | hidden | hidden |
+| `remaximize` | true, attempt 1 | 902 ms | true | `selected-remaximize` | `(0,0)` | showing | hidden | hidden |
+
+The canonical probe exited `0` and emitted these authoritative classifications:
+
+```text
+failure-class=NONE reason=all scenario gates passed scenario=startup-normal
+failure-class=NONE reason=all scenario gates passed scenario=maximize
+failure-class=NONE reason=all scenario gates passed scenario=restore
+failure-class=NONE reason=all scenario gates passed scenario=remaximize
+```
 
 Representative raw checkpoints, including all four active-frame and pointer-bound assertions, are preserved in the canonical log:
 
@@ -103,24 +116,34 @@ It was compiled and run on the same isolated display, with no production source 
 
 | Scenario | Persistence | Intended click | Actual item bounds | Click inside item | Pointer selection | Placement error | Before pointer | After pointer | After fallback |
 | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- |
-| `startup-normal` | 905 ms | `(238,202)` | `(382,370,192,24)` | false | missing | `(240,180)` | showing | hidden | hidden |
+| `startup-normal` | 910 ms | `(238,202)` | `(382,370,192,24)` | false | missing | `(240,180)` | showing | hidden | hidden |
 | `maximize` | 902 ms | `(101,82)` | `(262,250,158,24)` | false | missing | `(240,180)` | showing | hidden | hidden |
 | `restore` | 903 ms | `(214,202)` | `(382,370,144,24)` | false | missing | `(240,180)` | showing | hidden | hidden |
 | `remaximize` | 903 ms | `(107,82)` | `(262,250,170,24)` | false | missing | `(240,180)` | showing | hidden | hidden |
 
-The raw mutant log records, for every scenario:
+The mutant probe exited `1` and emitted these authoritative classifications:
 
 ```text
-pointer-click-inside-item-bounds ... value=false
-assertion-failure=PRODUCT: popup misplaced ... placement-error=(240,180)
-menu-showing-before-pointer ... value=true
-menu-showing-after-pointer ... value=false
-menu-showing-after-fallback ... value=false
+failure-class=PRODUCT reason=popup misplaced; click landed outside item bounds scenario=startup-normal
+failure-class=PRODUCT reason=popup misplaced; click landed outside item bounds scenario=maximize
+failure-class=PRODUCT reason=popup misplaced; click landed outside item bounds scenario=restore
+failure-class=PRODUCT reason=popup misplaced; click landed outside item bounds scenario=remaximize
 ```
 
-Thus the misplaced popup was **dismissed by the outside Robot click in all four mutant scenarios**, and this statement is based on the explicit `menu-showing-after-pointer ... value=false` checkpoints. It is not inferred from the later fallback. The mutant also records pointer-selection-missing and pointer-dispatch/selection environment-labelled failures, which are expected downstream consequences of deliberately clicking the correct-location point while the popup has been shifted away. Frame activation itself passed, so those mutant `ENVIRONMENT:` lines do not indicate the earlier shared-display focus problem.
+The actual geometry checkpoints show the miss directly (item bounds are `x,y,width,height`):
 
-The mutant proves that a large coordinate displacement is detected by the product placement gate and cannot silently pass through the acceptance runner. It also proves that the click target is checked against the actual item bounds rather than being adjusted to follow the displaced popup. It does not prove pointer selection on a misplaced item, because the intended point is intentionally outside that item, and it does not extend the result to XWayland or native X11 KWin behavior.
+```text
+popup-pointer-target=startup-normal clicked-screen-point=(238,202) menu-screen-bounds=(381,366,194,32) item-screen-bounds=(382,370,192,24)
+popup-pointer-target=maximize clicked-screen-point=(101,82) menu-screen-bounds=(261,246,160,32) item-screen-bounds=(262,250,158,24)
+popup-pointer-target=restore clicked-screen-point=(214,202) menu-screen-bounds=(381,366,146,32) item-screen-bounds=(382,370,144,24)
+popup-pointer-target=remaximize clicked-screen-point=(107,82) menu-screen-bounds=(261,246,172,32) item-screen-bounds=(262,250,170,24)
+```
+
+For every mutant scenario the raw log also records `pointer-click-inside-item-bounds ... value=false`, `placement-error=(240,180)`, `menu-showing-before-pointer ... value=true`, `menu-showing-after-pointer ... value=false`, and `pointer-selection=false`. There are no `ENVIRONMENT` classifications in this mutant run.
+
+The mutant proves that the popup was misplaced, so the intended click missed and no entry could be selected by that click. The outside Robot click dismissed the menu in all four scenarios, matching the reported symptom that the popup disappears without a selectable entry at the expected position. The dismissal is established by the explicit post-pointer checkpoints, before the diagnostic fallback. It also proves that the placement and pointer-selection gates reject the defect and that the click target does not follow the displaced popup.
+
+The mutant does not prove anything about selection or persistence of a correctly placed popup. It does not test clicking the displaced item's actual position, and it does not establish XWayland or native X11 KWin behavior. Positive correctly placed popup evidence comes from the separate canonical Xvfb/Openbox run.
 
 ## Regression and Source Boundaries
 

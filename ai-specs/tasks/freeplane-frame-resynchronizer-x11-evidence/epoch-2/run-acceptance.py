@@ -30,6 +30,17 @@ PRODUCTION_FILES = (
 PRIVATE_DISPLAY_START = 77
 PRIVATE_DISPLAY_END = 100
 PRIVATE_SCREEN = "2240x1400x24"
+SCENARIOS = ("startup-normal", "maximize", "restore", "remaximize")
+
+
+def classifications_match(stdout: str, expected_class: str) -> bool:
+    lines = [line for line in stdout.splitlines() if line.startswith("failure-class=")]
+    classifications = re.findall(
+        r"^failure-class=(PRODUCT|ENVIRONMENT|NONE) reason=.+ scenario=(\S+)$", stdout, re.MULTILINE
+    )
+    return len(lines) == len(SCENARIOS) and sorted(classifications) == sorted(
+        (expected_class, scenario) for scenario in SCENARIOS
+    )
 
 
 def shell_command(command: Sequence[str]) -> str:
@@ -352,6 +363,7 @@ def main() -> int:
 
         canonical_exit_code: Optional[int] = None
         canonical_timed_out = False
+        canonical_stdout = ""
         mutant_exit_code: Optional[int] = None
         mutant_timed_out = False
         mutant_stdout = ""
@@ -435,6 +447,7 @@ def main() -> int:
                     stderr_path = LOG_DIR / "probe.stderr"
                     canonical_exit_code = exit_code
                     canonical_timed_out = timed_out
+                    canonical_stdout = stdout
                 else:
                     stdout_path = LOG_DIR / ("falsifiability" + mutant_suffix + ".stdout")
                     stderr_path = LOG_DIR / ("falsifiability" + mutant_suffix + ".stderr")
@@ -461,6 +474,11 @@ def main() -> int:
         if canonical_exit_code != 0:
             print("probe failed", file=sys.stderr)
             return 1 if canonical_exit_code is None else canonical_exit_code
+        canonical_classifications_valid = classifications_match(canonical_stdout, "NONE")
+        print("canonical-classification-validation=" + str(canonical_classifications_valid))
+        if not canonical_classifications_valid:
+            print("canonical classification validation failed", file=sys.stderr)
+            return 1
         if mutant_offset is not None:
             offset_x, offset_y = mutant_offset
             expected_error = "placement-error=(" + str(offset_x) + "," + str(offset_y) + ")"
@@ -470,6 +488,7 @@ def main() -> int:
                 and mutant_exit_code != 0
                 and not mutant_timed_out
                 and expected_error in mutant_stdout
+                and classifications_match(mutant_stdout, "PRODUCT")
             )
             print("mutant-offset=" + str(offset_x) + "," + str(offset_y))
             print("mutant-exit-code=" + str(mutant_exit_code))

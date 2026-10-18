@@ -472,6 +472,7 @@ public final class PopupCoordinateAcceptanceProbe {
 
     private void runScenario(final String scenario) throws Exception {
         final ScenarioEvidence evidence = new ScenarioEvidence(scenario);
+        final int failureCountBefore = failures.size();
         final SelectionCapture selection = new SelectionCapture();
         final JPopupMenu[] menuHolder = new JPopupMenu[1];
         final JMenuItem[] itemHolder = new JMenuItem[1];
@@ -559,6 +560,19 @@ public final class PopupCoordinateAcceptanceProbe {
                 + " minimum-ms=" + POPUP_PERSISTENCE_MILLIS
                 + " menu-showing=" + evidence.menuShowingAtPersistenceCheckpoint);
 
+            if (evidence.expectedPopup == null || evidence.popupNativeBounds == null) {
+                require(false, scenario + " native-placement-evidence-unavailable");
+            }
+            else {
+                evidence.placementErrorX = evidence.popupNativeBounds.x - evidence.expectedPopup.x;
+                evidence.placementErrorY = evidence.popupNativeBounds.y - evidence.expectedPopup.y;
+                evidence.placementError = Math.max(Math.abs(evidence.placementErrorX),
+                    Math.abs(evidence.placementErrorY));
+                require(evidence.placementError <= MAX_PLACEMENT_ERROR,
+                    "popup misplaced scenario=" + scenario
+                        + " placement-error=(" + evidence.placementErrorX + "," + evidence.placementErrorY + ")");
+            }
+
             selectWithPointer(scenario, menu, item, selection, evidence);
 
             log("diagnostic-only doClick-fallback-start scenario=" + scenario);
@@ -579,19 +593,6 @@ public final class PopupCoordinateAcceptanceProbe {
             });
             log("menu-showing-after-fallback scenario=" + scenario
                 + " value=" + evidence.menuShowingAfterFallback);
-
-            if (evidence.expectedPopup == null || evidence.popupNativeBounds == null) {
-                require(false, scenario + " native-placement-evidence-unavailable");
-            }
-            else {
-                evidence.placementErrorX = evidence.popupNativeBounds.x - evidence.expectedPopup.x;
-                evidence.placementErrorY = evidence.popupNativeBounds.y - evidence.expectedPopup.y;
-                evidence.placementError = Math.max(Math.abs(evidence.placementErrorX),
-                    Math.abs(evidence.placementErrorY));
-                require(evidence.placementError <= MAX_PLACEMENT_ERROR,
-                    "PRODUCT: popup misplaced scenario=" + scenario
-                        + " placement-error=(" + evidence.placementErrorX + "," + evidence.placementErrorY + ")");
-            }
         }
         finally {
             SwingUtilities.invokeAndWait(new Runnable() {
@@ -629,6 +630,40 @@ public final class PopupCoordinateAcceptanceProbe {
             + " doClick-fallback-selection=" + evidence.doClickFallbackSelected
             + " doClick-fallback-text=" + evidence.doClickFallbackText
             + " frame-correction-setBounds-delta=" + evidence.frameCorrectionCount);
+        logScenarioFailureClass(evidence, failureCountBefore);
+    }
+
+    private void logScenarioFailureClass(final ScenarioEvidence evidence, final int failureCountBefore) {
+        final String failureClass;
+        final String reason;
+        if (Boolean.FALSE.equals(evidence.pointerClickInsideItem)) {
+            failureClass = "PRODUCT";
+            reason = "popup misplaced; click landed outside item bounds";
+        }
+        else if (evidence.expectedPopup != null && evidence.popupNativeBounds != null
+                && evidence.placementError > MAX_PLACEMENT_ERROR) {
+            failureClass = "PRODUCT";
+            reason = "popup misplaced; placement error exceeds tolerance";
+        }
+        else if (!evidence.frameActive) {
+            failureClass = "ENVIRONMENT";
+            reason = "frame could not be activated";
+        }
+        else if (Boolean.TRUE.equals(evidence.pointerClickInsideItem) && !evidence.pointerSelected
+                && evidence.menuShowingAtPersistenceCheckpoint && evidence.menuShowingBeforePointer
+                && evidence.expectedPopup != null && evidence.popupNativeBounds != null) {
+            failureClass = "ENVIRONMENT";
+            reason = "pointer dispatch failed although the click landed inside the item";
+        }
+        else if (failures.size() > failureCountBefore) {
+            failureClass = "PRODUCT";
+            reason = "scenario acceptance gate failed: " + failures.get(failureCountBefore);
+        }
+        else {
+            failureClass = "NONE";
+            reason = "all scenario gates passed";
+        }
+        log("failure-class=" + failureClass + " reason=" + reason + " scenario=" + evidence.name);
     }
 
     private boolean activateFrame(final String scenario) throws Exception {
@@ -652,14 +687,14 @@ public final class PopupCoordinateAcceptanceProbe {
             }
         }
         log("frame-active scenario=" + scenario + " value=false");
-        fail("ENVIRONMENT: frame could not be activated scenario=" + scenario + " timeout-ms=5000");
+        fail("frame could not be activated scenario=" + scenario + " timeout-ms=5000");
         return false;
     }
 
     private void selectWithPointer(final String scenario, final JPopupMenu menu, final JMenuItem item,
             final SelectionCapture selection, final ScenarioEvidence evidence) throws Exception {
         if (!evidence.frameActive) {
-            fail("ENVIRONMENT: pointer path skipped because frame could not be activated scenario=" + scenario);
+            fail("pointer path skipped because frame could not be activated scenario=" + scenario);
             return;
         }
         evidence.pointerClickScreen = calculateExpectedPointerClick(evidence);
@@ -673,9 +708,9 @@ public final class PopupCoordinateAcceptanceProbe {
         if (evidence.pointerClickScreen == null) {
             return;
         }
-        final boolean pointerClickInsideItem = evidence.itemScreenBounds.contains(evidence.pointerClickScreen);
-        log("pointer-click-inside-item-bounds scenario=" + scenario + " value=" + pointerClickInsideItem);
-        require(pointerClickInsideItem, scenario + " pointer-click-outside-item-bounds");
+        evidence.pointerClickInsideItem = evidence.itemScreenBounds.contains(evidence.pointerClickScreen);
+        log("pointer-click-inside-item-bounds scenario=" + scenario + " value=" + evidence.pointerClickInsideItem);
+        require(evidence.pointerClickInsideItem, scenario + " pointer-click-outside-item-bounds");
 
         selection.pointerPhase = true;
         selection.pointerEventQueueDrained = false;
@@ -709,7 +744,7 @@ public final class PopupCoordinateAcceptanceProbe {
                 }
             }, POINTER_EVENT_TIMEOUT_MILLIS);
             if (!selection.pointerSelected) {
-                fail("ENVIRONMENT: pointer event dispatch or selection failed scenario=" + scenario
+                fail("pointer event dispatch or selection failed scenario=" + scenario
                     + " timeout-ms=" + POINTER_EVENT_TIMEOUT_MILLIS);
             }
             SwingUtilities.invokeAndWait(new Runnable() {
@@ -727,7 +762,7 @@ public final class PopupCoordinateAcceptanceProbe {
         evidence.pointerSelected = selection.pointerSelected;
         evidence.pointerSelectedText = selection.pointerText;
         if (!evidence.pointerSelected) {
-            fail("ENVIRONMENT: pointer selection missing scenario=" + scenario);
+            fail("pointer selection missing scenario=" + scenario);
         }
     }
 
@@ -881,6 +916,7 @@ public final class PopupCoordinateAcceptanceProbe {
         private Rectangle itemScreenBounds;
         private Point itemLocationWithinMenu;
         private Point pointerClickScreen;
+        private Boolean pointerClickInsideItem;
         private int placementErrorX;
         private int placementErrorY;
         private int placementError = Integer.MAX_VALUE;
