@@ -2,7 +2,6 @@ package org.freeplane.core.ui.components;
 
 import java.awt.Component;
 import java.awt.Point;
-import java.awt.Rectangle;
 
 import javax.swing.JFrame;
 
@@ -34,11 +33,13 @@ final class PopupCoordinateCalibrator {
 	 */
 	interface GeometryProvider {
 		/**
-		 * Returns the native window manager frame bounds of the given frame in the
-		 * same logical screen coordinate space used by AWT, or {@code null} when the
-		 * geometry is unavailable or implausible.
+		 * Returns the native client-area origin of the frame in logical screen
+		 * coordinates. It must belong to the same coordinate space as
+		 * {@link Component#getLocationOnScreen()}, and it must be paired with a
+		 * position expressed relative to the frame's root pane so that decoration
+		 * extents appear on neither side.
 		 */
-		Rectangle getNativeFrameBounds(JFrame frame);
+		Point getNativeClientOrigin(JFrame frame);
 
 		/**
 		 * Returns the owner origin in the frame's own coordinate system, or
@@ -58,9 +59,9 @@ final class PopupCoordinateCalibrator {
 
 	/**
 	 * Returns the correction to add to the requested popup coordinates, or
-	 * {@code null} when the calibration is unavailable. Every unavailable or
-	 * implausible geometry value, and every runtime failure while reading it, is
-	 * reported as {@code null} so that callers keep the original popup coordinates.
+	 * {@code null} when the calibration is unavailable. Every unavailable geometry
+	 * value, and every runtime failure while reading it, is reported as
+	 * {@code null} so that callers keep the original popup coordinates.
 	 */
 	static Point calculateCorrection(final Component owner, final JFrame frame,
 			final GeometryProvider geometryProvider) {
@@ -68,15 +69,14 @@ final class PopupCoordinateCalibrator {
 			return null;
 		}
 		try {
-			final Rectangle nativeFrameBounds = geometryProvider.getNativeFrameBounds(frame);
-			final Point ownerLocationWithinFrame = geometryProvider.getOwnerLocationWithinFrame(owner, frame);
+			final Point nativeClientOrigin = geometryProvider.getNativeClientOrigin(frame);
+			final Point ownerLocationWithinRootPane = geometryProvider.getOwnerLocationWithinFrame(owner, frame);
 			final Point ownerLocationOnScreen = geometryProvider.getOwnerLocationOnScreen(owner);
-			if (nativeFrameBounds == null || nativeFrameBounds.width <= 0 || nativeFrameBounds.height <= 0
-					|| ownerLocationWithinFrame == null || ownerLocationOnScreen == null) {
+			if (nativeClientOrigin == null || ownerLocationWithinRootPane == null || ownerLocationOnScreen == null) {
 				return null;
 			}
-			final int expectedX = nativeFrameBounds.x + ownerLocationWithinFrame.x;
-			final int expectedY = nativeFrameBounds.y + ownerLocationWithinFrame.y;
+			final int expectedX = nativeClientOrigin.x + ownerLocationWithinRootPane.x;
+			final int expectedY = nativeClientOrigin.y + ownerLocationWithinRootPane.y;
 			return new Point(expectedX - ownerLocationOnScreen.x, expectedY - ownerLocationOnScreen.y);
 		}
 		catch (RuntimeException unavailableGeometry) {

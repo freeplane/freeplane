@@ -22,7 +22,7 @@ public class PopupCoordinateCalibratorTest {
         final Component owner = mock(Component.class);
         final PopupCoordinateCalibrator.GeometryProvider geometry = mock(
             PopupCoordinateCalibrator.GeometryProvider.class);
-        when(geometry.getNativeFrameBounds(frame)).thenReturn(new Rectangle(0, 0, 2240, 1400));
+        when(geometry.getNativeClientOrigin(frame)).thenReturn(new Point(0, 0));
         when(geometry.getOwnerLocationWithinFrame(owner, frame)).thenReturn(new Point(1035, 5));
         when(geometry.getOwnerLocationOnScreen(owner)).thenReturn(new Point(1275, 185));
 
@@ -36,7 +36,7 @@ public class PopupCoordinateCalibratorTest {
         final Component owner = mock(Component.class);
         final PopupCoordinateCalibrator.GeometryProvider geometry = mock(
             PopupCoordinateCalibrator.GeometryProvider.class);
-        when(geometry.getNativeFrameBounds(frame)).thenReturn(new Rectangle(240, 180, 960, 600));
+        when(geometry.getNativeClientOrigin(frame)).thenReturn(new Point(240, 180));
         when(geometry.getOwnerLocationWithinFrame(owner, frame)).thenReturn(new Point(10, 20));
         when(geometry.getOwnerLocationOnScreen(owner)).thenReturn(new Point(250, 200));
 
@@ -50,7 +50,7 @@ public class PopupCoordinateCalibratorTest {
         final Component owner = mock(Component.class);
         final PopupCoordinateCalibrator.GeometryProvider geometry = mock(
             PopupCoordinateCalibrator.GeometryProvider.class);
-        when(geometry.getNativeFrameBounds(frame)).thenReturn(new Rectangle(240, 180, 960, 600));
+        when(geometry.getNativeClientOrigin(frame)).thenReturn(new Point(240, 180));
         when(geometry.getOwnerLocationWithinFrame(owner, frame)).thenReturn(new Point(10, 20));
         when(geometry.getOwnerLocationOnScreen(owner)).thenReturn(new Point(200, 150));
 
@@ -64,7 +64,7 @@ public class PopupCoordinateCalibratorTest {
         final Component owner = mock(Component.class);
         final PopupCoordinateCalibrator.GeometryProvider geometry = mock(
             PopupCoordinateCalibrator.GeometryProvider.class);
-        when(geometry.getNativeFrameBounds(frame)).thenReturn(new Rectangle(-1200, -40, 1200, 900));
+        when(geometry.getNativeClientOrigin(frame)).thenReturn(new Point(-1200, -40));
         when(geometry.getOwnerLocationWithinFrame(owner, frame)).thenReturn(new Point(4, 30));
         when(geometry.getOwnerLocationOnScreen(owner)).thenReturn(new Point(-1196, -10));
 
@@ -78,7 +78,7 @@ public class PopupCoordinateCalibratorTest {
         final Component owner = mock(Component.class);
         final PopupCoordinateCalibrator.GeometryProvider geometry = mock(
             PopupCoordinateCalibrator.GeometryProvider.class);
-        when(geometry.getNativeFrameBounds(frame)).thenReturn(null);
+        when(geometry.getNativeClientOrigin(frame)).thenReturn(null);
         when(geometry.getOwnerLocationWithinFrame(owner, frame)).thenReturn(new Point(10, 20));
         when(geometry.getOwnerLocationOnScreen(owner)).thenReturn(new Point(250, 200));
 
@@ -91,7 +91,7 @@ public class PopupCoordinateCalibratorTest {
         final Component owner = mock(Component.class);
         final PopupCoordinateCalibrator.GeometryProvider geometry = mock(
             PopupCoordinateCalibrator.GeometryProvider.class);
-        when(geometry.getNativeFrameBounds(frame)).thenReturn(new Rectangle(240, 180, 960, 600));
+        when(geometry.getNativeClientOrigin(frame)).thenReturn(new Point(240, 180));
         when(geometry.getOwnerLocationWithinFrame(owner, frame)).thenReturn(null);
         when(geometry.getOwnerLocationOnScreen(owner)).thenReturn(new Point(250, 200));
 
@@ -104,7 +104,7 @@ public class PopupCoordinateCalibratorTest {
         final Component owner = mock(Component.class);
         final PopupCoordinateCalibrator.GeometryProvider geometry = mock(
             PopupCoordinateCalibrator.GeometryProvider.class);
-        when(geometry.getNativeFrameBounds(frame)).thenReturn(new Rectangle(240, 180, 960, 600));
+        when(geometry.getNativeClientOrigin(frame)).thenReturn(new Point(240, 180));
         when(geometry.getOwnerLocationWithinFrame(owner, frame)).thenReturn(new Point(10, 20));
         when(geometry.getOwnerLocationOnScreen(owner)).thenReturn(null);
 
@@ -112,24 +112,49 @@ public class PopupCoordinateCalibratorTest {
     }
 
     @Test
-    public void calculateCorrection_withNonPositiveNativeDimensions_returnsNull() {
+    public void calculateCorrection_maximizedDecoratedFrame_returnsZeroEvenWhenFrameOriginIsStale() {
+        // Regression pin for the shipped defect: the maximized frame reports a stale
+        // AWT origin (-4,-2) with 4/34 decoration insets, while the native client
+        // area starts at (0,32). Anchoring to the native client origin and to a
+        // root-pane-relative owner position must not emit a correction at all.
+        final JFrame frame = mock(JFrame.class);
+        final Component owner = mock(Component.class);
+        final PopupCoordinateCalibrator.GeometryProvider geometry = mock(
+            PopupCoordinateCalibrator.GeometryProvider.class);
+        when(geometry.getNativeClientOrigin(frame)).thenReturn(new Point(0, 32));
+        when(geometry.getOwnerLocationWithinFrame(owner, frame)).thenReturn(new Point(120, 80));
+        when(geometry.getOwnerLocationOnScreen(owner)).thenReturn(new Point(120, 112));
+
+        assertThat(PopupCoordinateCalibrator.calculateCorrection(owner, frame, geometry))
+            .isEqualTo(new Point(0, 0));
+    }
+
+    @Test
+    public void calculateCorrection_unmaximizedFrameWithStaleAwtOrigin_returnsZero() {
+        // Normal window: owner screen position already correct, so no correction may
+        // be emitted even though the frame's own AWT origin disagrees with native.
+        final JFrame frame = mock(JFrame.class);
+        final Component owner = mock(Component.class);
+        final PopupCoordinateCalibrator.GeometryProvider geometry = mock(
+            PopupCoordinateCalibrator.GeometryProvider.class);
+        when(geometry.getNativeClientOrigin(frame)).thenReturn(new Point(244, 214));
+        when(geometry.getOwnerLocationWithinFrame(owner, frame)).thenReturn(new Point(120, 80));
+        when(geometry.getOwnerLocationOnScreen(owner)).thenReturn(new Point(364, 294));
+
+        assertThat(PopupCoordinateCalibrator.calculateCorrection(owner, frame, geometry))
+            .isEqualTo(new Point(0, 0));
+    }
+
+    @Test
+    public void calculateCorrection_withMissingNativeClientOrigin_returnsNull() {
         final JFrame frame = mock(JFrame.class);
         final Component owner = mock(Component.class);
         final PopupCoordinateCalibrator.GeometryProvider geometry = mock(
             PopupCoordinateCalibrator.GeometryProvider.class);
         when(geometry.getOwnerLocationWithinFrame(owner, frame)).thenReturn(new Point(10, 20));
         when(geometry.getOwnerLocationOnScreen(owner)).thenReturn(new Point(250, 200));
+        when(geometry.getNativeClientOrigin(frame)).thenReturn(null);
 
-        when(geometry.getNativeFrameBounds(frame)).thenReturn(new Rectangle(240, 180, 0, 600));
-        assertThat(PopupCoordinateCalibrator.calculateCorrection(owner, frame, geometry)).isNull();
-
-        when(geometry.getNativeFrameBounds(frame)).thenReturn(new Rectangle(240, 180, 960, 0));
-        assertThat(PopupCoordinateCalibrator.calculateCorrection(owner, frame, geometry)).isNull();
-
-        when(geometry.getNativeFrameBounds(frame)).thenReturn(new Rectangle(240, 180, -1, 600));
-        assertThat(PopupCoordinateCalibrator.calculateCorrection(owner, frame, geometry)).isNull();
-
-        when(geometry.getNativeFrameBounds(frame)).thenReturn(new Rectangle(240, 180, 960, -5));
         assertThat(PopupCoordinateCalibrator.calculateCorrection(owner, frame, geometry)).isNull();
     }
 
@@ -139,7 +164,7 @@ public class PopupCoordinateCalibratorTest {
         final Component owner = mock(Component.class);
         final PopupCoordinateCalibrator.GeometryProvider geometry = mock(
             PopupCoordinateCalibrator.GeometryProvider.class);
-        when(geometry.getNativeFrameBounds(frame)).thenThrow(new IllegalStateException("native bounds unavailable"));
+        when(geometry.getNativeClientOrigin(frame)).thenThrow(new IllegalStateException("native bounds unavailable"));
 
         assertThat(PopupCoordinateCalibrator.calculateCorrection(owner, frame, geometry)).isNull();
     }
@@ -150,7 +175,7 @@ public class PopupCoordinateCalibratorTest {
         final Component owner = mock(Component.class);
         final PopupCoordinateCalibrator.GeometryProvider geometry = mock(
             PopupCoordinateCalibrator.GeometryProvider.class);
-        when(geometry.getNativeFrameBounds(frame)).thenReturn(new Rectangle(240, 180, 960, 600));
+        when(geometry.getNativeClientOrigin(frame)).thenReturn(new Point(240, 180));
         when(geometry.getOwnerLocationWithinFrame(owner, frame)).thenReturn(new Point(10, 20));
         when(geometry.getOwnerLocationOnScreen(owner)).thenThrow(new IllegalStateException("owner not showing"));
 
@@ -168,7 +193,7 @@ public class PopupCoordinateCalibratorTest {
         assertThat(PopupCoordinateCalibrator.calculateCorrection(owner, null, geometry)).isNull();
         assertThat(PopupCoordinateCalibrator.calculateCorrection(owner, frame, null)).isNull();
         verifyNoInteractions(frame, owner);
-        verify(geometry, never()).getNativeFrameBounds(frame);
+        verify(geometry, never()).getNativeClientOrigin(frame);
     }
 
     @Test
@@ -177,7 +202,7 @@ public class PopupCoordinateCalibratorTest {
         final Component owner = mock(Component.class);
         final PopupCoordinateCalibrator.GeometryProvider geometry = mock(
             PopupCoordinateCalibrator.GeometryProvider.class);
-        when(geometry.getNativeFrameBounds(frame)).thenReturn(new Rectangle(0, 0, 2240, 1400));
+        when(geometry.getNativeClientOrigin(frame)).thenReturn(new Point(0, 0));
         when(geometry.getOwnerLocationWithinFrame(owner, frame)).thenReturn(new Point(1035, 5));
         when(geometry.getOwnerLocationOnScreen(owner)).thenReturn(new Point(1275, 185));
 

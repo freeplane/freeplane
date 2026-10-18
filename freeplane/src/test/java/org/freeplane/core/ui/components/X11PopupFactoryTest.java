@@ -27,7 +27,7 @@ public class X11PopupFactoryTest {
     @Test
     public void getPopup_appliesOwnerLocalCorrectionToRequestedCoordinates() {
         final PopupFixture fixture = new PopupFixture();
-        fixture.geometryReturns(new Rectangle(0, 0, 2240, 1400), new Point(1035, 5), new Point(1275, 185));
+        fixture.geometryReturns(new Point(0, 0), new Point(1035, 5), new Point(1275, 185));
 
         final Popup popup = fixture.factory.getPopup(fixture.owner, fixture.contents, 1000, 400);
 
@@ -38,7 +38,7 @@ public class X11PopupFactoryTest {
     @Test
     public void getPopup_forwardsTheOriginalOwnerAndContentsToTheDelegate() {
         final PopupFixture fixture = new PopupFixture();
-        fixture.geometryReturns(new Rectangle(0, 0, 2240, 1400), new Point(1035, 5), new Point(1275, 185));
+        fixture.geometryReturns(new Point(0, 0), new Point(1035, 5), new Point(1275, 185));
 
         fixture.factory.getPopup(fixture.owner, fixture.contents, 1000, 400);
 
@@ -49,7 +49,7 @@ public class X11PopupFactoryTest {
     @Test
     public void getPopup_withPositiveCorrection_shiftsRequestedCoordinatesForward() {
         final PopupFixture fixture = new PopupFixture();
-        fixture.geometryReturns(new Rectangle(240, 180, 960, 600), new Point(10, 20), new Point(200, 150));
+        fixture.geometryReturns(new Point(240, 180), new Point(10, 20), new Point(200, 150));
 
         fixture.factory.getPopup(fixture.owner, fixture.contents, 1000, 400);
 
@@ -59,7 +59,7 @@ public class X11PopupFactoryTest {
     @Test
     public void getPopup_withZeroCorrection_passesRequestedCoordinatesUnchanged() {
         final PopupFixture fixture = new PopupFixture();
-        fixture.geometryReturns(new Rectangle(240, 180, 960, 600), new Point(10, 20), new Point(250, 200));
+        fixture.geometryReturns(new Point(240, 180), new Point(10, 20), new Point(250, 200));
 
         final Popup popup = fixture.factory.getPopup(fixture.owner, fixture.contents, 300, 240);
 
@@ -93,7 +93,7 @@ public class X11PopupFactoryTest {
     @Test
     public void getPopup_withoutOwnerScreenLocation_passesRequestedCoordinatesAndDelegates() {
         final PopupFixture fixture = new PopupFixture();
-        fixture.geometryReturns(new Rectangle(0, 0, 2240, 1400), new Point(1035, 5), null);
+        fixture.geometryReturns(new Point(0, 0), new Point(1035, 5), null);
 
         final Popup popup = fixture.factory.getPopup(fixture.owner, fixture.contents, 1000, 400);
 
@@ -102,9 +102,9 @@ public class X11PopupFactoryTest {
     }
 
     @Test
-    public void getPopup_withNonPositiveNativeWidth_delegatesOriginalCoordinates() {
+    public void getPopup_withMissingNativeClientOrigin_delegatesOriginalCoordinates() {
         final PopupFixture fixture = new PopupFixture();
-        fixture.geometryReturns(new Rectangle(240, 180, 0, 600), new Point(10, 20), new Point(1000, 400));
+        fixture.geometryReturns(null, new Point(10, 20), new Point(1000, 400));
 
         final Popup popup = fixture.factory.getPopup(fixture.owner, fixture.contents, 1000, 400);
 
@@ -116,7 +116,7 @@ public class X11PopupFactoryTest {
     @Test
     public void getPopup_withMissingOwnerLocationWithinFrame_delegatesOriginalCoordinates() {
         final PopupFixture fixture = new PopupFixture();
-        fixture.geometryReturns(new Rectangle(0, 0, 2240, 1400), null, new Point(1035, 5));
+        fixture.geometryReturns(new Point(0, 0), null, new Point(1035, 5));
 
         final Popup popup = fixture.factory.getPopup(fixture.owner, fixture.contents, 1000, 400);
 
@@ -128,7 +128,7 @@ public class X11PopupFactoryTest {
     @Test
     public void getPopup_whenGeometryProviderThrows_passesRequestedCoordinatesAndDelegates() {
         final PopupFixture fixture = new PopupFixture();
-        when(fixture.geometry.getNativeFrameBounds(fixture.frame))
+        when(fixture.geometry.getNativeClientOrigin(fixture.frame))
             .thenThrow(new IllegalStateException("native bounds unavailable"));
 
         final Popup popup = fixture.factory.getPopup(fixture.owner, fixture.contents, 1000, 400);
@@ -157,7 +157,7 @@ public class X11PopupFactoryTest {
     @Test
     public void getPopup_callsTheDelegateExactlyOnce() {
         final PopupFixture fixture = new PopupFixture();
-        fixture.geometryReturns(new Rectangle(0, 0, 2240, 1400), new Point(1035, 5), new Point(1275, 185));
+        fixture.geometryReturns(new Point(0, 0), new Point(1035, 5), new Point(1275, 185));
 
         fixture.factory.getPopup(fixture.owner, fixture.contents, 1000, 400);
 
@@ -168,7 +168,7 @@ public class X11PopupFactoryTest {
     @Test
     public void getPopup_doesNotMutateTheOwnerOrFrame() {
         final PopupFixture fixture = new PopupFixture();
-        fixture.geometryReturns(new Rectangle(0, 0, 2240, 1400), new Point(1035, 5), new Point(1275, 185));
+        fixture.geometryReturns(new Point(0, 0), new Point(1035, 5), new Point(1275, 185));
 
         fixture.factory.getPopup(fixture.owner, fixture.contents, 1000, 400);
 
@@ -183,7 +183,7 @@ public class X11PopupFactoryTest {
     @Test
     public void getPopup_whenDelegateThrows_propagatesTheSameExceptionInstance() {
         final PopupFixture fixture = new PopupFixture();
-        fixture.geometryReturns(new Rectangle(0, 0, 2240, 1400), new Point(1035, 5), new Point(1275, 185));
+        fixture.geometryReturns(new Point(0, 0), new Point(1035, 5), new Point(1275, 185));
         final IllegalStateException delegateFailure = new IllegalStateException("delegate failed");
         when(fixture.delegate.getPopup(fixture.owner, fixture.contents, 760, 220)).thenThrow(delegateFailure);
 
@@ -271,9 +271,9 @@ public class X11PopupFactoryTest {
             }, geometry);
         }
 
-        private void geometryReturns(final Rectangle nativeFrameBounds, final Point ownerLocationWithinFrame,
+        private void geometryReturns(final Point nativeClientOrigin, final Point ownerLocationWithinFrame,
                 final Point ownerLocationOnScreen) {
-            when(geometry.getNativeFrameBounds(frame)).thenReturn(nativeFrameBounds);
+            when(geometry.getNativeClientOrigin(frame)).thenReturn(nativeClientOrigin);
             when(geometry.getOwnerLocationWithinFrame(owner, frame)).thenReturn(ownerLocationWithinFrame);
             when(geometry.getOwnerLocationOnScreen(owner)).thenReturn(ownerLocationOnScreen);
         }

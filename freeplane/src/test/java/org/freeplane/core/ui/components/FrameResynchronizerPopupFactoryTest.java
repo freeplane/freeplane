@@ -116,7 +116,7 @@ public class FrameResynchronizerPopupFactoryTest {
         final Popup popup = mock(Popup.class);
         final PopupCoordinateCalibrator.GeometryProvider geometryProvider =
             mock(PopupCoordinateCalibrator.GeometryProvider.class);
-        when(geometryProvider.getNativeFrameBounds(registeredFrame)).thenReturn(new Rectangle(100, 200, 400, 300));
+        when(geometryProvider.getNativeClientOrigin(registeredFrame)).thenReturn(new Point(100, 200));
         when(geometryProvider.getOwnerLocationWithinFrame(registeredFrame, registeredFrame))
             .thenReturn(new Point(10, 20));
         when(geometryProvider.getOwnerLocationOnScreen(registeredFrame)).thenReturn(new Point(90, 190));
@@ -140,8 +140,8 @@ public class FrameResynchronizerPopupFactoryTest {
         final Component contents = mock(Component.class);
         final PopupCoordinateCalibrator.GeometryProvider geometryProvider =
             mock(PopupCoordinateCalibrator.GeometryProvider.class);
-        when(geometryProvider.getNativeFrameBounds(registeredFrame))
-            .thenReturn(new Rectangle(0, 0, 2240, 1400));
+        when(geometryProvider.getNativeClientOrigin(registeredFrame))
+            .thenReturn(new Point(0, 0));
         when(geometryProvider.getOwnerLocationWithinFrame(childWindow, registeredFrame))
             .thenReturn(new Point(1035, 5));
         when(geometryProvider.getOwnerLocationOnScreen(childWindow)).thenReturn(new Point(1275, 185));

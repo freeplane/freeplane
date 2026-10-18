@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 import javax.swing.JFrame;
+import javax.swing.JRootPane;
 import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
 
@@ -159,13 +160,23 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 	private static final PopupCoordinateCalibrator.GeometryProvider DEFAULT_POPUP_GEOMETRY_PROVIDER =
 			new PopupCoordinateCalibrator.GeometryProvider() {
 				@Override
-				public Rectangle getNativeFrameBounds(final JFrame frame) {
-					return FrameResynchronizer.getNativeWindowBounds(frame);
+				public Point getNativeClientOrigin(final JFrame frame) {
+					// The popup correction is anchored to the native client origin and to
+					// the owner position measured from the frame's root pane. Both are
+					// expressed relative to the client area, so decoration extents appear
+					// on neither side and cancel. Do not substitute the outer frame bounds
+					// here: pairing an outer origin with a root-pane-relative position
+					// reintroduces the decoration offset as a constant popup error.
+					return FrameResynchronizer.getNativeClientOrigin(frame);
 				}
 
 				@Override
 				public Point getOwnerLocationWithinFrame(final Component owner, final JFrame frame) {
-					return SwingUtilities.convertPoint(owner, 0, 0, frame);
+					final JRootPane rootPane = frame.getRootPane();
+					if (owner == null || rootPane == null) {
+						return null;
+					}
+					return SwingUtilities.convertPoint(owner, 0, 0, rootPane);
 				}
 
 				@Override
@@ -327,13 +338,9 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 	 * being placed). Only available on the X11 toolkit and only when the component
 	 * has a native shell window.
 	 */
-	static Rectangle getNativeWindowBounds(final Component component) {
-		if (!isX11Toolkit() || component == null) {
-			return null;
-		}
-		com.sun.jna.platform.unix.X11.Display display = null;
+	static long getShellWindowId(final Component component) {
 		try {
-			final long shell = java.security.AccessController.doPrivileged(
+			return java.security.AccessController.doPrivileged(
 					new java.security.PrivilegedExceptionAction<Long>() {
 						@Override
 						public Long run() throws Exception {
@@ -351,6 +358,71 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 							return ((Number) getShell.invoke(peer)).longValue();
 						}
 					});
+		}
+		catch (Throwable unavailableShell) {
+			return 0L;
+		}
+	}
+
+	/**
+	 * Returns the origin of the native client area of the given component's shell
+	 * window in logical screen coordinates, or {@code null} when it cannot be
+	 * queried. This origin belongs to the same coordinate space as
+	 * {@code java.awt.Component#getLocationOnScreen()}, so a position expressed
+	 * relative to the root pane can be added to it directly.
+	 */
+	static Point getNativeClientOrigin(final Component component) {
+		if (!isX11Toolkit() || component == null) {
+			return null;
+		}
+		com.sun.jna.platform.unix.X11.Display display = null;
+		try {
+			final long shell = getShellWindowId(component);
+			if (shell == 0) {
+				return null;
+			}
+			display = com.sun.jna.platform.unix.X11.INSTANCE.XOpenDisplay(null);
+			if (display == null) {
+				return null;
+			}
+			final com.sun.jna.platform.unix.X11.Window root = com.sun.jna.platform.unix.X11.INSTANCE.XDefaultRootWindow(display);
+			final com.sun.jna.platform.unix.X11.Window shellWindow = new com.sun.jna.platform.unix.X11.Window(shell);
+			final com.sun.jna.ptr.IntByReference x = new com.sun.jna.ptr.IntByReference();
+			final com.sun.jna.ptr.IntByReference y = new com.sun.jna.ptr.IntByReference();
+			final com.sun.jna.platform.unix.X11.WindowByReference child = new com.sun.jna.platform.unix.X11.WindowByReference();
+			final boolean translated = com.sun.jna.platform.unix.X11.INSTANCE.XTranslateCoordinates(
+					display, shellWindow, root, 0, 0, x, y, child);
+			if (!translated) {
+				return null;
+			}
+			final GraphicsConfiguration gc = component.getGraphicsConfiguration();
+			final java.awt.geom.AffineTransform transform = gc == null ? null : gc.getDefaultTransform();
+			final double scaleX = transform == null ? 1.0 : transform.getScaleX();
+			final double scaleY = transform == null ? 1.0 : transform.getScaleY();
+			return new Point((int) Math.round(x.getValue() / (scaleX > 0 ? scaleX : 1.0)),
+					(int) Math.round(y.getValue() / (scaleY > 0 ? scaleY : 1.0)));
+		}
+		catch (Throwable throwable) {
+			return null;
+		}
+		finally {
+			if (display != null) {
+				try {
+					com.sun.jna.platform.unix.X11.INSTANCE.XCloseDisplay(display);
+				}
+				catch (Throwable ignored) {
+				}
+			}
+		}
+	}
+
+	static Rectangle getNativeWindowBounds(final Component component) {
+		if (!isX11Toolkit() || component == null) {
+			return null;
+		}
+		com.sun.jna.platform.unix.X11.Display display = null;
+		try {
+			final long shell = getShellWindowId(component);
 			if (shell == 0) {
 				return null;
 			}
