@@ -77,6 +77,7 @@ import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.ContainerComboBoxEditor;
+import org.freeplane.core.ui.components.FrameResynchronizer;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
@@ -643,6 +644,7 @@ abstract public class FrameController implements ViewController {
             if (lookAndFeel.equals("default")) {
             	String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
             	UIManager.setLookAndFeel(lookAndFeelClassName);
+            FrameResynchronizer.refreshPopupFactory();
             }
             else {
             	LookAndFeelInfo[] lafInfos = UIManager.getInstalledLookAndFeels();
@@ -662,12 +664,14 @@ abstract public class FrameController implements ViewController {
 						final ClassLoader uiClassLoader = lookAndFeelClass.getClassLoader();
 						UIManager.getDefaults().put("ClassLoader", uiClassLoader);
 						UIManager.setLookAndFeel((LookAndFeel) lookAndFeelClass.newInstance());
+						FrameResynchronizer.refreshPopupFactory();
 						if (userLibClassLoader != uiClassLoader)
 							userLibClassLoader.close();
 					}
 					catch (ClassNotFoundException | ClassCastException | InstantiationException e) {
 						LogUtils.warn("Error while setting Look&Feel " + lookAndFeel + ", reverted to default");
 						UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+						FrameResynchronizer.refreshPopupFactory();
 						Controller.getCurrentController().getResourceController().setProperty("lookandfeel", "default");
 					}
 				}
@@ -744,6 +748,7 @@ abstract public class FrameController implements ViewController {
     private static boolean tryToSetLookAndFeel(String lafClassName) {
         try {
             UIManager.setLookAndFeel(lafClassName);
+            FrameResynchronizer.refreshPopupFactory();
             return true;
         } catch (Exception e) {
         }
@@ -751,6 +756,7 @@ abstract public class FrameController implements ViewController {
             Class<?> lookAndFeelClass = FrameController.class.getClassLoader().loadClass(lafClassName);
             LookAndFeel lookAndFeelInstance = (LookAndFeel) lookAndFeelClass.getDeclaredConstructor().newInstance();
             UIManager.setLookAndFeel(lookAndFeelInstance);
+            FrameResynchronizer.refreshPopupFactory();
             return true;
         } catch (Exception e) {
         }

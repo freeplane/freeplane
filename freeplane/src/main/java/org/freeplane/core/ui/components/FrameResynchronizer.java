@@ -6,14 +6,21 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 import javax.swing.JFrame;
+import javax.swing.PopupFactory;
+import javax.swing.SwingUtilities;
 
 /**
  * Repairs the stale AWT window coordinate cache on the X11 toolkit so that
@@ -31,6 +38,7 @@ import javax.swing.JFrame;
 public final class FrameResynchronizer extends WindowAdapter implements ComponentListener {
 	private static final String X11_TOOLKIT_CLASS_NAME = "sun.awt.X11.XToolkit";
 	private static final int RESYNCHRONIZATION_TOLERANCE = 4;
+	private static final Set<JFrame> REGISTERED_FRAMES = Collections.newSetFromMap(new WeakHashMap<JFrame, Boolean>());
 
 	/**
 	 * Installs a {@link FrameResynchronizer} on the given frame. The listener
@@ -42,6 +50,8 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		frame.addWindowListener(frameResynchronizer);
 		frame.addWindowStateListener(frameResynchronizer);
 		frame.addComponentListener(frameResynchronizer);
+		REGISTERED_FRAMES.add(frame);
+		refreshPopupFactory();
 	}
 
 	static boolean needsFrameResynchronization(final boolean isX11Toolkit, final int windowState,
@@ -144,6 +154,67 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 
 	private static boolean isX11Toolkit() {
 		return X11_TOOLKIT_CLASS_NAME.equals(Toolkit.getDefaultToolkit().getClass().getName());
+	}
+
+	private static final PopupCoordinateCalibrator.GeometryProvider DEFAULT_POPUP_GEOMETRY_PROVIDER =
+			new PopupCoordinateCalibrator.GeometryProvider() {
+				@Override
+				public Rectangle getNativeFrameBounds(final JFrame frame) {
+					return FrameResynchronizer.getNativeWindowBounds(frame);
+				}
+
+				@Override
+				public Point getOwnerLocationWithinFrame(final Component owner, final JFrame frame) {
+					return SwingUtilities.convertPoint(owner, 0, 0, frame);
+				}
+
+				@Override
+				public Point getOwnerLocationOnScreen(final Component owner) {
+					try {
+						if (owner == null || !owner.isShowing()) {
+							return null;
+						}
+						return owner.getLocationOnScreen();
+					}
+					catch (RuntimeException unavailableLocation) {
+						return null;
+					}
+				}
+			};
+
+	public static void refreshPopupFactory() {
+		if (!isX11Toolkit()) {
+			return;
+		}
+		final PopupFactory currentFactory = PopupFactory.getSharedInstance();
+		final PopupFactory refreshedFactory = ensurePopupFactory(true, currentFactory, REGISTERED_FRAMES,
+				DEFAULT_POPUP_GEOMETRY_PROVIDER);
+		if (refreshedFactory != currentFactory) {
+			PopupFactory.setSharedInstance(refreshedFactory);
+		}
+	}
+
+	static PopupFactory ensurePopupFactory(final boolean isX11Toolkit, final PopupFactory currentFactory,
+			final Set<JFrame> registeredFrames,
+			final PopupCoordinateCalibrator.GeometryProvider geometryProvider) {
+		if (!isX11Toolkit || currentFactory == null || registeredFrames == null || registeredFrames.isEmpty()
+				|| currentFactory instanceof X11PopupFactory) {
+			return currentFactory;
+		}
+		final X11PopupFactory.PopupOwnerResolver ownerResolver = new X11PopupFactory.PopupOwnerResolver() {
+			@Override
+			public JFrame findFrame(final Component owner) {
+				if (owner instanceof JFrame && registeredFrames.contains(owner)) {
+					return (JFrame) owner;
+				}
+				if (owner == null) {
+					return null;
+				}
+				final Window ancestor = SwingUtilities.getWindowAncestor(owner);
+				return ancestor instanceof JFrame && registeredFrames.contains(ancestor) ? (JFrame) ancestor : null;
+			}
+		};
+		return new X11PopupFactory(currentFactory, ownerResolver, geometryProvider);
 	}
 
 	static final class MaximizedResynchronizationGuard {
