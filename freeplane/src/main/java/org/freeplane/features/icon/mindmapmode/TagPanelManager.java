@@ -32,23 +32,33 @@ import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.Tag;
 import org.freeplane.features.icon.TagCategories;
+import org.freeplane.features.icon.TagUsage;
+import org.freeplane.features.icon.Tags;
 import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeChangeEvent;
+import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
 public class TagPanelManager {
+    private static final int USAGE_REFRESH_DELAY_MS = 200;
+
     final private JPanel tagPanel;
     private JTagTree tagTree; // JTagTree extends our FilterableJTree
     private Font treeFont;
     private TagCategories treeCategories;
     private final MIconController iconController;
     private final JButton editCategoriesButton;
+    // Coalesces rapid map edits into one recount rather than traversing the map per event.
+    private final Timer usageRefreshTimer;
+    private MapModel displayedMap;
 
     // The search field and its timer.
     private final JTextField filterField = new JTextField();
@@ -59,6 +69,8 @@ public class TagPanelManager {
         final JTagTree tree;
         final TagCategories categories;
         final Font font;
+        // Null means a map edit has invalidated this cached snapshot.
+        TagUsage usage;
 
         TreeCache(JTagTree tree, TagCategories categories, Font font) {
             this.tree = tree;
@@ -69,7 +81,7 @@ public class TagPanelManager {
 
     private final WeakHashMap<MapModel, TreeCache> treeCache = new WeakHashMap<>();
 
-    private class TableCreator implements INodeSelectionListener, IMapChangeListener, HierarchyListener {
+    private class TableCreator implements INodeSelectionListener, IMapChangeListener, INodeChangeListener, HierarchyListener {
         @Override
         public void hierarchyChanged(HierarchyEvent e) {
             if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
@@ -94,6 +106,7 @@ public class TagPanelManager {
                 return;
             }
             if (map == null) {
+                displayedMap = null;
                 TagPanelManager.this.updateTreeAndButton(null);
                 return;
             }
@@ -126,12 +139,37 @@ public class TagPanelManager {
                 treeCache.put(map, new TreeCache(tagTree, treeCategories, treeFont));
             }
 
+            displayedMap = map;
+            TreeCache displayed = treeCache.get(map);
+            if (displayed.usage == null) {
+                refreshUsage(map, displayed);
+            }
             TagPanelManager.this.updateTreeAndButton(tagTree);
         }
 
         @Override
         public void mapChanged(MapChangeEvent event) {
             onChange(event.getMap());
+        }
+
+        @Override
+        public void nodeChanged(NodeChangeEvent event) {
+            if (event.getProperty() == Tags.class) {
+                // Only tag changes can alter a usage count; other node edits leave it valid.
+                markUsageStale(event.getNode().getMap());
+            }
+        }
+
+        @Override
+        public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
+            // A whole inserted branch may contain tags, so recount the displayed map.
+            markUsageStale(parent.getMap());
+        }
+
+        @Override
+        public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
+            // Deleted nodes can remove one or more tag uses from the map.
+            markUsageStale(nodeDeletionEvent.parent.getMap());
         }
 
         private void insertTagIntoSelectedNodes(MouseEvent e) {
@@ -160,6 +198,9 @@ public class TagPanelManager {
         final MapController mapController = modeController.getMapController();
         mapController.addNodeSelectionListener(tableCreator);
         mapController.addMapChangeListener(tableCreator);
+        mapController.addUINodeChangeListener(tableCreator);
+        usageRefreshTimer = new Timer(USAGE_REFRESH_DELAY_MS, event -> refreshDisplayedUsage());
+        usageRefreshTimer.setRepeats(false);
         tagPanel.addHierarchyListener(tableCreator);
         iconController = (MIconController) modeController.getExtension(IconController.class);
 
@@ -168,6 +209,38 @@ public class TagPanelManager {
 
     public JPanel getTagPanel() {
         return tagPanel;
+    }
+
+    private void markUsageStale(MapModel map) {
+        TreeCache cache = treeCache.get(map);
+        if (cache == null) {
+            return;
+        }
+        cache.usage = null;
+        if (map == displayedMap && tagPanel.isShowing()) {
+            // Restarting implements debounce: wait until edits pause before recounting.
+            usageRefreshTimer.restart();
+        }
+    }
+
+    private void refreshDisplayedUsage() {
+        if (displayedMap == null || !tagPanel.isShowing()) {
+            return;
+        }
+        TreeCache cache = treeCache.get(displayedMap);
+        if (cache != null && cache.usage == null) {
+            refreshUsage(displayedMap, cache);
+        }
+    }
+
+    private void refreshUsage(MapModel map, TreeCache cache) {
+        // Compute one immutable snapshot and let the renderer look up every visible tag from it.
+        TagUsage usage = TagUsage.countIn(map.getRootNode());
+        TagCategories categories = cache.categories;
+        cache.usage = usage;
+        cache.tree.setUsageProvider(node -> categories.containsTag(node)
+                ? usage.of(categories.categorizedContent(node))
+                : TagCellRenderer.NO_USAGE_DISPLAYED);
     }
 
     // Updates the panel with the filter field at the top, then the tree (if available) and always the button underneath.
