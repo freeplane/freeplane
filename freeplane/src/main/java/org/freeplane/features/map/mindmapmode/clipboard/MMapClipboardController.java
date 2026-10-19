@@ -97,6 +97,8 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLException;
+import org.freeplane.features.treetable.TreeTableSheet;
+import org.freeplane.features.treetable.mindmapmode.TreeTableEditing;
 import org.freeplane.view.swing.features.filepreview.ImageAdder;
 import org.freeplane.view.swing.features.filepreview.ViewerController;
 import org.freeplane.view.swing.features.filepreview.ViewerController.PasteMode;
@@ -224,6 +226,19 @@ public class MMapClipboardController extends MapClipboardController implements M
             mapController.balanceFirstGroupNodes(target);
         }
     }
+    private class TreeTableFlavorHandler implements IDataFlavorHandler {
+        private final TreeTableSheet sheet;
+
+        public TreeTableFlavorHandler(final TreeTableSheet sheet) {
+            this.sheet = sheet;
+        }
+
+        @Override
+        public void paste(Transferable t, final NodeModel target, final Side side, int dropAction) {
+            TreeTableEditing.pasteAsTable(target, side, sheet);
+        }
+    }
+
     private class TagSelectionHandler implements IDataFlavorHandler {
         private final String textFromClipboard;
 
@@ -780,6 +795,9 @@ public class MMapClipboardController extends MapClipboardController implements M
 			catch (final IOException e) {
 			}
 		}
+		final TreeTableSheet treeTableSheet = treeTableSheetOf(t);
+		if (treeTableSheet != null)
+			handlerList.add(new TreeTableFlavorHandler(treeTableSheet));
 		if (t.isDataFlavorSupported(MindMapNodesSelection.fileListFlavor)) {
 			try {
 				final List<File> fileList = castToFileList(t.getTransferData(MindMapNodesSelection.fileListFlavor));
@@ -803,6 +821,49 @@ public class MMapClipboardController extends MapClipboardController implements M
 		}
 		return handlerList;
 	}
+	private static boolean isTabSeparated(final String text) {
+		return text.indexOf('	') >= 0;
+	}
+
+	private TreeTableSheet treeTableSheetOf(final Transferable t) {
+		if (t == null)
+			return null;
+		final TreeTableSheet htmlSheet = TreeTableSheet.parseHtmlTable(transferredText(t, completeHtmlFlavor(t)));
+		if (htmlSheet != null)
+			return htmlSheet;
+		final String text = transferredText(t, DataFlavor.stringFlavor);
+		return text != null && isTabSeparated(text) ? TreeTableSheet.parseTabSeparated(text) : null;
+	}
+
+	private DataFlavor completeHtmlFlavor(final Transferable t) {
+		final DataFlavor htmlFlavor = getSupportedHtmlFlavor(t);
+		for (final DataFlavor dataFlavor : t.getTransferDataFlavors()) {
+			if (htmlFlavor != null && dataFlavor.getMimeType().startsWith(htmlFlavor.getPrimaryType() + "/" + htmlFlavor.getSubType())
+					&& dataFlavor.getRepresentationClass().equals(String.class)
+					&& "all".equals(dataFlavor.getParameter("document")))
+				return dataFlavor;
+		}
+		return htmlFlavor;
+	}
+
+	private static String transferredText(final Transferable t, final DataFlavor flavor) {
+		if (flavor == null || !t.isDataFlavorSupported(flavor))
+			return null;
+		try {
+			return t.getTransferData(flavor).toString();
+		}
+		catch (final UnsupportedFlavorException | IOException e) {
+			return null;
+		}
+	}
+
+	public void pasteAsTreeTable(final NodeModel target) {
+		final Transferable t = getClipboardContents();
+		final TreeTableSheet sheet = treeTableSheetOf(t);
+		if (sheet != null)
+			paste(t, new TreeTableFlavorHandler(sheet), target, MapController.suggestNewChildSide(target, Side.DEFAULT));
+	}
+
 	private DataFlavor getSupportedHtmlFlavor(Transferable t) {
 		for (DataFlavor dataFlavor : t.getTransferDataFlavors())
 			if(dataFlavor.getPrimaryType().equals(MindMapNodesSelection.htmlFlavor.getPrimaryType())
