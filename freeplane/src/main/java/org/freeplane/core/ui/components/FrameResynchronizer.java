@@ -80,12 +80,26 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 				|| Math.abs(frameBounds.y - nativeBounds.y) > RESYNCHRONIZATION_TOLERANCE;
 	}
 
+	/**
+	 * Decides whether a maximized frame still needs a bounds request.
+	 *
+	 * <p>The decision is based on the geometry the window manager reports, not on
+	 * the AWT bounds. On X11 the window manager maximizes the <em>client</em> area to
+	 * the work area while AWT keeps reporting the decorated <em>outer</em> frame
+	 * (for example AWT {@code -4,-34 1928x1120} for a client {@code 0,0 1920x1080}).
+	 * Comparing AWT bounds against the work area therefore never matches on a
+	 * correctly maximized window, and the frame is re-requested over and over for
+	 * geometry the window manager already produced.</p>
+	 *
+	 * @param nativeBounds the geometry reported by the window manager
+	 * @param targetBounds the work area the maximized frame should cover
+	 */
 	static boolean needsMaximizedFrameResynchronization(final boolean isX11Toolkit, final int windowState,
-			final Rectangle frameBounds, final Rectangle targetBounds) {
+			final Rectangle nativeBounds, final Rectangle targetBounds) {
 		return (windowState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH
 				&& isX11Toolkit && (windowState & Frame.ICONIFIED) == 0
-				&& frameBounds != null && targetBounds != null
-				&& !frameBounds.equals(targetBounds);
+				&& nativeBounds != null && targetBounds != null
+				&& !nativeBounds.equals(targetBounds);
 	}
 
 	static boolean needsNormalFrameResynchronization(final boolean isX11Toolkit, final int oldState,
@@ -314,7 +328,11 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 			maximizedResynchronizationGuard.reset();
 			return true;
 		}
-		if (!needsMaximizedFrameResynchronization(frameGeometry.isX11Toolkit(), windowState, currentBounds, targetBounds)
+		// Ask the window manager what the window actually covers. AWT bounds are
+		// the decorated outer frame and never equal the client work area, so they
+		// cannot tell a correctly maximized window from a displaced one.
+		if (!needsMaximizedFrameResynchronization(frameGeometry.isX11Toolkit(), windowState, nativeBounds,
+				targetBounds)
 				|| !maximizedResynchronizationGuard.shouldRequest(currentBounds, targetBounds)) {
 			return true;
 		}

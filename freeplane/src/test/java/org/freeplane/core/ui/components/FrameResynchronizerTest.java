@@ -388,6 +388,50 @@ public class FrameResynchronizerTest {
     }
 
     @Test
+    public void needsMaximizedFrameResynchronization_whenWindowManagerAlreadyMaximized_returnsFalse() {
+        // Measured on KWin/XWayland: the WM maximizes the CLIENT area to the work
+        // area (0,0,1920,1080) while AWT keeps reporting the decorated outer frame
+        // (-4,-34,1928,1120). The window is already correct, so no bounds request is
+        // needed; deciding from AWT bounds retried 69 times for one maximize.
+        final Rectangle awtOuter = new Rectangle(-4, -34, 1928, 1120);
+        final Rectangle nativeClient = new Rectangle(0, 0, 1920, 1080);
+        final Rectangle workArea = new Rectangle(0, 0, 1920, 1080);
+        assertThat(FrameResynchronizer.needsMaximizedFrameResynchronization(
+            true, Frame.MAXIMIZED_BOTH, awtOuter, workArea)).isTrue();
+        assertThat(FrameResynchronizer.needsMaximizedFrameResynchronization(
+            true, Frame.MAXIMIZED_BOTH, nativeClient, workArea)).isFalse();
+    }
+
+    @Test
+    public void needsMaximizedFrameResynchronization_whenNativeStillOffTarget_returnsTrue() {
+        assertThat(FrameResynchronizer.needsMaximizedFrameResynchronization(
+            true, Frame.MAXIMIZED_BOTH, new Rectangle(204, 184, 1920, 1080),
+            new Rectangle(0, 0, 1920, 1080))).isTrue();
+    }
+
+    @Test
+    public void maximizedComponentEvent_whenWindowManagerAlreadyMaximized_requestsNoBounds() throws Exception {
+        final Rectangle workArea = new Rectangle(0, 0, 1920, 1080);
+        final Rectangle awtOuter = new Rectangle(-4, -34, 1928, 1120);
+        final JFrame frame = resynchronizerFrame(awtOuter, Frame.MAXIMIZED_BOTH);
+        // Native geometry already covers the work area; only AWT bounds disagree.
+        final FrameResynchronizer resynchronizer = maximizedResynchronizer(frame, workArea, workArea);
+
+        SwingUtilities.invokeAndWait(() -> {
+            try {
+                resynchronizer.componentMoved(mock(ComponentEvent.class));
+
+                verify(frame, never()).setBounds(any(Rectangle.class));
+                verify(frame, never()).validate();
+                assertThat(deferredResynchronizationTimer(resynchronizer)).isNull();
+            }
+            finally {
+                stopDeferredResynchronizationTimer(resynchronizer);
+            }
+        });
+    }
+
+    @Test
     public void maximizedGuard_allowsExactlyTenRequestsForOneTarget() {
         final FrameResynchronizer.MaximizedResynchronizationGuard guard =
             new FrameResynchronizer.MaximizedResynchronizationGuard();
