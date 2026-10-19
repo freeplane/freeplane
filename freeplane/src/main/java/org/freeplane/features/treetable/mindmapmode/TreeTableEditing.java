@@ -156,17 +156,16 @@ public class TreeTableEditing {
 			insertColumn(header, 0);
 	}
 
-	public static void pasteAsTable(final NodeModel target, final Side side, final String tabSeparatedText) {
+	public static void pasteAsTable(final NodeModel target, final Side side, final TreeTableSheet sheet) {
 		final NodeModel parent = side.isSibling() ? target.getParentNode() : target;
 		if (parent == null || !TreeTableNodes.canConvertToTable(parent))
 			return;
-		final TreeTableSheetImport table = TreeTableSheetImport.of(TreeTableSheet.parseTabSeparated(tabSeparatedText),
-			TextUtils.getText("treetable.new_column"));
+		final TreeTableSheetImport table = TreeTableSheetImport.of(sheet, TextUtils.getText("treetable.new_column"));
 		if (table == null)
 			return;
 		final MapModel map = target.getMap();
 		TreeTableAppearance.ensureStylesExistIn(map);
-		final NodeModel treeTableRoot = mapController().newNode(table.getRootText(), map);
+		final NodeModel treeTableRoot = mapController().newNode(table.getRootContent(), map);
 		TreeTableModel.createFor(treeTableRoot);
 		TreeTableAppearance.applyTo(treeTableRoot);
 		final NodeModel header = mapController().newNode(TextUtils.getText("treetable.header"), map);
@@ -182,11 +181,12 @@ public class TreeTableEditing {
 
 	private static void insertItems(final NodeModel parent, final List<TreeTableSheetImport.Item> items) {
 		for (final TreeTableSheetImport.Item item : items) {
-			final NodeModel node = mapController().newNode(item.getText(), parent.getMap());
-			if (!item.getValues().isEmpty()) {
+			final NodeModel node = mapController().newNode(item.getContent(), parent.getMap());
+			final Map<String, String> values = item.getValueContents();
+			if (!values.isEmpty()) {
 				final NodeAttributeTableModel attributes = new NodeAttributeTableModel();
 				node.addExtension(attributes);
-				for (final Map.Entry<String, String> value : item.getValues().entrySet())
+				for (final Map.Entry<String, String> value : values.entrySet())
 					attributes.silentlyAddRowNoUndo(node, new Attribute(value.getKey(), value.getValue()));
 			}
 			parent.insert(node);

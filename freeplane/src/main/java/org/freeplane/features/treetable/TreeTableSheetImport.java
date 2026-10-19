@@ -10,20 +10,38 @@ import java.util.Set;
 
 public class TreeTableSheetImport {
 	public static class Item {
-		private final String text;
-		private final Map<String, String> values = new LinkedHashMap<String, String>();
+		private final RichText text;
+		private final Map<String, RichText> values = new LinkedHashMap<String, RichText>();
 		private final List<Item> children = new ArrayList<Item>();
 
 		private Item(final String text) {
+			this(RichText.plain(text));
+		}
+
+		private Item(final RichText text) {
 			this.text = text;
 		}
 
 		public String getText() {
-			return text;
+			return text.plainText();
+		}
+
+		public String getContent() {
+			return text.toFreeplaneContent();
 		}
 
 		public Map<String, String> getValues() {
-			return Collections.unmodifiableMap(values);
+			final Map<String, String> plainValues = new LinkedHashMap<String, String>();
+			for (final Map.Entry<String, RichText> value : values.entrySet())
+				plainValues.put(value.getKey(), value.getValue().plainText());
+			return plainValues;
+		}
+
+		public Map<String, String> getValueContents() {
+			final Map<String, String> contents = new LinkedHashMap<String, String>();
+			for (final Map.Entry<String, RichText> value : values.entrySet())
+				contents.put(value.getKey(), value.getValue().toFreeplaneContent());
+			return contents;
 		}
 
 		public List<Item> getChildren() {
@@ -60,6 +78,10 @@ public class TreeTableSheetImport {
 
 	public String getRootText() {
 		return sheet.get(0, 0).trim();
+	}
+
+	public String getRootContent() {
+		return sheet.getRichText(0, 0).toFreeplaneContent();
 	}
 
 	public List<Item> getColumns() {
@@ -174,11 +196,11 @@ public class TreeTableSheetImport {
 				continue;
 			final int filledColumn = firstFilledColumn(row, 0, treeColumnCount);
 			final int depth = Math.min(Math.max(filledColumn, 0), parents.size());
-			final Item item = new Item(filledColumn < 0 ? "" : sheet.get(row, filledColumn).trim());
+			final Item item = new Item(filledColumn < 0 ? RichText.EMPTY : sheet.getRichText(row, filledColumn));
 			for (int column = 0; column < columnKeys.size(); column++) {
 				final int sheetColumn = treeColumnCount + column;
 				if (!sheet.isEmpty(row, sheetColumn))
-					item.values.put(columnKeys.get(column), sheet.get(row, sheetColumn).trim());
+					item.values.put(columnKeys.get(column), sheet.getRichText(row, sheetColumn));
 			}
 			while (parents.size() > depth)
 				parents.remove(parents.size() - 1);

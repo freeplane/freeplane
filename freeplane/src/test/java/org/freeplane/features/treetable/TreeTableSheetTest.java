@@ -57,7 +57,7 @@ public class TreeTableSheetTest {
 
 		assertThat(parsed.get(0, 0)).isEqualTo("a\tb");
 		assertThat(parsed.get(0, 1)).isEmpty();
-		assertThat(parsed.get(1, 1)).isEqualTo("\"x\"\r\ny");
+		assertThat(parsed.get(1, 1)).isEqualTo("\"x\"\ny");
 	}
 
 	@Test

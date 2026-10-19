@@ -9,7 +9,6 @@ public class TreeTableSheet {
 	private static final char CELL_SEPARATOR = '\t';
 	private static final char QUOTE = '"';
 	private static final String LINE_SEPARATOR = "\r\n";
-	private static final String HTML_LINE_BREAK = "<br style=\"mso-data-placement:same-cell;\">";
 
 	public static class Span {
 		private final int row;
@@ -34,14 +33,18 @@ public class TreeTableSheet {
 		}
 	}
 
-	private final String[][] cells;
+	private final RichText[][] cells;
 	private final List<Span> spans;
 
 	public TreeTableSheet(final int rowCount, final int columnCount) {
-		cells = new String[rowCount][columnCount];
-		for (final String[] row : cells)
-			Arrays.fill(row, "");
+		cells = new RichText[rowCount][columnCount];
+		for (final RichText[] row : cells)
+			Arrays.fill(row, RichText.EMPTY);
 		spans = new ArrayList<Span>();
+	}
+
+	public static TreeTableSheet parseHtmlTable(final String html) {
+		return html == null ? null : RichHtmlReader.readTable(html);
 	}
 
 	public static TreeTableSheet parseTabSeparated(final String text) {
@@ -128,15 +131,23 @@ public class TreeTableSheet {
 	}
 
 	public String get(final int row, final int column) {
+		return cells[row][column].plainText();
+	}
+
+	public RichText getRichText(final int row, final int column) {
 		return cells[row][column];
 	}
 
 	public boolean isEmpty(final int row, final int column) {
-		return cells[row][column].trim().isEmpty();
+		return cells[row][column].isEmpty();
 	}
 
 	public void set(final int row, final int column, final String value) {
-		cells[row][column] = value == null ? "" : value;
+		set(row, column, RichText.plain(value));
+	}
+
+	public void set(final int row, final int column, final RichText value) {
+		cells[row][column] = value == null ? RichText.EMPTY : value;
 	}
 
 	public void span(final int row, final int column, final int rowCount, final int columnCount) {
@@ -150,11 +161,11 @@ public class TreeTableSheet {
 
 	public String toTabSeparatedText() {
 		final StringBuilder text = new StringBuilder();
-		for (final String[] row : cells) {
+		for (final RichText[] row : cells) {
 			for (int column = 0; column < row.length; column++) {
 				if (column > 0)
 					text.append(CELL_SEPARATOR);
-				text.append(quotedIfNeeded(row[column]));
+				text.append(quotedIfNeeded(row[column].plainText()));
 			}
 			text.append(LINE_SEPARATOR);
 		}
@@ -190,7 +201,7 @@ public class TreeTableSheet {
 			if (span.columnCount > 1)
 				html.append(" colspan=\"").append(span.columnCount).append('"');
 		}
-		html.append('>').append(escapeHtml(cells[row][column])).append("</td>");
+		html.append('>').append(cells[row][column].toExcelHtml()).append("</td>");
 	}
 
 	private Span spanAt(final int row, final int column) {
@@ -199,10 +210,5 @@ public class TreeTableSheet {
 				return span;
 		}
 		return null;
-	}
-
-	private static String escapeHtml(final String value) {
-		return value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;")
-			.replace("\r\n", "\n").replace("\n", HTML_LINE_BREAK);
 	}
 }

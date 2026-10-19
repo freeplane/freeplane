@@ -96,6 +96,28 @@ public class TreeTableSheetImportTest {
 		assertThat(importedTask.getValues()).containsExactly(entry("Min", "7"));
 	}
 
+	@Test
+	public void keepsFormattingOfExportedHtmlTable() {
+		final MapFake mapFake = new MapFake();
+		final NodeModel tableNode = childOf(mapFake, mapFake.getRoot(), "Projects");
+		TreeTableModel.createFor(tableNode);
+		final NodeModel header = childOf(mapFake, tableNode, "Columns");
+		LogicalStyleModel.createExtension(header).setStyle(TreeTableHeader.style());
+		childOf(mapFake, header, "Note");
+		final NodeModel task = childOf(mapFake, tableNode, "<html><body><p><b>Task</b></p></body></html>");
+		TreeTableSheetExportTest.setValue(task, "Note",
+			"<html><body><p>Du <span style=\"color: #ff0000; font-weight: bold;\">HTML </span>ici</p></body></html>");
+
+		final TreeTableSheetImport table = TreeTableSheetImport
+			.of(TreeTableSheet.parseHtmlTable(TreeTableSheetExport.sheetOf(tableNode).toHtml()), "Column");
+
+		final Item importedTask = table.getRows().get(0);
+		assertThat(importedTask.getContent())
+			.isEqualTo("<html><body><p><span style=\"font-weight: bold;\">Task</span></p></body></html>");
+		assertThat(importedTask.getValueContents()).containsExactly(entry("Note",
+			"<html><body><p>Du <span style=\"color: #ff0000; font-weight: bold;\">HTML </span>ici</p></body></html>"));
+	}
+
 	private static NodeModel childOf(final MapFake mapFake, final NodeModel parent, final String text) {
 		final NodeModel child = mapFake.createNode(text);
 		parent.insert(child);

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.map.NodeModel;
 
 public class TreeTableSheetExport {
@@ -32,10 +31,6 @@ public class TreeTableSheetExport {
 		return new TreeTableSheetExport(treeTableRoot).sheet;
 	}
 
-	static String plainTextOf(final String text) {
-		return text == null ? "" : HtmlUtils.htmlToPlain(text, true, false).trim();
-	}
-
 	private TreeTableSheetExport(final NodeModel treeTableRoot) {
 		final NodeModel header = TreeTableHeader.headerOf(treeTableRoot);
 		columnNodes = TreeTableHeader.distinctColumnNodesOf(treeTableRoot);
@@ -44,7 +39,7 @@ public class TreeTableSheetExport {
 		treeColumnCount = maximalRowDepth() + 1;
 		headerRowCount = header == null ? 1 : headerRowCountBelow(header);
 		sheet = new TreeTableSheet(headerRowCount + rows.size(), treeColumnCount + columnNodes.size());
-		sheet.set(0, 0, plainTextOf(treeTableRoot.getText()));
+		sheet.set(0, 0, RichText.fromContent(treeTableRoot.getText()));
 		sheet.span(0, 0, headerRowCount, treeColumnCount);
 		if (header != null)
 			placeHeaderChildrenOf(header, 0);
@@ -117,11 +112,12 @@ public class TreeTableSheetExport {
 		for (int index = 0; index < rows.size(); index++) {
 			final Row row = rows.get(index);
 			final int sheetRow = headerRowCount + index;
-			sheet.set(sheetRow, row.depth, plainTextOf(row.node.getText()));
+			sheet.set(sheetRow, row.depth, RichText.fromContent(row.node.getText()));
 			sheet.span(sheetRow, row.depth, 1, treeColumnCount - row.depth);
 			for (int column = 0; column < columnNodes.size(); column++) {
 				final String key = TreeTableHeader.keyOf(columnNodes.get(column));
-				sheet.set(sheetRow, treeColumnCount + column, plainTextOf(TreeTableNodes.cellValueOf(row.node, key)));
+				sheet.set(sheetRow, treeColumnCount + column,
+					RichText.fromContent(TreeTableNodes.cellValueOf(row.node, key)));
 			}
 		}
 	}
