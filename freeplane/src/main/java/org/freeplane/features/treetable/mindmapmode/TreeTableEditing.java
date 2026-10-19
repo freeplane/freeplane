@@ -1,17 +1,22 @@
 package org.freeplane.features.treetable.mindmapmode;
 
 import java.awt.event.ActionEvent;
+import java.util.List;
+import java.util.Map;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeModel.Side;
+import org.freeplane.features.map.mindmapmode.InsertionRelation;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
@@ -24,6 +29,8 @@ import org.freeplane.features.treetable.TreeTableColumnNames;
 import org.freeplane.features.treetable.TreeTableHeader;
 import org.freeplane.features.treetable.TreeTableModel;
 import org.freeplane.features.treetable.TreeTableNodes;
+import org.freeplane.features.treetable.TreeTableSheet;
+import org.freeplane.features.treetable.TreeTableSheetImport;
 import org.freeplane.main.mindmapmode.stylemode.EditStylesAction;
 
 public class TreeTableEditing {
@@ -147,6 +154,44 @@ public class TreeTableEditing {
 		});
 		if (header != null)
 			insertColumn(header, 0);
+	}
+
+	public static void pasteAsTable(final NodeModel target, final Side side, final String tabSeparatedText) {
+		final NodeModel parent = side.isSibling() ? target.getParentNode() : target;
+		if (parent == null || !TreeTableNodes.canConvertToTable(parent))
+			return;
+		final TreeTableSheetImport table = TreeTableSheetImport.of(TreeTableSheet.parseTabSeparated(tabSeparatedText),
+			TextUtils.getText("treetable.new_column"));
+		if (table == null)
+			return;
+		final MapModel map = target.getMap();
+		TreeTableAppearance.ensureStylesExistIn(map);
+		final NodeModel treeTableRoot = mapController().newNode(table.getRootText(), map);
+		TreeTableModel.createFor(treeTableRoot);
+		TreeTableAppearance.applyTo(treeTableRoot);
+		final NodeModel header = mapController().newNode(TextUtils.getText("treetable.header"), map);
+		LogicalStyleModel.createExtension(header).setStyle(TreeTableHeader.style());
+		treeTableRoot.insert(header);
+		insertItems(header, table.getColumns());
+		insertItems(treeTableRoot, table.getRows());
+		treeTableRoot.setSide(side.isSibling() ? target.getSide() : side);
+		mapController().insertNode(treeTableRoot, target, InsertionRelation.bySide(side));
+		attributeController().performRegistrySubtreeAttributes(treeTableRoot);
+		LogicalStyleController.getController().refreshMapLaterUndoable(map);
+	}
+
+	private static void insertItems(final NodeModel parent, final List<TreeTableSheetImport.Item> items) {
+		for (final TreeTableSheetImport.Item item : items) {
+			final NodeModel node = mapController().newNode(item.getText(), parent.getMap());
+			if (!item.getValues().isEmpty()) {
+				final NodeAttributeTableModel attributes = new NodeAttributeTableModel();
+				node.addExtension(attributes);
+				for (final Map.Entry<String, String> value : item.getValues().entrySet())
+					attributes.silentlyAddRowNoUndo(node, new Attribute(value.getKey(), value.getValue()));
+			}
+			parent.insert(node);
+			insertItems(node, item.getChildren());
+		}
 	}
 
 	public static void confirmAndDeleteTable(final NodeModel treeTableRoot) {

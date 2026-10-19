@@ -119,6 +119,7 @@ import org.freeplane.features.styles.mindmapmode.ShowFormatPanelAction;
 import org.freeplane.features.treetable.TreeTableController;
 import org.freeplane.features.treetable.mindmapmode.ConvertToTreeTableAction;
 import org.freeplane.features.treetable.mindmapmode.DeleteTreeTableAction;
+import org.freeplane.features.treetable.mindmapmode.PasteAsTreeTableAction;
 import org.freeplane.features.treetable.mindmapmode.TreeTablePropertiesAction;
 import org.freeplane.features.treetable.mindmapmode.ToggleTreeTableTextWrapAction;
 import org.freeplane.features.treetable.mindmapmode.TreeTableColumnActions;
@@ -311,6 +312,7 @@ public class MModeControllerFactory {
 		TreeTableController.install(new TreeTableController());
 		modeController.addAction(new ConvertToTreeTableAction());
 		modeController.addAction(new DeleteTreeTableAction());
+		modeController.addAction(new PasteAsTreeTableAction());
 		modeController.addAction(new TreeTablePropertiesAction());
 		modeController.addAction(new ToggleTreeTableTextWrapAction());
 		TreeTableColumnActions.addTo(modeController);

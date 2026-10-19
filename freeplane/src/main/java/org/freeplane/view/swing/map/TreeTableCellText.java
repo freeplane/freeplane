@@ -11,20 +11,15 @@ import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
 
 import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.treetable.TreeTableNodes;
 
 class TreeTableCellText {
 	private static final int UNWRAPPED_WIDTH = Short.MAX_VALUE;
 	private static final JLabel RENDERER = new JLabel();
 
 	static String valueOf(final NodeModel row, final String attributeKey) {
-		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(row);
-		final int index = attributes.getAttributeIndex(attributeKey);
-		if (index < 0)
-			return null;
-		final Object value = attributes.getValue(index);
-		return value != null ? value.toString() : null;
+		return TreeTableNodes.cellValueOf(row, attributeKey);
 	}
 
 	static Font zoomedFontOf(final NodeView view) {

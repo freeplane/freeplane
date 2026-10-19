@@ -97,6 +97,7 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLException;
+import org.freeplane.features.treetable.mindmapmode.TreeTableEditing;
 import org.freeplane.view.swing.features.filepreview.ImageAdder;
 import org.freeplane.view.swing.features.filepreview.ViewerController;
 import org.freeplane.view.swing.features.filepreview.ViewerController.PasteMode;
@@ -224,6 +225,19 @@ public class MMapClipboardController extends MapClipboardController implements M
             mapController.balanceFirstGroupNodes(target);
         }
     }
+    private class TreeTableFlavorHandler implements IDataFlavorHandler {
+        private final String textFromClipboard;
+
+        public TreeTableFlavorHandler(final String textFromClipboard) {
+            this.textFromClipboard = textFromClipboard;
+        }
+
+        @Override
+        public void paste(Transferable t, final NodeModel target, final Side side, int dropAction) {
+            TreeTableEditing.pasteAsTable(target, side, textFromClipboard);
+        }
+    }
+
     private class TagSelectionHandler implements IDataFlavorHandler {
         private final String textFromClipboard;
 
@@ -774,6 +788,8 @@ public class MMapClipboardController extends MapClipboardController implements M
 			try {
 				final String plainTextFromClipboard = t.getTransferData(DataFlavor.stringFlavor).toString();
 				handlerList.add(new StringFlavorHandler(plainTextFromClipboard));
+				if (isTabSeparated(plainTextFromClipboard))
+					handlerList.add(new TreeTableFlavorHandler(plainTextFromClipboard));
 			}
 			catch (final UnsupportedFlavorException e) {
 			}
@@ -803,6 +819,30 @@ public class MMapClipboardController extends MapClipboardController implements M
 		}
 		return handlerList;
 	}
+	private static boolean isTabSeparated(final String text) {
+		return text.indexOf('	') >= 0;
+	}
+
+	private String tabSeparatedClipboardText() {
+		final Transferable t = getClipboardContents();
+		if (t == null || !t.isDataFlavorSupported(DataFlavor.stringFlavor))
+			return null;
+		try {
+			final String text = t.getTransferData(DataFlavor.stringFlavor).toString();
+			return isTabSeparated(text) ? text : null;
+		}
+		catch (final UnsupportedFlavorException | IOException e) {
+			return null;
+		}
+	}
+
+	public void pasteAsTreeTable(final NodeModel target) {
+		final String text = tabSeparatedClipboardText();
+		if (text != null)
+			paste(getClipboardContents(), new TreeTableFlavorHandler(text), target,
+				MapController.suggestNewChildSide(target, Side.DEFAULT));
+	}
+
 	private DataFlavor getSupportedHtmlFlavor(Transferable t) {
 		for (DataFlavor dataFlavor : t.getTransferDataFlavors())
 			if(dataFlavor.getPrimaryType().equals(MindMapNodesSelection.htmlFlavor.getPrimaryType())
