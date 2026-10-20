@@ -352,11 +352,9 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 	}
 
 	/**
-	 * Returns the current window manager frame bounds (including decorations) of the
-	 * given component as a screen rectangle in logical pixels, or {@code null} if the
-	 * bounds cannot be queried or are implausible (e.g. while the window is still
-	 * being placed). Only available on the X11 toolkit and only when the component
-	 * has a native shell window.
+	 * Returns the native X11 shell window identifier of the given component, or
+	 * {@code 0} when the identifier is inaccessible or unavailable. The X11 toolkit
+	 * gate is enforced by the callers of this helper, not here.
 	 */
 	static long getShellWindowId(final Component component) {
 		try {
@@ -436,6 +434,13 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		}
 	}
 
+	/**
+	 * Returns the current window manager frame bounds (including decorations) of the
+	 * given component as a screen rectangle in logical pixels, or {@code null} if the
+	 * bounds cannot be queried or are implausible (e.g. while the window is still
+	 * being placed). Only available on the X11 toolkit and only when the component
+	 * has a native shell window.
+	 */
 	static Rectangle getNativeWindowBounds(final Component component) {
 		if (!isX11Toolkit() || component == null) {
 			return null;
