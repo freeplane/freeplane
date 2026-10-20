@@ -124,5 +124,52 @@
       "committed": false
     }
   ],
-  "test_scope": "Native X11 KWin; one connected display; FlatIntelliJLaf; tester-supplied measurements; no Gradle execution during native session."
+  "post_native_run_retry_correction": {
+    "commit": "2c09aff6b260547ec0fdef4a023066a76f715f57",
+    "native_x11_runtime_retested": false,
+    "historical_fix_files_comparison_scope": "The fix_files entries above compare tested_checkout with integration_before_delivery at 49d8878b35; they do not compare with this follow-up commit.",
+    "behavior": "Native geometry governs maximized correction eligibility and retry accounting; confirmed native convergence resets the existing retry budget, unavailable geometry does not; ten-request cap retained.",
+    "files": [
+      {
+        "path": "freeplane/src/main/java/org/freeplane/core/ui/components/FrameResynchronizer.java",
+        "blob_oid": "cac69838939027627f10bbc30e7734d0cef97e5d",
+        "sha256": "31bbd6950822d173fc4a820769d8587e5b4988092ca9b23b0ca735dc6e4e7ab8",
+        "byte_identical_to_tested_checkout": false,
+        "change": "Maximized listener retry eligibility and native-convergence reset"
+      },
+      {
+        "path": "freeplane/src/main/java/org/freeplane/core/ui/components/PopupCoordinateCalibrator.java",
+        "blob_oid": "e5d4f9354dec1601f3be65fea243858340e1c2d7",
+        "sha256": "648744945e01105e23d5b12d6a14ccfed8a70bd75e7934b7b98a62b90688f127",
+        "byte_identical_to_tested_checkout": false,
+        "change": "Javadoc only; popup-calibration behavior unchanged"
+      },
+      {
+        "path": "freeplane/src/main/java/org/freeplane/core/ui/components/X11PopupFactory.java",
+        "blob_oid": "dc008665d2f72f322fd3aceadce24dc055fedae6",
+        "sha256": "3907eba98e2f384e8a80e1afc9bf9f6063435770bd6a0337e359132b383c8419",
+        "byte_identical_to_tested_checkout": true,
+        "change": "None"
+      },
+      {
+        "path": "freeplane/src/main/java/org/freeplane/features/ui/FrameController.java",
+        "blob_oid": "c5b46a26e6f81d2ce69afd973e323249c313ac9f",
+        "sha256": "7731e69fe9b0a59a317926166bf6e78f81f12f91b281b0d3b3b6f3b5c2dc7b96",
+        "byte_identical_to_tested_checkout": true,
+        "change": "None"
+      }
+    ],
+    "automated_regression_evidence": {
+      "new_listener_regressions": 2,
+      "pre_fix_failures": 2,
+      "feature_tests": 104,
+      "feature_failures": 0,
+      "module_rerun_tests": 749,
+      "module_rerun_failures": 0,
+      "module_rerun_errors": 0,
+      "module_rerun_skipped": 2,
+      "first_full_module_run": "ConcurrentModificationException in unchanged MapViewFilterAutoUnfoldModeTest; identical command passed on rerun without source changes; both executions retained externally."
+    }
+  },
+  "test_scope": "Native X11 KWin; one connected display; FlatIntelliJLaf; tester-supplied measurements at e3555cf5; no Gradle execution during native session; later retry corrections not native-desktop retested."
 }

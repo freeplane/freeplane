@@ -63,12 +63,41 @@ compared for all four production files touched by the fix:
 - `org/freeplane/core/ui/components/X11PopupFactory.java`
 - `org/freeplane/features/ui/FrameController.java`
 
-All four match byte for byte between the tested checkout and the PR source.
-[provenance.json](provenance.json) records the exact commits, whole-tree hashes,
-per-file blob IDs, and source SHA-256 values. This establishes source equivalence
-for the fix; it does not claim whole-application or runtime-environment identity.
-Graph Workspace case G is integration coverage from that checkout; the graph
-plugin itself is outside this PR.
+All four matched byte for byte between the tested checkout and the original
+integration tip `49d8878b35`. [provenance.json](provenance.json) records that
+historical comparison using exact commits, whole-tree hashes, per-file blob IDs,
+and source SHA-256 values. It establishes source equivalence at that tip; it does
+not claim whole-application or runtime-environment identity. Graph Workspace case
+G is integration coverage from the tested checkout; the graph plugin itself is
+outside this PR.
+
+### Retry corrections after the native run
+
+Delivery audit found two deterministic listener gaps after this report was
+recorded: cached AWT equality could suppress correction of a displaced native
+frame, and confirmed native convergence could leave an exhausted retry budget
+unchanged. Commit `2c09aff6b260547ec0fdef4a023066a76f715f57` makes native geometry
+govern eligibility and retry accounting and resets the existing budget on
+confirmed native convergence. Unavailable native geometry does not reset it. The
+ten-request cap for uninterrupted nonconvergence remains in place.
+
+That commit changes `FrameResynchronizer.java` behavior and updates only Javadoc
+in `PopupCoordinateCalibrator.java`. `X11PopupFactory.java` and
+`FrameController.java` still match the native-tested checkout byte for byte.
+Popup-calibration behavior is unchanged. The provenance includes a separate
+comparison against this follow-up commit; the original source pins are retained.
+
+Two new listener regressions failed before the fix and passed afterward. The four
+feature test classes passed 104 tests; the full module rerun passed 749 tests with
+zero failures, zero errors, and two skips. The first full-module execution failed
+with `ConcurrentModificationException` in the untouched
+`MapViewFilterAutoUnfoldModeTest`; the same command passed without source changes
+on rerun. The external PM record preserves both executions. Fresh delivery build
+and audit results are reported separately in the PR.
+
+The native-X11 measurements above remain evidence for `e3555cf5`, not a fresh
+native-desktop acceptance run of the retry corrections. No new native-X11 run was
+performed for that commit.
 
 ## Artifact availability
 
