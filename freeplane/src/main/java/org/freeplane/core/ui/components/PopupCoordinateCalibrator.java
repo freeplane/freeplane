@@ -12,12 +12,12 @@ import javax.swing.JFrame;
  * <p>The window manager on X11 can move a window, while OpenJDK keeps reporting
  * the pre-move origin from {@link Component#getLocationOnScreen()}. AWT component
  * bounds are therefore not a reliable source of truth for popup placement. The
- * native window manager frame origin is, as long as it is combined with the
- * owner's position expressed in the frame's own coordinate system: the decoration
- * offset cancels because the native query returns the outer frame origin.</p>
+ * native client origin is, as long as it is combined with the owner's position
+ * expressed relative to the frame's root pane. Both refer to the client area,
+ * so decoration extents enter neither value.</p>
  *
  * <pre>
- * expectedOwnerOnScreen = nativeFrameOrigin + ownerLocationWithinFrame
+ * expectedOwnerOnScreen = nativeClientOrigin + ownerLocationWithinRootPane
  * correction            = expectedOwnerOnScreen - ownerLocationOnScreen
  * </pre>
  *
@@ -42,7 +42,7 @@ final class PopupCoordinateCalibrator {
 		Point getNativeClientOrigin(JFrame frame);
 
 		/**
-		 * Returns the owner origin in the frame's own coordinate system, or
+		 * Returns the owner origin relative to the frame's root pane, or
 		 * {@code null} when the point cannot be converted.
 		 */
 		Point getOwnerLocationWithinFrame(Component owner, JFrame frame);

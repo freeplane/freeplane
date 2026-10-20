@@ -565,6 +565,102 @@ public class FrameResynchronizerTest {
     }
 
     @Test
+    public void maximizedComponentEvents_withCachedAwtAtTarget_retryNativeMismatchOnlyTenTimes() throws Exception {
+        final JFrame frame = resynchronizerFrame(TOP_PANEL_WORK_AREA, Frame.MAXIMIZED_BOTH);
+        final Rectangle nativeBounds = new Rectangle(240, 212, 1920, 1048);
+        final FrameResynchronizer resynchronizer = maximizedResynchronizer(frame, nativeBounds, TOP_PANEL_WORK_AREA);
+        final ComponentEvent event = mock(ComponentEvent.class);
+
+        SwingUtilities.invokeAndWait(() -> {
+            try {
+                resynchronizer.componentMoved(event);
+                verify(frame).setBounds(TOP_PANEL_WORK_AREA);
+                verify(frame).validate();
+                for (int attempt = 2; attempt <= 10; attempt++) {
+                    fireDeferredResynchronizationTimer(resynchronizer);
+                    verify(frame, times(attempt)).setBounds(TOP_PANEL_WORK_AREA);
+                }
+
+                // AWT stays at target while native geometry keeps ignoring the requests.
+                fireDeferredResynchronizationTimer(resynchronizer);
+                assertThat(deferredResynchronizationTimer(resynchronizer)).isNull();
+                for (int eventCount = 0; eventCount < 3; eventCount++) {
+                    resynchronizer.componentMoved(event);
+                    resynchronizer.componentResized(event);
+                    verify(frame, times(10)).setBounds(any(Rectangle.class));
+                    assertThat(deferredResynchronizationTimer(resynchronizer)).isNull();
+                }
+                verify(frame, times(10)).validate();
+            }
+            finally {
+                stopDeferredResynchronizationTimer(resynchronizer);
+            }
+        });
+    }
+
+    @Test
+    public void maximizedComponentEvents_afterNativeConvergence_resetExhaustedSameTargetBudget() throws Exception {
+        final Rectangle awtOuter = new Rectangle(-4, -2, 1928, 1086);
+        final JFrame frame = resynchronizerFrame(awtOuter, Frame.MAXIMIZED_BOTH);
+        final Rectangle displacedNativeBounds = new Rectangle(240, 212, 1920, 1048);
+        final FrameResynchronizer.FrameGeometry geometry = mock(FrameResynchronizer.FrameGeometry.class);
+        when(geometry.isX11Toolkit()).thenReturn(true);
+        when(geometry.getNativeWindowBounds(frame)).thenReturn(displacedNativeBounds);
+        when(geometry.getScreenWorkAreas()).thenReturn(new Rectangle[] { TOP_PANEL_WORK_AREA });
+        final FrameResynchronizer resynchronizer = new FrameResynchronizer(frame, geometry);
+        final ComponentEvent event = mock(ComponentEvent.class);
+
+        SwingUtilities.invokeAndWait(() -> {
+            try {
+                resynchronizer.componentMoved(event);
+                for (int attempt = 2; attempt <= 10; attempt++) {
+                    fireDeferredResynchronizationTimer(resynchronizer);
+                }
+                verify(frame, times(10)).setBounds(TOP_PANEL_WORK_AREA);
+                fireDeferredResynchronizationTimer(resynchronizer);
+                assertThat(deferredResynchronizationTimer(resynchronizer)).isNull();
+                for (int eventCount = 0; eventCount < 3; eventCount++) {
+                    resynchronizer.componentMoved(event);
+                    verify(frame, times(10)).setBounds(any(Rectangle.class));
+                    assertThat(deferredResynchronizationTimer(resynchronizer)).isNull();
+                }
+
+                // Missing native geometry is stable, but cannot replenish an exhausted budget.
+                when(geometry.getNativeWindowBounds(frame)).thenReturn(null);
+                resynchronizer.componentMoved(event);
+                verify(frame, times(10)).setBounds(any(Rectangle.class));
+                assertThat(deferredResynchronizationTimer(resynchronizer)).isNull();
+                when(geometry.getNativeWindowBounds(frame)).thenReturn(displacedNativeBounds);
+                resynchronizer.componentMoved(event);
+                verify(frame, times(10)).setBounds(any(Rectangle.class));
+                assertThat(deferredResynchronizationTimer(resynchronizer)).isNull();
+
+                // Only native geometry converges; decorated AWT bounds remain different.
+                when(geometry.getNativeWindowBounds(frame)).thenReturn(TOP_PANEL_WORK_AREA);
+                resynchronizer.componentMoved(event);
+                verify(frame, times(10)).setBounds(any(Rectangle.class));
+                assertThat(deferredResynchronizationTimer(resynchronizer)).isNull();
+
+                when(geometry.getNativeWindowBounds(frame)).thenReturn(displacedNativeBounds);
+                resynchronizer.componentResized(event);
+                verify(frame, times(11)).setBounds(TOP_PANEL_WORK_AREA);
+                for (int attempt = 12; attempt <= 20; attempt++) {
+                    fireDeferredResynchronizationTimer(resynchronizer);
+                    verify(frame, times(attempt)).setBounds(TOP_PANEL_WORK_AREA);
+                }
+                fireDeferredResynchronizationTimer(resynchronizer);
+                resynchronizer.componentMoved(event);
+                verify(frame, times(20)).setBounds(any(Rectangle.class));
+                verify(frame, times(20)).validate();
+                assertThat(deferredResynchronizationTimer(resynchronizer)).isNull();
+            }
+            finally {
+                stopDeferredResynchronizationTimer(resynchronizer);
+            }
+        });
+    }
+
+    @Test
     public void maximizedComponentEvents_afterDeferredExhaustion_doNotRestartTimer() throws Exception {
         final JFrame frame = resynchronizerFrame(FULL_SCREEN, Frame.MAXIMIZED_BOTH);
         final FrameResynchronizer resynchronizer = maximizedResynchronizer(frame, FULL_SCREEN, TOP_PANEL_WORK_AREA);

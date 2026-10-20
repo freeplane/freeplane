@@ -323,8 +323,10 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		if (targetBounds == null) {
 			return true;
 		}
-		final Rectangle currentBounds = frame.getBounds();
-		if (currentBounds == null || currentBounds.equals(targetBounds)) {
+		if (nativeBounds == null) {
+			return true;
+		}
+		if (nativeBounds.equals(targetBounds)) {
 			maximizedResynchronizationGuard.reset();
 			return true;
 		}
@@ -333,7 +335,7 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		// cannot tell a correctly maximized window from a displaced one.
 		if (!needsMaximizedFrameResynchronization(frameGeometry.isX11Toolkit(), windowState, nativeBounds,
 				targetBounds)
-				|| !maximizedResynchronizationGuard.shouldRequest(currentBounds, targetBounds)) {
+				|| !maximizedResynchronizationGuard.shouldRequest(nativeBounds, targetBounds)) {
 			return true;
 		}
 		frame.setBounds(targetBounds);
