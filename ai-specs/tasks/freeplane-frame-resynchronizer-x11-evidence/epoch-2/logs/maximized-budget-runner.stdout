@@ -1,0 +1,3 @@
+budget-control-exit-code=1
+budget-control-timeout=False
+independent-budget-validation=True

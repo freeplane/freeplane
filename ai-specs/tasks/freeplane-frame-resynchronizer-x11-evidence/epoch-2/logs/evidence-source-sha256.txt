@@ -1,0 +1,3 @@
+7053e2a203f2fa9e53f0c3a52e3a0104f3748814c3a515652aa0a809f9d6c8e1  PopupCoordinateAcceptanceProbe.java
+fd15dfdd3bc4b219381661e7d60bb663d0b2412b4051e7f20427e2674e467acc  run-acceptance.py
+f7672c7578fb3849b61340b33d0db6b6d265c033428a1bd94268d8f8bf99c157  run-maximized-budget-control.py

@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "record_type": "archived-developer-xwayland-screenshots",
+  "recorded_at": "2026-10-20T04:03:22.038300+00:00",
+  "capture_date": "2026-10-19",
+  "display_kind": "XWayland under KWin",
+  "limitations": [
+    "Desktop panel occludes the application menu bar.",
+    "Images do not establish numeric menu-item-to-popup gaps.",
+    "Not the native-X11 tester screenshots.",
+    "Not a fresh runtime test of the delivery merge."
+  ],
+  "captures": [
+    {
+      "path": "screenshots/kbd-file.png",
+      "original_path": "/tmp/shots/kbd-file.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 268426,
+      "sha256": "c5ce664d48f2b82691f079fd50200d257a17c93f67027b2d710f43712ed671a6",
+      "byte_copy_verified": true
+    },
+    {
+      "path": "screenshots/final-nav-max.png",
+      "original_path": "/tmp/shots/final-nav-max.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 298092,
+      "sha256": "19e3a1588e0717f5ef224fc933218b3e5dda20f01ae05c5303197a537f11d791",
+      "byte_copy_verified": true
+    }
+  ]
+}

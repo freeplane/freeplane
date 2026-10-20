@@ -1,0 +1,13 @@
+probe-attempt={"attempt": 1, "classification_produced": true, "display": ":99", "exit_code": 1, "outcome": "classified-failure", "phase": "product-probe", "reason": "classification produced; retry disabled", "run_id": "product-run", "timeout": false, "variant": "product"}
+product-calls=1
+product-display-closes=0
+product-attempts=1
+product-outcome=classified-failure
+probe-attempt={"attempt": 1, "classification_produced": false, "display": ":99", "exit_code": 1, "outcome": "retry", "phase": "retry-probe", "reason": "pre-classification harness failure", "run_id": "retry-run", "timeout": false, "variant": "retry"}
+probe-attempt={"attempt": 2, "classification_produced": true, "display": ":99", "exit_code": 0, "outcome": "classified-success", "phase": "retry-probe", "reason": "classification produced; retry disabled", "run_id": "retry-run", "timeout": false, "variant": "retry"}
+retry-calls=2
+retry-display-starts=1
+retry-display-closes=1
+retry-backoff=[1.0]
+retry-attempts=2
+retry-final-exit=0

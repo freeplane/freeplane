@@ -1,0 +1,6 @@
+runner-owned-display=:77
+runner-owned-Xvfb-remaining=NONE
+runner-owned-Openbox-remaining=NONE
+acceptance-probe-processes-remaining=NONE
+pre-existing-Xvfb-preserved=true
+pre-existing-Xvfb=4168168 Xvfb            Xvfb :91 -screen 0 1440x1000x24 -nolisten tcp -ac
