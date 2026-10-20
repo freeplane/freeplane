@@ -1,0 +1,20 @@
+digraph maximized_frame_resynchronization {
+  rankdir=LR;
+  node [shape=box, style=rounded];
+  subgraph cluster_frame_resynchronization {
+    label = "Frame Resynchronization Lane";
+    T-001 [label="Task 1: Lock the Retained Work-Area and Maximized-Guard Contract\nStandard"];
+    T-003 [label="Task 3: Register Frames and Refresh the Adapter Across Look-and-Feel Changes\nCapable"];
+  }
+  subgraph cluster_popup_calibration {
+    label = "Popup Calibration Lane";
+    T-002 [label="Task 2: Implement Owner-Local Popup Calibration and the Delegating Adapter\nAdvanced"];
+  }
+  subgraph cluster_acceptance_evidence {
+    label = "Native Acceptance Evidence Lane";
+    T-004 [label="Task 4: Run Full Regression Checks and Capture Native-X11 Acceptance Evidence\nFrontier"];
+  }
+  T-001 -> T-003;
+  T-002 -> T-003;
+  T-003 -> T-004;
+}

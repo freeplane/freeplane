@@ -1,0 +1,10 @@
+retry-policy-check=PASS
+product-classified-calls=1
+product-classified-display-closes=0
+product-classified-attempts=1
+product-classified-outcome=classified-failure
+pre-classification-calls=2
+pre-classification-display-closes=1
+pre-classification-backoff=[1.0]
+pre-classification-attempts=2
+pre-classification-final-exit=0

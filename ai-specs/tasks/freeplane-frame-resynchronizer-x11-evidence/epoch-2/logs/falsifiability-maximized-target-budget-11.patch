@@ -1,0 +1,14 @@
+--- PopupCoordinateAcceptanceProbe.java
++++ disposable-budget-control.java
+@@ -477,0 +478,11 @@
++        if (maximized) {
++            SwingUtilities.invokeAndWait(new Runnable() {
++                @Override
++                public void run() {
++                    final Rectangle unchangedTarget = frame.getBounds();
++                    for (int request = 0; request < 11; request++) {
++                        frame.setBounds(unchangedTarget);
++                    }
++                }
++            });
++        }
