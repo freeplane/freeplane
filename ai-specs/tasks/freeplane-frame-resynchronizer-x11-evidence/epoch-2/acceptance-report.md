@@ -4,7 +4,14 @@
 
 The canonical four-scenario pointer acceptance **passes on isolated Xvfb/Openbox**. It compiled with `javac --release 8`, exited `0`, and recorded `failure-class=NONE` four times, pointer selection four times, native placement error `(0,0)`, popup persistence above 800 ms before the pointer, and `frame-correction-setBounds-delta=0` in every scenario. All three required negative controls exited `1` with `failure-class=PRODUCT` four times.
 
-The host session is Wayland with XWayland available on `DISPLAY=:1` and `:2`; the isolated acceptance display is Xvfb. **XWayland-only runtime acceptance and native X11 KWin runtime acceptance remain UNVERIFIED.**
+The host session is Wayland with XWayland available on `DISPLAY=:1` and `:2`; the isolated acceptance display is Xvfb. At the time of this isolated run, **XWayland-only runtime acceptance and native X11 KWin runtime acceptance were UNVERIFIED**.
+
+Later evidence supplements this historical harness record:
+
+- [Native X11/KWin tester report](native-x11-20261019/report.md): FlatLaf, single display; cases A–G and I PASS, H N/A; native measurements and request counts preserved, with the original screenshot availability stated explicitly.
+- [Archived XWayland screenshots](xwayland-20261019/report.md): two actual image artifacts from the later developer run, separately identified from the native-X11 report.
+
+The measurements and source hashes below belong to the original harness run. They predate the final client-origin and maximized-request fixes; they are not relabelled as a fresh run of the later PR source.
 
 ## Commands and artifacts
 
@@ -185,4 +192,4 @@ The host has `kwin_wayland` with XWayland displays `:1` and `:2`; `kwin_x11=NONE
 - Native X11 KWin runtime acceptance: **UNVERIFIED**.
 - Isolated Xvfb/Openbox canonical acceptance: **PASS**, as documented above.
 
-The shared XWayland activation limitation remains unresolved by these isolated-display results. No native X11 KWin or shared XWayland pointer acceptance claim is made.
+These limitations describe the isolated harness run recorded above. The later [native-X11 tester report](native-x11-20261019/report.md) and [XWayland visual evidence](xwayland-20261019/report.md) are separate records with their own scope, source identity, and artifact limitations. They do not retroactively turn this isolated run into a native-KWin or shared-XWayland run.

@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "record_type": "tester-supplied-native-x11-report",
+  "recorded_at": "2026-10-20T04:03:22.024770+00:00",
+  "source_message_id": "cc2775bd",
+  "original_report_sha256": "cafeb7835ce97b1e5bdd885994decbc5bd02e24a14c4074b290385a03f1c2952",
+  "committed_tester_report_sha256": "413e7b8452ecaea93bc8f2f226632453e7b19d4716f3ea2885a205fcffcca03b",
+  "redactions": [
+    {
+      "purpose": "Remove private document identifier from test side-effect note",
+      "replacement": "[personal mind-map path redacted]"
+    }
+  ],
+  "commits": {
+    "integration_before_delivery": {
+      "commit": "49d8878b3588bdaeb554b58a09716659838636f5",
+      "tree": "f17a818795bf798a5162b2146117d48fcfe18f99"
+    },
+    "tested_checkout": {
+      "commit": "e3555cf5162aa74f92e8083c8b3fdccf950c4c8a",
+      "tree": "6f60e5f61005e3e50ff6097d1c804390554385b6"
+    }
+  },
+  "whole_trees_identical": false,
+  "fix_files": [
+    {
+      "path": "freeplane/src/main/java/org/freeplane/core/ui/components/FrameResynchronizer.java",
+      "integration_before_delivery": {
+        "blob_oid": "acf8b1b2cb6e4c081ba032b31c44cfd9f94b2181",
+        "sha256": "62a616564cde24ae9bf30e76af6e98fd9005efb7c982d22e1adf1c95c0f5ccb4"
+      },
+      "tested_checkout": {
+        "blob_oid": "acf8b1b2cb6e4c081ba032b31c44cfd9f94b2181",
+        "sha256": "62a616564cde24ae9bf30e76af6e98fd9005efb7c982d22e1adf1c95c0f5ccb4"
+      },
+      "byte_identical": true
+    },
+    {
+      "path": "freeplane/src/main/java/org/freeplane/core/ui/components/PopupCoordinateCalibrator.java",
+      "integration_before_delivery": {
+        "blob_oid": "2bee6daf9cd8667da8601d594e8642295492888b",
+        "sha256": "b784fa191aa0ca98c6304e33397925048e20870525a368f3489207344bfbca6a"
+      },
+      "tested_checkout": {
+        "blob_oid": "2bee6daf9cd8667da8601d594e8642295492888b",
+        "sha256": "b784fa191aa0ca98c6304e33397925048e20870525a368f3489207344bfbca6a"
+      },
+      "byte_identical": true
+    },
+    {
+      "path": "freeplane/src/main/java/org/freeplane/core/ui/components/X11PopupFactory.java",
+      "integration_before_delivery": {
+        "blob_oid": "dc008665d2f72f322fd3aceadce24dc055fedae6",
+        "sha256": "3907eba98e2f384e8a80e1afc9bf9f6063435770bd6a0337e359132b383c8419"
+      },
+      "tested_checkout": {
+        "blob_oid": "dc008665d2f72f322fd3aceadce24dc055fedae6",
+        "sha256": "3907eba98e2f384e8a80e1afc9bf9f6063435770bd6a0337e359132b383c8419"
+      },
+      "byte_identical": true
+    },
+    {
+      "path": "freeplane/src/main/java/org/freeplane/features/ui/FrameController.java",
+      "integration_before_delivery": {
+        "blob_oid": "c5b46a26e6f81d2ce69afd973e323249c313ac9f",
+        "sha256": "7731e69fe9b0a59a317926166bf6e78f81f12f91b281b0d3b3b6f3b5c2dc7b96"
+      },
+      "tested_checkout": {
+        "blob_oid": "c5b46a26e6f81d2ce69afd973e323249c313ac9f",
+        "sha256": "7731e69fe9b0a59a317926166bf6e78f81f12f91b281b0d3b3b6f3b5c2dc7b96"
+      },
+      "byte_identical": true
+    }
+  ],
+  "native_screenshot_artifacts": [
+    {
+      "reported_path": "/tmp/fp-test/FINAL-A-unmaximized-File-menu.png",
+      "available_on_preparation_machine": false,
+      "committed": false
+    },
+    {
+      "reported_path": "/tmp/fp-test/FINAL-A-unmaximized-Edit-menu.png",
+      "available_on_preparation_machine": false,
+      "committed": false
+    },
+    {
+      "reported_path": "/tmp/fp-test/FINAL-A-unmaximized-File-menu-crop.png",
+      "available_on_preparation_machine": false,
+      "committed": false
+    },
+    {
+      "reported_path": "/tmp/fp-test/FINAL-B-maximized-File-menu.png",
+      "available_on_preparation_machine": false,
+      "committed": false
+    },
+    {
+      "reported_path": "/tmp/fp-test/FINAL-B-crop.png",
+      "available_on_preparation_machine": false,
+      "committed": false
+    },
+    {
+      "reported_path": "/tmp/fp-test/FINAL-C-cascading-submenu.png",
+      "available_on_preparation_machine": false,
+      "committed": false
+    },
+    {
+      "reported_path": "/tmp/fp-test/FINAL-C-parent-menu.png",
+      "available_on_preparation_machine": false,
+      "committed": false
+    },
+    {
+      "reported_path": "/tmp/fp-test/FINAL-C-seam-4x.png",
+      "available_on_preparation_machine": false,
+      "committed": false
+    },
+    {
+      "reported_path": "/tmp/fp-test/FINAL-E-combo-dropdown.png",
+      "available_on_preparation_machine": false,
+      "committed": false
+    },
+    {
+      "reported_path": "/tmp/fp-test/FINAL-G-graph-workspace-maximized-Edit-menu.png",
+      "available_on_preparation_machine": false,
+      "committed": false
+    }
+  ],
+  "test_scope": "Native X11 KWin; one connected display; FlatIntelliJLaf; tester-supplied measurements; no Gradle execution during native session."
+}
