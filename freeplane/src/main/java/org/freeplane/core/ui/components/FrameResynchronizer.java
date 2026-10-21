@@ -55,13 +55,6 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		refreshPopupFactory();
 	}
 
-	static boolean needsFrameResynchronization(final boolean isX11Toolkit, final int windowState,
-			final Rectangle frameBounds, final Rectangle targetBounds) {
-		return isX11Toolkit && (windowState & Frame.ICONIFIED) == 0
-				&& frameBounds != null && targetBounds != null
-				&& (frameBounds.x != targetBounds.x || frameBounds.y != targetBounds.y);
-	}
-
 	static boolean needsNormalWindowResynchronization(final boolean isX11Toolkit, final int windowState,
 			final Rectangle frameBounds, final Rectangle nativeBounds) {
 		if (!isX11Toolkit
@@ -100,13 +93,6 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 				&& isX11Toolkit && (windowState & Frame.ICONIFIED) == 0
 				&& nativeBounds != null && targetBounds != null
 				&& !nativeBounds.equals(targetBounds);
-	}
-
-	static boolean needsNormalFrameResynchronization(final boolean isX11Toolkit, final int oldState,
-			final int newState, final Rectangle frameBounds, final Rectangle normalBounds) {
-		return (oldState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH
-				&& (newState & Frame.MAXIMIZED_BOTH) != Frame.MAXIMIZED_BOTH
-				&& needsFrameResynchronization(isX11Toolkit, newState, frameBounds, normalBounds);
 	}
 
 	static Rectangle findTargetScreenBounds(final Rectangle frameBounds, final Rectangle[] screenBounds) {
@@ -403,9 +389,9 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 						|| Math.abs(awtOrigin.y - nativeOrigin.y) > RESYNCHRONIZATION_TOLERANCE);
 	}
 
-	private static void resynchronizeNormalFrame(final JFrame frame, final int windowState,
+	private void resynchronizeNormalFrame(final JFrame frame, final int windowState,
 			final Rectangle nativeBounds) {
-		if (needsNormalWindowResynchronization(isX11Toolkit(), windowState, frame.getBounds(), nativeBounds)) {
+		if (needsNormalWindowResynchronization(frameGeometry.isX11Toolkit(), windowState, frame.getBounds(), nativeBounds)) {
 			frame.setBounds(nativeBounds);
 			frame.validate();
 		}
@@ -663,14 +649,6 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		}
 	}
 
-	private static void resynchronizeFrame(final JFrame frame, final int windowState,
-			final Rectangle targetBounds) {
-		if (needsFrameResynchronization(isX11Toolkit(), windowState, frame.getBounds(), targetBounds)) {
-			frame.setBounds(targetBounds);
-			frame.validate();
-		}
-	}
-
 	private final JFrame frame;
 	private final FrameGeometry frameGeometry;
 	private Rectangle normalBounds;
@@ -716,15 +694,11 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		else if ((oldState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH
 				&& (newState & Frame.MAXIMIZED_BOTH) != Frame.MAXIMIZED_BOTH) {
 			maximizedResynchronizationGuard.reset();
-			if (needsNormalFrameResynchronization(isX11Toolkit(), oldState, newState,
-					frame.getBounds(), normalBounds)) {
-				runGuardedResynchronization(new Runnable() {
-					@Override
-					public void run() {
-						resynchronizeFrame(frame, newState, normalBounds);
-						rememberNormalBounds();
-					}
-				});
+			// AWT's remembered origin can include the decoration offset. Restore
+			// through the native-geometry path instead of moving the window there.
+			if (isNormalWindowState(newState) && frameGeometry.isX11Toolkit()
+					&& !resynchronizeOnStableState()) {
+				scheduleDeferredResynchronization();
 			}
 		}
 	}
@@ -762,7 +736,6 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 			stable = resynchronizeOnStableState();
 		}
 		else {
-			rememberNormalBounds();
 			stable = true;
 		}
 		if (shouldScheduleDeferredResynchronization(maximized, stable)) {
@@ -820,13 +793,13 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 						final boolean sizesMatch =
 								Math.abs(frameBounds.width - nativeBounds.width) <= RESYNCHRONIZATION_TOLERANCE
 										&& Math.abs(frameBounds.height - nativeBounds.height) <= RESYNCHRONIZATION_TOLERANCE;
-						stable[0] = sizesMatch && !needsNormalWindowResynchronization(isX11Toolkit(),
+						stable[0] = sizesMatch && !needsNormalWindowResynchronization(frameGeometry.isX11Toolkit(),
 								windowState, frameBounds, nativeBounds);
+						if (sizesMatch) {
+							resynchronizeNormalFrame(frame, windowState, nativeBounds);
+							rememberNormalBounds(nativeBounds);
+						}
 					}
-					if (nativeBounds != null) {
-						resynchronizeNormalFrame(frame, windowState, nativeBounds);
-					}
-					rememberNormalBounds();
 				}
 				else {
 					stable[0] = true;
@@ -849,9 +822,10 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		}
 	}
 
-	private void rememberNormalBounds() {
+	private void rememberNormalBounds(final Rectangle nativeBounds) {
 		if (isNormalWindowState(lastKnownWindowState) && isNormalWindowState(frame.getExtendedState())) {
-			normalBounds = new Rectangle(frame.getBounds());
+			// Never seed the next cycle from AWT's potentially inset-offset cache.
+			normalBounds = new Rectangle(nativeBounds);
 		}
 	}
 

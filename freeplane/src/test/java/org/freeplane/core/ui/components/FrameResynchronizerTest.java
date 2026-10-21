@@ -250,91 +250,6 @@ public class FrameResynchronizerTest {
     }
 
     @Test
-    public void needsFrameResynchronization_withStaleNormalX11FrameLocation_returnsTrue() {
-        final Rectangle restoredBounds = new Rectangle(2616, 363, 1912, 1008);
-
-        assertThat(FrameResynchronizer.needsFrameResynchronization(
-            true, Frame.NORMAL, new Rectangle(1920, 0, 1912, 1008), restoredBounds)).isTrue();
-    }
-
-    @Test
-    public void needsFrameResynchronization_withCurrentNormalFrameLocation_returnsFalse() {
-        final Rectangle restoredBounds = new Rectangle(2616, 363, 1912, 1008);
-
-        assertThat(FrameResynchronizer.needsFrameResynchronization(
-            true, Frame.NORMAL, restoredBounds, restoredBounds)).isFalse();
-    }
-
-    @Test
-    public void needsFrameResynchronization_withNonX11Toolkit_returnsFalse() {
-        final Rectangle restoredBounds = new Rectangle(2616, 363, 1912, 1008);
-
-        assertThat(FrameResynchronizer.needsFrameResynchronization(
-            false, Frame.NORMAL, new Rectangle(1920, 0, 1912, 1008), restoredBounds)).isFalse();
-    }
-
-    @Test
-    public void needsFrameResynchronization_whenIconified_returnsFalse() {
-        final Rectangle restoredBounds = new Rectangle(2616, 363, 1912, 1008);
-
-        assertThat(FrameResynchronizer.needsFrameResynchronization(
-            true, Frame.NORMAL | Frame.ICONIFIED, new Rectangle(1920, 0, 1912, 1008), restoredBounds)).isFalse();
-    }
-
-    @Test
-    public void needsFrameResynchronization_withMissingBounds_returnsFalse() {
-        final Rectangle restoredBounds = new Rectangle(2616, 363, 1912, 1008);
-
-        assertThat(FrameResynchronizer.needsFrameResynchronization(
-            true, Frame.NORMAL, null, restoredBounds)).isFalse();
-        assertThat(FrameResynchronizer.needsFrameResynchronization(
-            true, Frame.NORMAL, new Rectangle(1920, 0, 1912, 1008), null)).isFalse();
-    }
-
-    @Test
-    public void needsNormalFrameResynchronization_whenLeavingMaximizedWithStaleLocation_returnsTrue() {
-        final Rectangle normalBounds = new Rectangle(2616, 363, 1912, 1008);
-
-        assertThat(FrameResynchronizer.needsNormalFrameResynchronization(
-            true, Frame.MAXIMIZED_BOTH, Frame.NORMAL, new Rectangle(1920, 0, 1912, 1008), normalBounds)).isTrue();
-    }
-
-    @Test
-    public void needsNormalFrameResynchronization_whenStillMaximized_returnsFalse() {
-        final Rectangle normalBounds = new Rectangle(2616, 363, 1912, 1008);
-
-        assertThat(FrameResynchronizer.needsNormalFrameResynchronization(
-            true, Frame.MAXIMIZED_BOTH, Frame.MAXIMIZED_BOTH,
-            new Rectangle(1920, 0, 1912, 1008), normalBounds)).isFalse();
-    }
-
-    @Test
-    public void needsNormalFrameResynchronization_whenNotLeavingMaximized_returnsFalse() {
-        final Rectangle normalBounds = new Rectangle(2616, 363, 1912, 1008);
-
-        assertThat(FrameResynchronizer.needsNormalFrameResynchronization(
-            true, Frame.NORMAL, Frame.NORMAL, new Rectangle(1920, 0, 1912, 1008), normalBounds)).isFalse();
-    }
-
-    @Test
-    public void needsNormalFrameResynchronization_whenIconified_returnsFalse() {
-        final Rectangle normalBounds = new Rectangle(2616, 363, 1912, 1008);
-
-        assertThat(FrameResynchronizer.needsNormalFrameResynchronization(
-            true, Frame.MAXIMIZED_BOTH, Frame.ICONIFIED,
-            new Rectangle(1920, 0, 1912, 1008), normalBounds)).isFalse();
-    }
-
-    @Test
-    public void needsNormalFrameResynchronization_withNonX11Toolkit_returnsFalse() {
-        final Rectangle normalBounds = new Rectangle(2616, 363, 1912, 1008);
-
-        assertThat(FrameResynchronizer.needsNormalFrameResynchronization(
-            false, Frame.MAXIMIZED_BOTH, Frame.NORMAL,
-            new Rectangle(1920, 0, 1912, 1008), normalBounds)).isFalse();
-    }
-
-    @Test
     public void needsMaximizedFrameResynchronization_withStaleX11FrameLocation_returnsTrue() {
         assertThat(FrameResynchronizer.needsMaximizedFrameResynchronization(
             true, Frame.MAXIMIZED_BOTH, new Rectangle(150, 100, 2560, 1440), PRIMARY_SCREEN)).isTrue();
@@ -408,6 +323,195 @@ public class FrameResynchronizerTest {
         assertThat(FrameResynchronizer.needsMaximizedFrameResynchronization(
             true, Frame.MAXIMIZED_BOTH, new Rectangle(204, 184, 1920, 1080),
             new Rectangle(0, 0, 1920, 1080))).isTrue();
+    }
+
+    @Test
+    public void restoredWindow_whenNativeAndAwtBoundsAgree_ignoresStaleRememberedPosition() throws Exception {
+        final Rectangle nativeBounds = new Rectangle(4304, 334, 1608, 1040);
+        final JFrame frame = resynchronizerFrame(new Rectangle(4308, 368, 1608, 1040), Frame.NORMAL);
+        final FrameResynchronizer.FrameGeometry geometry = mock(FrameResynchronizer.FrameGeometry.class);
+        when(geometry.isX11Toolkit()).thenReturn(true);
+        when(geometry.getNativeWindowBounds(frame)).thenReturn(nativeBounds);
+        final FrameResynchronizer resynchronizer = new FrameResynchronizer(frame, geometry);
+        when(frame.getBounds()).thenReturn(nativeBounds);
+
+        SwingUtilities.invokeAndWait(() -> {
+            try {
+                for (int cycle = 0; cycle < 3; cycle++) {
+                    resynchronizer.windowStateChanged(windowStateChangedEvent(Frame.MAXIMIZED_BOTH, Frame.NORMAL));
+                }
+
+                verify(frame, never()).setBounds(any(Rectangle.class));
+                verify(frame, never()).validate();
+            }
+            finally {
+                stopDeferredResynchronizationTimer(resynchronizer);
+            }
+        });
+    }
+
+    @Test
+    public void restoredWindow_withStaleAwtPosition_requestsNativeBounds() throws Exception {
+        final Rectangle nativeBounds = new Rectangle(4304, 334, 1608, 1040);
+        final JFrame frame = resynchronizerFrame(new Rectangle(4308, 368, 1608, 1040), Frame.NORMAL);
+        final FrameResynchronizer.FrameGeometry geometry = mock(FrameResynchronizer.FrameGeometry.class);
+        when(geometry.isX11Toolkit()).thenReturn(true);
+        when(geometry.getNativeWindowBounds(frame)).thenReturn(nativeBounds);
+        final FrameResynchronizer resynchronizer = new FrameResynchronizer(frame, geometry);
+        when(frame.getBounds()).thenReturn(new Rectangle(4312, 402, 1608, 1040));
+
+        SwingUtilities.invokeAndWait(() -> {
+            try {
+                resynchronizer.windowStateChanged(windowStateChangedEvent(Frame.MAXIMIZED_BOTH, Frame.NORMAL));
+
+                verify(frame).setBounds(nativeBounds);
+                verify(frame).validate();
+                verify(frame, times(1)).setBounds(any(Rectangle.class));
+            }
+            finally {
+                stopDeferredResynchronizationTimer(resynchronizer);
+            }
+        });
+    }
+
+    @Test
+    public void restoredWindow_withTransientSizeMismatch_waitsForMatchingSizes() throws Exception {
+        final Rectangle nativeBounds = new Rectangle(4304, 334, 1608, 1040);
+        final JFrame frame = resynchronizerFrame(nativeBounds, Frame.NORMAL);
+        final FrameResynchronizer.FrameGeometry geometry = mock(FrameResynchronizer.FrameGeometry.class);
+        when(geometry.isX11Toolkit()).thenReturn(true);
+        when(geometry.getNativeWindowBounds(frame)).thenReturn(nativeBounds);
+        final FrameResynchronizer resynchronizer = new FrameResynchronizer(frame, geometry);
+        when(frame.getBounds()).thenReturn(new Rectangle(3836, -34, 1928, 1120));
+
+        SwingUtilities.invokeAndWait(() -> {
+            try {
+                resynchronizer.windowStateChanged(windowStateChangedEvent(Frame.MAXIMIZED_BOTH, Frame.NORMAL));
+                verify(frame, never()).setBounds(any(Rectangle.class));
+                assertThat(deferredResynchronizationTimer(resynchronizer)).isNotNull();
+
+                when(frame.getBounds()).thenReturn(new Rectangle(4308, 368, 1608, 1040));
+                fireDeferredResynchronizationTimer(resynchronizer);
+                verify(frame).setBounds(nativeBounds);
+                verify(frame).validate();
+
+                when(frame.getBounds()).thenReturn(nativeBounds);
+                fireDeferredResynchronizationTimer(resynchronizer);
+                verify(frame, times(1)).setBounds(any(Rectangle.class));
+                assertThat(deferredResynchronizationTimer(resynchronizer)).isNull();
+            }
+            finally {
+                stopDeferredResynchronizationTimer(resynchronizer);
+            }
+        });
+    }
+
+    @Test
+    public void restoredWindow_withoutNativeGeometry_doesNotWriteRememberedAwtBounds() throws Exception {
+        final JFrame frame = resynchronizerFrame(new Rectangle(4308, 368, 1608, 1040), Frame.NORMAL);
+        final FrameResynchronizer.FrameGeometry geometry = mock(FrameResynchronizer.FrameGeometry.class);
+        when(geometry.isX11Toolkit()).thenReturn(true);
+        final FrameResynchronizer resynchronizer = new FrameResynchronizer(frame, geometry);
+        when(frame.getBounds()).thenReturn(new Rectangle(4312, 402, 1608, 1040));
+
+        SwingUtilities.invokeAndWait(() -> {
+            try {
+                resynchronizer.windowStateChanged(windowStateChangedEvent(Frame.MAXIMIZED_BOTH, Frame.NORMAL));
+
+                verify(frame, never()).setBounds(any(Rectangle.class));
+                verify(frame, never()).validate();
+            }
+            finally {
+                stopDeferredResynchronizationTimer(resynchronizer);
+            }
+        });
+    }
+
+    @Test
+    public void restoredWindow_withNonX11Toolkit_appliesNothing() throws Exception {
+        final Rectangle nativeBounds = new Rectangle(4304, 334, 1608, 1040);
+        final JFrame frame = resynchronizerFrame(new Rectangle(4308, 368, 1608, 1040), Frame.NORMAL);
+        final FrameResynchronizer.FrameGeometry geometry = mock(FrameResynchronizer.FrameGeometry.class);
+        when(geometry.isX11Toolkit()).thenReturn(false);
+        when(geometry.getNativeWindowBounds(frame)).thenReturn(nativeBounds);
+        final FrameResynchronizer resynchronizer = new FrameResynchronizer(frame, geometry);
+        when(frame.getBounds()).thenReturn(new Rectangle(4312, 402, 1608, 1040));
+
+        SwingUtilities.invokeAndWait(() -> {
+            try {
+                resynchronizer.windowStateChanged(windowStateChangedEvent(Frame.MAXIMIZED_BOTH, Frame.NORMAL));
+
+                verify(frame, never()).setBounds(any(Rectangle.class));
+                verify(frame, never()).validate();
+            }
+            finally {
+                stopDeferredResynchronizationTimer(resynchronizer);
+            }
+        });
+    }
+
+    @Test
+    public void restoredWindow_whenIconified_appliesNothing() throws Exception {
+        assertRestoreStateDoesNotRequestBounds(Frame.ICONIFIED);
+    }
+
+    @Test
+    public void restoredWindow_whenPartiallyMaximized_appliesNothing() throws Exception {
+        assertRestoreStateDoesNotRequestBounds(Frame.MAXIMIZED_HORIZ);
+        assertRestoreStateDoesNotRequestBounds(Frame.MAXIMIZED_VERT);
+    }
+
+    private void assertRestoreStateDoesNotRequestBounds(final int restoredState) throws Exception {
+        final Rectangle nativeBounds = new Rectangle(4304, 334, 1608, 1040);
+        final JFrame frame = resynchronizerFrame(new Rectangle(4308, 368, 1608, 1040), restoredState);
+        final FrameResynchronizer.FrameGeometry geometry = mock(FrameResynchronizer.FrameGeometry.class);
+        when(geometry.isX11Toolkit()).thenReturn(true);
+        when(geometry.getNativeWindowBounds(frame)).thenReturn(nativeBounds);
+        final FrameResynchronizer resynchronizer = new FrameResynchronizer(frame, geometry);
+        when(frame.getBounds()).thenReturn(new Rectangle(4312, 402, 1608, 1040));
+
+        SwingUtilities.invokeAndWait(() -> {
+            try {
+                resynchronizer.windowStateChanged(windowStateChangedEvent(Frame.MAXIMIZED_BOTH, restoredState));
+
+                verify(frame, never()).setBounds(any(Rectangle.class));
+                verify(frame, never()).validate();
+                assertThat(deferredResynchronizationTimer(resynchronizer)).isNull();
+            }
+            finally {
+                stopDeferredResynchronizationTimer(resynchronizer);
+            }
+        });
+    }
+
+    @Test
+    public void normalWindow_remembersNativePositionForMaximizedScreenFallback() throws Exception {
+        final Rectangle leftScreen = new Rectangle(0, 0, 1920, 1080);
+        final Rectangle rightScreen = new Rectangle(1920, 0, 1920, 1080);
+        // Native bounds overlap the left screen by 806 pixels and the right by 802.
+        // The stale AWT offset of 4,34 would incorrectly select the right screen.
+        final Rectangle nativeBounds = new Rectangle(1114, 100, 1608, 940);
+        final JFrame frame = resynchronizerFrame(new Rectangle(1118, 134, 1608, 940), Frame.NORMAL);
+        final FrameResynchronizer.FrameGeometry geometry = mock(FrameResynchronizer.FrameGeometry.class);
+        when(geometry.isX11Toolkit()).thenReturn(true);
+        when(geometry.getNativeWindowBounds(frame)).thenReturn(nativeBounds);
+        when(geometry.getScreenWorkAreas()).thenReturn(new Rectangle[] { leftScreen, rightScreen });
+        final FrameResynchronizer resynchronizer = new FrameResynchronizer(frame, geometry);
+
+        SwingUtilities.invokeAndWait(() -> {
+            try {
+                resynchronizer.componentMoved(mock(ComponentEvent.class));
+                when(frame.getExtendedState()).thenReturn(Frame.MAXIMIZED_BOTH);
+                when(geometry.getNativeWindowBounds(frame)).thenReturn(new Rectangle(4000, 0, 100, 100));
+                resynchronizer.windowStateChanged(windowStateChangedEvent(Frame.NORMAL, Frame.MAXIMIZED_BOTH));
+
+                verify(frame).setBounds(leftScreen);
+                verify(frame, never()).setBounds(rightScreen);
+            }
+            finally {
+                stopDeferredResynchronizationTimer(resynchronizer);
+            }
+        });
     }
 
     @Test
