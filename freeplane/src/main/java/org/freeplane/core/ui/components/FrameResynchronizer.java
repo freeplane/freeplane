@@ -285,6 +285,10 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 
 		Rectangle getNativeWindowBounds(Component component);
 
+		Point getNativeClientOrigin(JFrame frame);
+
+		Point getAwtClientOrigin(JFrame frame);
+
 		Rectangle[] getScreenWorkAreas();
 
 		Insets getScreenInsets(GraphicsConfiguration graphicsConfiguration);
@@ -299,6 +303,25 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		@Override
 		public Rectangle getNativeWindowBounds(final Component component) {
 			return FrameResynchronizer.getNativeWindowBounds(component);
+		}
+
+		@Override
+		public Point getNativeClientOrigin(final JFrame frame) {
+			return FrameResynchronizer.getNativeClientOrigin(frame);
+		}
+
+		@Override
+		public Point getAwtClientOrigin(final JFrame frame) {
+			final JRootPane rootPane = frame.getRootPane();
+			if (rootPane == null) {
+				return null;
+			}
+			try {
+				return rootPane.getLocationOnScreen();
+			}
+			catch (RuntimeException unavailableLocation) {
+				return null;
+			}
 		}
 
 		@Override
@@ -328,8 +351,9 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		}
 		if (nativeBounds.equals(targetBounds)) {
 			maximizedResynchronizationGuard.reset();
-			return true;
+			return resynchronizeAwtClientOrigin(frame, targetBounds);
 		}
+		clearAwtCacheResynchronizationRequestIfConverged(frame);
 		// Ask the window manager what the window actually covers. AWT bounds are
 		// the decorated outer frame and never equal the client work area, so they
 		// cannot tell a correctly maximized window from a displaced one.
@@ -341,6 +365,42 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		frame.setBounds(targetBounds);
 		frame.validate();
 		return false;
+	}
+
+	private boolean resynchronizeAwtClientOrigin(final JFrame frame, final Rectangle targetBounds) {
+		final Point nativeOrigin = frameGeometry.getNativeClientOrigin(frame);
+		final Point awtOrigin = frameGeometry.getAwtClientOrigin(frame);
+		if (nativeOrigin == null || awtOrigin == null) {
+			return true;
+		}
+		if (!needsAwtClientOriginResynchronization(awtOrigin, nativeOrigin)) {
+			awtCacheResynchronizationRequested = false;
+			return true;
+		}
+		if (!awtCacheResynchronizationRequested) {
+			awtCacheResynchronizationRequested = true;
+			frame.setBounds(targetBounds);
+			frame.validate();
+		}
+		return false;
+	}
+
+	private void clearAwtCacheResynchronizationRequestIfConverged(final JFrame frame) {
+		if (!awtCacheResynchronizationRequested) {
+			return;
+		}
+		final Point nativeOrigin = frameGeometry.getNativeClientOrigin(frame);
+		final Point awtOrigin = frameGeometry.getAwtClientOrigin(frame);
+		if (nativeOrigin != null && awtOrigin != null
+				&& !needsAwtClientOriginResynchronization(awtOrigin, nativeOrigin)) {
+			awtCacheResynchronizationRequested = false;
+		}
+	}
+
+	static boolean needsAwtClientOriginResynchronization(final Point awtOrigin, final Point nativeOrigin) {
+		return awtOrigin != null && nativeOrigin != null
+				&& (Math.abs(awtOrigin.x - nativeOrigin.x) > RESYNCHRONIZATION_TOLERANCE
+						|| Math.abs(awtOrigin.y - nativeOrigin.y) > RESYNCHRONIZATION_TOLERANCE);
 	}
 
 	private static void resynchronizeNormalFrame(final JFrame frame, final int windowState,
@@ -616,6 +676,7 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 	private Rectangle normalBounds;
 	private final MaximizedResynchronizationGuard maximizedResynchronizationGuard =
 			new MaximizedResynchronizationGuard();
+	private boolean awtCacheResynchronizationRequested;
 	private int lastKnownWindowState;
 	private boolean isResynchronizing;
 	private javax.swing.Timer deferredResynchronizationTimer;
@@ -697,6 +758,7 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 			stable = resynchronizeOnStableState();
 		}
 		else if (isNormalWindowState(windowState)) {
+			clearAwtCacheResynchronizationRequestIfConverged(frame);
 			stable = resynchronizeOnStableState();
 		}
 		else {

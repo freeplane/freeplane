@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import java.awt.Frame;
 import java.awt.GraphicsConfiguration;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -424,6 +425,74 @@ public class FrameResynchronizerTest {
                 verify(frame, never()).setBounds(any(Rectangle.class));
                 verify(frame, never()).validate();
                 assertThat(deferredResynchronizationTimer(resynchronizer)).isNull();
+            }
+            finally {
+                stopDeferredResynchronizationTimer(resynchronizer);
+            }
+        });
+    }
+
+    @Test
+    public void maximizedComponentEvent_whenNativeMatchesButRootPaneOriginIsStale_requestsOneAwtRefreshUntilConvergence()
+            throws Exception {
+        final Rectangle workArea = FULL_SCREEN;
+        final JFrame frame = resynchronizerFrame(new Rectangle(224, 140, 2248, 1440), Frame.MAXIMIZED_BOTH);
+        final FrameResynchronizer.FrameGeometry geometry = mock(FrameResynchronizer.FrameGeometry.class);
+        when(geometry.isX11Toolkit()).thenReturn(true);
+        when(geometry.getNativeWindowBounds(frame)).thenReturn(workArea);
+        when(geometry.getNativeClientOrigin(frame)).thenReturn(new Point(0, 0));
+        when(geometry.getAwtClientOrigin(frame)).thenReturn(new Point(228, 174));
+        when(geometry.getScreenWorkAreas()).thenReturn(new Rectangle[] { workArea });
+        final FrameResynchronizer resynchronizer = new FrameResynchronizer(frame, geometry);
+
+        SwingUtilities.invokeAndWait(() -> {
+            try {
+                resynchronizer.componentMoved(mock(ComponentEvent.class));
+                resynchronizer.componentMoved(mock(ComponentEvent.class));
+
+                verify(frame, times(1)).setBounds(workArea);
+                verify(frame, times(1)).validate();
+
+                when(geometry.getAwtClientOrigin(frame)).thenReturn(new Point(0, 0));
+                resynchronizer.componentMoved(mock(ComponentEvent.class));
+                verify(frame, times(1)).setBounds(workArea);
+
+                when(geometry.getAwtClientOrigin(frame)).thenReturn(new Point(228, 174));
+                resynchronizer.componentMoved(mock(ComponentEvent.class));
+                verify(frame, times(2)).setBounds(workArea);
+                verify(frame, times(2)).validate();
+            }
+            finally {
+                stopDeferredResynchronizationTimer(resynchronizer);
+            }
+        });
+    }
+
+    @Test
+    public void maximizedComponentEvent_afterNativeRepositioning_allowsAnotherAwtRefresh() throws Exception {
+        final Rectangle workArea = FULL_SCREEN;
+        final Rectangle offTarget = new Rectangle(0, 0, workArea.width - 20, workArea.height);
+        final JFrame frame = resynchronizerFrame(new Rectangle(224, 140, 2248, 1440), Frame.MAXIMIZED_BOTH);
+        final FrameResynchronizer.FrameGeometry geometry = mock(FrameResynchronizer.FrameGeometry.class);
+        when(geometry.isX11Toolkit()).thenReturn(true);
+        when(geometry.getNativeWindowBounds(frame)).thenReturn(workArea);
+        when(geometry.getNativeClientOrigin(frame)).thenReturn(new Point(0, 0));
+        when(geometry.getAwtClientOrigin(frame)).thenReturn(new Point(228, 174));
+        when(geometry.getScreenWorkAreas()).thenReturn(new Rectangle[] { workArea });
+        final FrameResynchronizer resynchronizer = new FrameResynchronizer(frame, geometry);
+
+        SwingUtilities.invokeAndWait(() -> {
+            try {
+                resynchronizer.componentMoved(mock(ComponentEvent.class));
+                when(geometry.getAwtClientOrigin(frame)).thenReturn(new Point(0, 0));
+                when(geometry.getNativeWindowBounds(frame)).thenReturn(offTarget);
+                resynchronizer.componentMoved(mock(ComponentEvent.class));
+                when(geometry.getAwtClientOrigin(frame)).thenReturn(new Point(228, 174));
+                when(geometry.getNativeWindowBounds(frame)).thenReturn(workArea);
+                resynchronizer.componentMoved(mock(ComponentEvent.class));
+
+                verify(frame, times(3)).setBounds(workArea);
+                verify(frame, times(3)).validate();
             }
             finally {
                 stopDeferredResynchronizationTimer(resynchronizer);
