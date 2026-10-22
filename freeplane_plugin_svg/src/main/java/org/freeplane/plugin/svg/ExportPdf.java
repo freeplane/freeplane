@@ -95,7 +95,6 @@ class ExportPdf extends ExportVectorGraphic {
 			    final PDFTranscoder transcoder = createPdfTranscoder();
 			    transcoder.transcode(input, output);
 			}
-			LinkController.getController().loadHyperlink(new Hyperlink(chosenFile.toURI()));
 		} catch (TranscoderException | IOException e) {
 			org.freeplane.core.util.LogUtils.warn(e);
 			UITools.errorMessage(e.getLocalizedMessage());

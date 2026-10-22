@@ -785,6 +785,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		if(! urlAfter.equals(urlBefore))
 			mapController.fireMapChanged(new MapChangeEvent(this, map, UrlManager.MAP_URL, urlBefore, urlAfter, false));
 		mapController.mapSaved(map, true);
+		// The autosave listener must capture the reset change count.
+		((MMapModel) map).scheduleTimerForAutomaticSaving();
 		return true;
 	}
 
@@ -851,7 +853,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				map.getTimerForAutomaticSaving().stop();
 			}
 			writeToFile(map, file);
-			map.scheduleTimerForAutomaticSaving();
+			if (isInternal) {
+				map.scheduleTimerForAutomaticSaving();
+			}
 			return true;
 		}
 		catch (final IOException e) {

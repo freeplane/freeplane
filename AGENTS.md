@@ -9,7 +9,6 @@
 
 ## Build, Test, and Development Commands
 - For build use `java` from Java from `~/.sdkman/candidates/java/21.0.8-zulu`
-- Run: `gradle` with escalation.
 - Use `gradle` (not `gradlew`/`maven`). Examples:
   - Compile app: `gradle :freeplane:compileJava`
   - Test all or module: `gradle test` / `gradle :freeplane:test`
