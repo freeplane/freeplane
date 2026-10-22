@@ -1,174 +1,113 @@
 package org.freeplane.core.ui.components;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assume.assumeFalse;
 
-import java.awt.Component;
+import java.awt.GraphicsEnvironment;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.Collections;
-import java.util.Set;
-import java.util.WeakHashMap;
+import java.awt.Window;
+import java.util.Arrays;
+import java.util.Collection;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JWindow;
-import javax.swing.Popup;
+import javax.swing.JPopupMenu;
+import javax.swing.LookAndFeel;
 import javax.swing.PopupFactory;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
+/**
+ * Run under Xvfb to exercise the X11 regression; other toolkits also verify that
+ * frame installation preserves the look-and-feel's popup behavior.
+ */
+@RunWith(Parameterized.class)
 public class FrameResynchronizerPopupFactoryTest {
-    @Test
-    public void refreshPopupFactory_outsideX11ReturnsTheRegisteredCurrentFactoryUnchanged() {
-        final Set<JFrame> frames = Collections.newSetFromMap(new WeakHashMap<JFrame, Boolean>());
-        frames.add(mock(JFrame.class));
-        final PopupFactory currentFactory = mock(PopupFactory.class);
+    @Parameters(name = "{0}, lightweight={1}")
+    public static Collection<Object[]> lookAndFeelsAndPopupWeights() {
+        return Arrays.asList(new Object[][] {
+            { "javax.swing.plaf.metal.MetalLookAndFeel", false },
+            { "javax.swing.plaf.metal.MetalLookAndFeel", true },
+            { "com.formdev.flatlaf.FlatLightLaf", false },
+            { "com.formdev.flatlaf.FlatLightLaf", true }
+        });
+    }
 
-        assertThat(FrameResynchronizer.refreshPopupFactory(false, currentFactory, frames,
-            mock(PopupCoordinateCalibrator.GeometryProvider.class))).isSameAs(currentFactory);
+    private final String lookAndFeelClassName;
+    private final boolean lightweightEnabled;
+
+    public FrameResynchronizerPopupFactoryTest(final String lookAndFeelClassName,
+            final boolean lightweightEnabled) {
+        this.lookAndFeelClassName = lookAndFeelClassName;
+        this.lightweightEnabled = lightweightEnabled;
     }
 
     @Test
-    public void refreshPopupFactory_onX11WrapsTheRegisteredCurrentFactory() {
-        final Set<JFrame> frames = Collections.newSetFromMap(new WeakHashMap<JFrame, Boolean>());
-        frames.add(mock(JFrame.class));
-        final PopupFactory currentFactory = mock(PopupFactory.class);
+    public void install_preservesLookAndFeelPopupSelectionAndCoordinates() throws Exception {
+        assumeFalse("Popup placement requires a display", GraphicsEnvironment.isHeadless());
+        SwingUtilities.invokeAndWait(() -> {
+            final LookAndFeel previousLookAndFeel = UIManager.getLookAndFeel();
+            final PopupFactory previousFactory = PopupFactory.getSharedInstance();
+            try {
+                UIManager.setLookAndFeel(lookAndFeelClassName);
+                final PopupFactory lookAndFeelFactory = PopupFactory.getSharedInstance();
+                final Class<? extends Window> originalPopupWindow = showMenu(false);
+                final Class<? extends Window> resynchronizedPopupWindow = showMenu(true);
 
-        final PopupFactory result = FrameResynchronizer.refreshPopupFactory(true, currentFactory, frames,
-            mock(PopupCoordinateCalibrator.GeometryProvider.class));
-
-        assertThat(result).isInstanceOf(X11PopupFactory.class);
-        assertThat(((X11PopupFactory) result).getDelegate()).isSameAs(currentFactory);
+                assertThat(resynchronizedPopupWindow).isEqualTo(originalPopupWindow);
+                assertThat(PopupFactory.getSharedInstance()).isSameAs(lookAndFeelFactory);
+            }
+            catch (Exception exception) {
+                throw new AssertionError(exception);
+            }
+            finally {
+                try {
+                    UIManager.setLookAndFeel(previousLookAndFeel);
+                }
+                catch (Exception exception) {
+                    throw new AssertionError(exception);
+                }
+                finally {
+                    PopupFactory.setSharedInstance(previousFactory);
+                }
+            }
+        });
     }
 
-    @Test
-    public void ensurePopupFactory_onX11WrapsCurrentFactoryWhenAFrameIsRegistered() {
-        final Set<JFrame> frames = Collections.newSetFromMap(new WeakHashMap<JFrame, Boolean>());
-        final JFrame frame = mock(JFrame.class);
-        frames.add(frame);
-        final PopupFactory delegate = mock(PopupFactory.class);
+    private Class<? extends Window> showMenu(final boolean installResynchronizer) {
+        final JFrame frame = new JFrame("Frame resynchronizer popup test");
+        final JPopupMenu menu = new JPopupMenu();
+        try {
+            final JButton owner = new JButton("Popup owner");
+            frame.add(owner);
+            frame.setBounds(100, 100, 640, 480);
+            if (installResynchronizer) {
+                FrameResynchronizer.install(frame);
+            }
+            frame.setVisible(true);
+            menu.setLightWeightPopupEnabled(lightweightEnabled);
+            menu.add("Popup item");
+            final Point expectedLocation = owner.getLocationOnScreen();
+            expectedLocation.translate(30, 30);
+            menu.show(owner, 30, 30);
 
-        final PopupFactory result = FrameResynchronizer.ensurePopupFactory(
-            true, delegate, frames, mock(PopupCoordinateCalibrator.GeometryProvider.class));
-
-        assertThat(result).isInstanceOf(X11PopupFactory.class);
-        assertThat(((X11PopupFactory) result).getDelegate()).isSameAs(delegate);
-    }
-
-    @Test
-    public void ensurePopupFactory_outsideX11ReturnsTheActiveFactoryUnchanged() {
-        final PopupFactory delegate = mock(PopupFactory.class);
-        final Set<JFrame> frames = Collections.newSetFromMap(new WeakHashMap<JFrame, Boolean>());
-        final JFrame frame = mock(JFrame.class);
-        frames.add(frame);
-
-        assertThat(FrameResynchronizer.ensurePopupFactory(false, delegate, frames,
-            mock(PopupCoordinateCalibrator.GeometryProvider.class))).isSameAs(delegate);
-    }
-
-    @Test
-    public void ensurePopupFactory_withEmptyRegistryReturnsTheActiveFactoryUnchanged() {
-        final PopupFactory delegate = mock(PopupFactory.class);
-        final Set<JFrame> frames = Collections.newSetFromMap(new WeakHashMap<JFrame, Boolean>());
-
-        assertThat(FrameResynchronizer.ensurePopupFactory(true, delegate, frames,
-            mock(PopupCoordinateCalibrator.GeometryProvider.class))).isSameAs(delegate);
-    }
-
-    @Test
-    public void ensurePopupFactory_doesNotWrapAnExistingAdapterAgain() {
-        final Set<JFrame> frames = Collections.newSetFromMap(new WeakHashMap<JFrame, Boolean>());
-        final JFrame frame = mock(JFrame.class);
-        frames.add(frame);
-        final X11PopupFactory adapter = new X11PopupFactory(mock(PopupFactory.class),
-            owner -> mock(JFrame.class), mock(PopupCoordinateCalibrator.GeometryProvider.class));
-
-        assertThat(FrameResynchronizer.ensurePopupFactory(true, adapter, frames,
-            mock(PopupCoordinateCalibrator.GeometryProvider.class))).isSameAs(adapter);
-    }
-
-    @Test
-    public void ensurePopupFactory_afterDelegateReplacementWrapsTheReplacement() {
-        final Set<JFrame> frames = Collections.newSetFromMap(new WeakHashMap<JFrame, Boolean>());
-        final JFrame frame = mock(JFrame.class);
-        frames.add(frame);
-        final PopupFactory firstDelegate = mock(PopupFactory.class);
-        final PopupFactory firstAdapter = FrameResynchronizer.ensurePopupFactory(true, firstDelegate, frames,
-            mock(PopupCoordinateCalibrator.GeometryProvider.class));
-        final PopupFactory replacement = mock(PopupFactory.class);
-
-        final PopupFactory replacementAdapter = FrameResynchronizer.ensurePopupFactory(true, replacement, frames,
-            mock(PopupCoordinateCalibrator.GeometryProvider.class));
-
-        assertThat(replacementAdapter).isInstanceOf(X11PopupFactory.class);
-        assertThat(replacementAdapter).isNotSameAs(firstAdapter);
-        assertThat(((X11PopupFactory) replacementAdapter).getDelegate()).isSameAs(replacement);
-    }
-
-    @Test
-    public void ensurePopupFactory_usesThePassedRegistryForRegisteredOwnerCalibration() {
-        final Set<JFrame> frames = Collections.newSetFromMap(new WeakHashMap<JFrame, Boolean>());
-        final JFrame registeredFrame = mock(JFrame.class);
-        frames.add(registeredFrame);
-        final PopupFactory delegate = mock(PopupFactory.class);
-        final Popup popup = mock(Popup.class);
-        final PopupCoordinateCalibrator.GeometryProvider geometryProvider =
-            mock(PopupCoordinateCalibrator.GeometryProvider.class);
-        when(geometryProvider.getNativeClientOrigin(registeredFrame)).thenReturn(new Point(100, 200));
-        when(geometryProvider.getOwnerLocationWithinFrame(registeredFrame, registeredFrame))
-            .thenReturn(new Point(10, 20));
-        when(geometryProvider.getOwnerLocationOnScreen(registeredFrame)).thenReturn(new Point(90, 190));
-        when(delegate.getPopup(registeredFrame, registeredFrame, 40, 60)).thenReturn(popup);
-
-        final PopupFactory result = FrameResynchronizer.ensurePopupFactory(true, delegate, frames, geometryProvider);
-
-        assertThat(result.getPopup(registeredFrame, registeredFrame, 20, 30)).isSameAs(popup);
-        verify(delegate).getPopup(registeredFrame, registeredFrame, 40, 60);
-    }
-
-    @Test
-    public void ensurePopupFactory_doesNotCalibrateStandaloneChildWindowOwner() {
-        final Set<JFrame> frames = Collections.newSetFromMap(new WeakHashMap<JFrame, Boolean>());
-        final JFrame registeredFrame = mock(JFrame.class);
-        frames.add(registeredFrame);
-        final JWindow childWindow = mock(JWindow.class);
-        when(childWindow.getParent()).thenReturn(registeredFrame);
-        final PopupFactory delegate = mock(PopupFactory.class);
-        final Popup popup = mock(Popup.class);
-        final Component contents = mock(Component.class);
-        final PopupCoordinateCalibrator.GeometryProvider geometryProvider =
-            mock(PopupCoordinateCalibrator.GeometryProvider.class);
-        when(geometryProvider.getNativeClientOrigin(registeredFrame))
-            .thenReturn(new Point(0, 0));
-        when(geometryProvider.getOwnerLocationWithinFrame(childWindow, registeredFrame))
-            .thenReturn(new Point(1035, 5));
-        when(geometryProvider.getOwnerLocationOnScreen(childWindow)).thenReturn(new Point(1275, 185));
-        when(delegate.getPopup(childWindow, contents, 1000, 420)).thenReturn(popup);
-
-        final PopupFactory result = FrameResynchronizer.ensurePopupFactory(true, delegate, frames,
-            geometryProvider);
-
-        assertThat(result.getPopup(childWindow, contents, 1000, 420)).isSameAs(popup);
-        verify(delegate).getPopup(childWindow, contents, 1000, 420);
-    }
-
-    @Test
-    public void ensurePopupFactory_withUnanchoredOwnerDelegatesOriginalCoordinates() {
-        final Set<JFrame> frames = Collections.newSetFromMap(new WeakHashMap<JFrame, Boolean>());
-        final JFrame frame = mock(JFrame.class);
-        frames.add(frame);
-        final PopupFactory delegate = mock(PopupFactory.class);
-        final Popup popup = mock(Popup.class);
-        final Component owner = mock(Component.class);
-        final Component contents = mock(Component.class);
-        when(delegate.getPopup(owner, contents, 40, 50)).thenReturn(popup);
-
-        final PopupFactory result = FrameResynchronizer.ensurePopupFactory(true, delegate, frames,
-            mock(PopupCoordinateCalibrator.GeometryProvider.class));
-
-        assertThat(result.getPopup(owner, contents, 40, 50)).isSameAs(popup);
-        verify(delegate).getPopup(owner, contents, 40, 50);
+            assertThat(menu.isShowing()).isTrue();
+            assertThat(menu.getLocationOnScreen()).isEqualTo(expectedLocation);
+            final Window popupWindow = SwingUtilities.getWindowAncestor(menu);
+            assertThat(popupWindow).isNotNull();
+            if (!lightweightEnabled) {
+                assertThat(popupWindow).isNotSameAs(frame);
+            }
+            return popupWindow.getClass();
+        }
+        finally {
+            menu.setVisible(false);
+            frame.dispose();
+        }
     }
 }

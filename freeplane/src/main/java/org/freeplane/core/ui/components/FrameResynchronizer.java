@@ -9,26 +9,20 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.awt.Window;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Collections;
-import java.util.Set;
-import java.util.WeakHashMap;
 
 import javax.swing.JFrame;
 import javax.swing.JRootPane;
-import javax.swing.PopupFactory;
-import javax.swing.SwingUtilities;
 
 /**
  * Repairs the stale AWT window coordinate cache on the X11 toolkit so that
- * heavyweight FlatLaf popup windows (menus, combo box dropdowns) open at the
- * correct screen position after the window manager changes the frame geometry
- * (maximize, unmaximize, or arbitrary move). OpenJDK 11 with KWin/X11 keeps
- * reporting the pre-change origin via {@link java.awt.Component#getLocationOnScreen()}
+ * popup placement and menu hit-testing remain correct after the window manager
+ * changes the frame geometry (maximize, unmaximize, or arbitrary move). OpenJDK 11
+ * with KWin/X11 keeps reporting the pre-change origin via
+ * {@link java.awt.Component#getLocationOnScreen()}
  * long after the native window moved, which misplaces popups and makes them
  * dismiss on release.
  *
@@ -39,7 +33,6 @@ import javax.swing.SwingUtilities;
 public final class FrameResynchronizer extends WindowAdapter implements ComponentListener {
 	private static final String X11_TOOLKIT_CLASS_NAME = "sun.awt.X11.XToolkit";
 	private static final int RESYNCHRONIZATION_TOLERANCE = 4;
-	private static final Set<JFrame> REGISTERED_FRAMES = Collections.newSetFromMap(new WeakHashMap<JFrame, Boolean>());
 
 	/**
 	 * Installs a {@link FrameResynchronizer} on the given frame. The listener
@@ -51,8 +44,6 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		frame.addWindowListener(frameResynchronizer);
 		frame.addWindowStateListener(frameResynchronizer);
 		frame.addComponentListener(frameResynchronizer);
-		REGISTERED_FRAMES.add(frame);
-		refreshPopupFactory();
 	}
 
 	static boolean needsNormalWindowResynchronization(final boolean isX11Toolkit, final int windowState,
@@ -155,80 +146,6 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 
 	private static boolean isX11Toolkit() {
 		return X11_TOOLKIT_CLASS_NAME.equals(Toolkit.getDefaultToolkit().getClass().getName());
-	}
-
-	private static final PopupCoordinateCalibrator.GeometryProvider DEFAULT_POPUP_GEOMETRY_PROVIDER =
-			new PopupCoordinateCalibrator.GeometryProvider() {
-				@Override
-				public Point getNativeClientOrigin(final JFrame frame) {
-					// The popup correction is anchored to the native client origin and to
-					// the owner position measured from the frame's root pane. Both are
-					// expressed relative to the client area, so decoration extents appear
-					// on neither side and cancel. Do not substitute the outer frame bounds
-					// here: pairing an outer origin with a root-pane-relative position
-					// reintroduces the decoration offset as a constant popup error.
-					return FrameResynchronizer.getNativeClientOrigin(frame);
-				}
-
-				@Override
-				public Point getOwnerLocationWithinFrame(final Component owner, final JFrame frame) {
-					final JRootPane rootPane = frame.getRootPane();
-					if (owner == null || rootPane == null) {
-						return null;
-					}
-					return SwingUtilities.convertPoint(owner, 0, 0, rootPane);
-				}
-
-				@Override
-				public Point getOwnerLocationOnScreen(final Component owner) {
-					try {
-						if (owner == null || !owner.isShowing()) {
-							return null;
-						}
-						return owner.getLocationOnScreen();
-					}
-					catch (RuntimeException unavailableLocation) {
-						return null;
-					}
-				}
-			};
-
-	public static void refreshPopupFactory() {
-		final PopupFactory currentFactory = PopupFactory.getSharedInstance();
-		final PopupFactory refreshedFactory = refreshPopupFactory(isX11Toolkit(), currentFactory, REGISTERED_FRAMES,
-				DEFAULT_POPUP_GEOMETRY_PROVIDER);
-		if (refreshedFactory != currentFactory) {
-			PopupFactory.setSharedInstance(refreshedFactory);
-		}
-	}
-
-	static PopupFactory refreshPopupFactory(final boolean isX11Toolkit, final PopupFactory currentFactory,
-			final Set<JFrame> registeredFrames,
-			final PopupCoordinateCalibrator.GeometryProvider geometryProvider) {
-		return ensurePopupFactory(isX11Toolkit, currentFactory, registeredFrames, geometryProvider);
-	}
-
-	static PopupFactory ensurePopupFactory(final boolean isX11Toolkit, final PopupFactory currentFactory,
-			final Set<JFrame> registeredFrames,
-			final PopupCoordinateCalibrator.GeometryProvider geometryProvider) {
-		if (!isX11Toolkit || currentFactory == null || registeredFrames == null || registeredFrames.isEmpty()
-				|| currentFactory instanceof X11PopupFactory) {
-			return currentFactory;
-		}
-		final X11PopupFactory.PopupOwnerResolver ownerResolver = new X11PopupFactory.PopupOwnerResolver() {
-			@Override
-			public JFrame findFrame(final Component owner) {
-				if (owner == null) {
-					return null;
-				}
-				if (owner instanceof Window) {
-					return registeredFrames.contains(owner) ? (JFrame) owner : null;
-				}
-				final Window ancestor = SwingUtilities.getWindowAncestor(owner);
-				return ancestor instanceof JFrame && registeredFrames.contains(ancestor) ? (JFrame) ancestor : null;
-			}
-		};
-		return new X11PopupFactory(currentFactory, ownerResolver, geometryProvider);
 	}
 
 	static final class MaximizedResynchronizationGuard {
