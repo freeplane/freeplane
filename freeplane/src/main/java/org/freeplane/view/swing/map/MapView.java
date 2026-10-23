@@ -369,6 +369,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private PaintingMode paintingMode = null;
+	private final TreeTableCellEditor treeTableCellEditor;
 
 	@Override
 	public void refresh() {
@@ -991,6 +992,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         setAutoscrolls(true);
         this.repaintsViewOnSelectionChange = highlightAscendantEdgesEnabled;
         final IUserInputListenerFactory userInputListenerFactory = getModeController().getUserInputListenerFactory();
+        final TreeTableColumnResizer treeTableColumnResizer = new TreeTableColumnResizer(this);
+        addMouseListener(treeTableColumnResizer);
+        addMouseMotionListener(treeTableColumnResizer);
+        treeTableCellEditor = new TreeTableCellEditor(this);
+        addMouseListener(treeTableCellEditor);
         addMouseListener(userInputListenerFactory.getMapMouseListener());
         addMouseMotionListener(userInputListenerFactory.getMapMouseListener());
         addMouseWheelListener(userInputListenerFactory.getMapMouseWheelListener());
@@ -2557,6 +2563,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    		};
 	    final Graphics2D g2 = (Graphics2D) g;
 	    paintChildren(g2, paintModes);
+	    new TreeTableCellPainter(this, treeTableCellEditor).paintTreeTables(g2);
 	    if(isSpotlightEnabled())
 	    	paintDimmer(g2, paintModes);
 		paintSelecteds(g2);

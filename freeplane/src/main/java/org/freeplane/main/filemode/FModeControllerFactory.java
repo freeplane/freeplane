@@ -51,6 +51,7 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.text.TextController;
+import org.freeplane.features.treetable.TreeTableController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
@@ -82,6 +83,7 @@ public class FModeControllerFactory {
 		LocationController.install(new LocationController());
 		LayoutController.install(new LayoutController());
 		LogicalStyleController.install(new LogicalStyleController(modeController));
+		TreeTableController.install(new TreeTableController());
 		MapStyle.install(true);
 		NodeStyleController.getController().shapeHandlers.addGetter(new Integer(0), new IPropertyHandler<NodeGeometryModel, NodeModel>() {
 		    @Override

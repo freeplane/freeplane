@@ -231,6 +231,39 @@ git diff | head -20  # Verify only expected changes, no deletions
 - For Freeplane-specific logging, use the proprietary logging utilities directly
 - Use `LogUtils.warn()` and similar methods for Freeplane logging (as seen in existing codebase)
 
+## Git Workflow
+
+### Branches
+- **`1.13.x`**: Main branch of the fork (tracks `upstream/1.13.x`). Never push to it unless asked.
+- **`feature/xxx`**: Feature branches, started from `1.13.x`. `origin/1.13.x` can be merged into a feature branch to avoid diverging.
+- Feature branches must always be prefixed with `feature/` and named **by subject** rather than by precise change (e.g. `feature/treeviewer`, not `feature/treetable-borders-and-rename`), so that follow-ups naturally attach to it.
+- **Never delete a Git branch** without being explicitly asked.
+
+### Choosing the feature branch
+An improvement or fix that continues an existing subject must be done **on the existing feature branch of that subject**, not on a new one, so that the history shows it is the continuation.
+
+Before creating a branch, look for an existing one on the same subject:
+- not yet merged into `origin/1.13.x`: `git branch -r --no-merged origin/1.13.x`;
+- already merged into `origin/1.13.x`: `git branch -r --merged origin/1.13.x`.
+
+Then:
+- **A branch deals with the same subject**: resume it, announcing it in one sentence ("resuming `feature/xxx`"). Only merge `origin/1.13.x` into it when necessary (dependency on newer code, or conflict), since each merge adds a useless node to the graph.
+- **The subject matches a feature already merged into `1.13.x`, OR there is doubt between several branches**: ask, proposing the candidate branch.
+- **No branch matches**: create a new one.
+
+### Commits, push and merge
+- **Commits**: Messages in casual French, single line, no Conventional Commits, no Co-Authored-By. Stage files automatically when committing (except files not managed by Git). Never merge automatically while committing.
+- **Push**: On a **feature branch**, commit and push automatically without asking. On any other branch, never push unless asked.
+- **Merge**: Never fast-forward (except when pulling). Never merge unless asked.
+
+### Git ignore rules
+Never manage in Git, unless explicitly asked:
+- Maven `target/` folders
+- Binary files (`.class`, `.jar`, `.war`, etc.)
+- Folders starting with `.` (`.vscode`, `.settings`, etc.)
+
+For other files starting with `.`, ask first.
+
 ## Distribution and Packaging
 - Multi-platform support (Windows, macOS, Linux)
 - Portable application support via PortableApps format

@@ -34,6 +34,9 @@ import org.freeplane.features.filter.Filter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryLevels;
 import org.freeplane.features.nodelocation.LocationModel;
+import org.freeplane.features.treetable.TreeTableHeader;
+import org.freeplane.features.treetable.TreeTableHeaderPlacement;
+import org.freeplane.features.treetable.TreeTableModel;
 
 class VerticalNodeViewLayoutStrategy {
 
@@ -153,8 +156,34 @@ class VerticalNodeViewLayoutStrategy {
     private void calculateLayoutData(final boolean isLeft) {
         setFreeChildNodes(isLeft);
         calculateLayoutX(isLeft);
+        placeTreeTableHeader(isLeft);
         calculateLayoutY(isLeft);
 
+    }
+
+    private void placeTreeTableHeader(final boolean laysOutLeftSide) {
+        if (laysOutLeftSide || !TreeTableModel.isTreeTableRoot(view.getNode()))
+            return;
+        int headerIndex = -1;
+        final IntStream.Builder rowXs = IntStream.builder();
+        final IntStream.Builder rowWidths = IntStream.builder();
+        for (int i = 0; i < childViewCount; i++) {
+            final NodeViewLayoutHelper child = view.getComponent(i);
+            if (child.isLeft())
+                continue;
+            if (TreeTableHeader.isHeaderRoot(child.getNode()))
+                headerIndex = i;
+            else {
+                rowXs.add(xCoordinates[i]);
+                rowWidths.add(child.getWidth());
+            }
+        }
+        if (headerIndex < 0)
+            return;
+        final int treeColumnRight = TreeTableHeaderPlacement.treeColumnRight(contentSize.width,
+            rowXs.build().toArray(), rowWidths.build().toArray(), spaceAround);
+        xCoordinates[headerIndex] = TreeTableHeaderPlacement.headerX(treeColumnRight,
+            view.getZoomed(TreeTableHeaderPlacement.GAP), spaceAround);
     }
 
     private void calculateLayoutX(final boolean laysOutLeftSide) {

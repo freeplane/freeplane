@@ -60,6 +60,7 @@ import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.features.treetable.TreeTableController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.view.swing.features.BlinkingNodeHook;
@@ -139,6 +140,7 @@ public class HeadlessMModeControllerFactory {
 		final MLogicalStyleController logicalStyleController = new MLogicalStyleController(modeController);
 		LogicalStyleController.install(logicalStyleController);
 		logicalStyleController.initM();
+		TreeTableController.install(new TreeTableController());
 		AttributeController.install(new MAttributeController(modeController));
 		modeController.addAction(new EditAttributesAction());
 		SpellCheckerController.install(modeController);

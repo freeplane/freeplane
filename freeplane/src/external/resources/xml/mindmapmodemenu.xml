@@ -801,6 +801,19 @@
 		<Entry builder="separator" />
 		<Entry name="AlwaysUnfoldedNodeAction" usedBy = "EDITOR" />
 		<Entry name="FreeNodeAction" usedBy = "EDITOR" />
+		<Entry name="treetable" textKey="menu_treetable" usedBy = "EDITOR">
+			<Entry name="ConvertToTreeTableAction" />
+			<Entry name="DeleteTreeTableAction" />
+			<Entry name="PasteAsTreeTableAction" />
+			<Entry builder="separator" />
+			<Entry name="AddTreeTableColumnAction" />
+			<Entry name="DeleteTreeTableColumnAction" />
+			<Entry name="MoveTreeTableColumnLeftAction" />
+			<Entry name="MoveTreeTableColumnRightAction" />
+			<Entry builder="separator" />
+			<Entry name="ToggleTreeTableTextWrapAction" />
+			<Entry name="TreeTablePropertiesAction" />
+		</Entry>
 		<Entry builder="separator" />
 		        <Entry name="BookmarkNodeAction" />
 				<Entry name="goto" processOnPopup="true">
