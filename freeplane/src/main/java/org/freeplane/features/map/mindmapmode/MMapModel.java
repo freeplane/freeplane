@@ -125,6 +125,12 @@ public class MMapModel extends MapModel {
 		return timerForAutomaticSaving;
 	}
 
+    public void resumeTimerForAutomaticSaving(Timer timer) {
+        if (autosaveEnabled && getTimerForAutomaticSaving() == timer) {
+            timer.restart();
+        }
+    }
+
 	@Override
 	public String getTitle() {
 		final URL url = getURL();

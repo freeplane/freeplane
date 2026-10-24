@@ -22,10 +22,13 @@ package org.freeplane.features.url.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 
 import javax.swing.Timer;
 
+import org.apache.commons.io.FileUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -57,62 +60,69 @@ public class DoAutomaticSave implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    	final URL url = model.getURL();
-    	if(url == null)
-    		return;
-    	/* Map is dirty enough? */
-        if (model.isReadOnly() || model.getNumberOfChangesSinceLastSave() == changeState) {
+        final URL url = model.getURL();
+        if (url == null) {
             return;
         }
-        changeState = model.getNumberOfChangesSinceLastSave();
-        if (changeState == 0) {
+        final int currentChangeState = model.getNumberOfChangesSinceLastSave();
+        if (model.isReadOnly() || currentChangeState == changeState) {
+            return;
+        }
+        if (currentChangeState == 0) {
+            changeState = 0;
             /* map was recently saved. */
             return;
         }
-        Timer timer =  (Timer) e.getSource();
+        final ModeController currentModeController = Controller.getCurrentModeController();
+        if (!(currentModeController instanceof MModeController)) {
+            return;
+        }
+        final UrlManager fileManager = UrlManager.getController();
+        if (!(fileManager instanceof MFileManager)) {
+            return;
+        }
+        final MModeController modeController = (MModeController) currentModeController;
+        final File file = new File(url.getFile());
+        final File pathToStore = MFileManager.backupDir(file);
+        final Timer timer = (Timer) e.getSource();
         timer.stop();
         try {
-            final ModeController currentModeController = Controller.getCurrentModeController();
-            if(!(currentModeController instanceof MModeController))
-                return;
-            final UrlManager fileManager = UrlManager.getController();
-            if(!(fileManager instanceof MFileManager))
-                return;
-            MModeController modeController = ((MModeController) currentModeController);
-            final File file = new File(url.getFile());
-            final File pathToStore = MFileManager.backupDir(url != null ? file : null);
-            pathToStore.mkdirs();
+            FileUtils.forceMkdir(pathToStore);
             final File tempFile = MFileManager.renameAutosaveFiles(pathToStore, file, numberOfFiles, filesShouldBeDeletedAfterShutdown);
             if (tempFile == null) {
-            	if(numberOfFiles > 0)
-            		LogUtils.severe("Can't create automatic backup for " + file);
-                return;
+                throw new IOException("Can't rotate automatic backups for " + file + " in " + pathToStore);
             }
             if (filesShouldBeDeletedAfterShutdown) {
                 tempFile.deleteOnExit();
             }
-            if(ResourceController.getResourceController().getBooleanProperty("automatically_overwrite_mindmap_files")) {
-                if(tempFile.isFile() && tempFile.canWrite()) {
-                    tempFile.delete();
+            final boolean saved;
+            final File savedFile;
+            if (ResourceController.getResourceController().getBooleanProperty("automatically_overwrite_mindmap_files")) {
+                if (tempFile.isFile() && tempFile.canWrite()) {
+                    Files.delete(tempFile.toPath());
                 }
-                if (file.renameTo(tempFile)) {
-                    ((MFileManager) fileManager).save(model);
-                    outputStatusMessageAfterAutomaticSave(modeController, model.getFile());
-                }
-                else
-                	LogUtils.severe("Can't create automatic backup for " + file);
+                FileUtils.moveFile(file, tempFile);
+                saved = ((MFileManager) fileManager).save(model);
+                savedFile = model.getFile();
             }
-            else if(tempFile.isFile() && tempFile.canWrite()
-                    || ! tempFile.exists() && tempFile.getParentFile().canWrite()) {
-                ((MFileManager) fileManager)
-                .saveInternal((MMapModel) model, tempFile, true /*=internal call*/);
-                outputStatusMessageAfterAutomaticSave(modeController, tempFile);
+            else if (tempFile.isFile() && tempFile.canWrite()
+                    || !tempFile.exists() && tempFile.getParentFile().canWrite()) {
+                saved = ((MFileManager) fileManager).saveInternal((MMapModel) model, tempFile, true);
+                savedFile = tempFile;
             }
-            else if (numberOfFiles > 0)
-            	LogUtils.severe("Can't create automatic backup for " + file);
+            else {
+                throw new IOException("Can't write automatic backup " + tempFile);
+            }
+            if (saved) {
+                changeState = currentChangeState;
+                outputStatusMessageAfterAutomaticSave(modeController, savedFile);
+            }
         }
         catch (final Exception ex) {
-            LogUtils.severe("Error in automatic MapModel.save(): ", ex);
+            LogUtils.severe("Error automatically saving " + file + " with backups in " + pathToStore, ex);
+        }
+        finally {
+            ((MMapModel) model).resumeTimerForAutomaticSaving(timer);
         }
     }
 
