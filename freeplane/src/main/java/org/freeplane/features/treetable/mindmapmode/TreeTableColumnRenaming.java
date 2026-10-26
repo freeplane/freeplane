@@ -13,7 +13,10 @@ class TreeTableColumnRenaming implements INodeChangeListener {
 		if (!NodeModel.NODE_TEXT.equals(event.getProperty()) || node.getMap().isUndoActionRunning()
 				|| !TreeTableHeader.isColumnNode(node))
 			return;
-		TreeTableEditing.renameColumnValues(node, TreeTableHeader.keyOfText(event.getOldValue()),
-			TreeTableHeader.keyOfText(event.getNewValue()));
+		final String oldKey = TreeTableHeader.keyOfText(event.getOldValue());
+		if (oldKey.isEmpty())
+			TreeTableEditing.inheritColumnValues(node.getParentNode());
+		else
+			TreeTableEditing.renameColumnValues(node, oldKey, TreeTableHeader.keyOfText(event.getNewValue()));
 	}
 }

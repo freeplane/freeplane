@@ -134,6 +134,59 @@ public class TreeTableHeaderTest {
 	}
 
 	@Test
+	public void passesKeyOfSplitColumnToItsFirstSubColumn() {
+		final NodeModel price = childOf(header, "Price");
+		final NodeModel net = childOf(price, "Net");
+		childOf(price, "Gross");
+
+		assertThat(TreeTableHeader.heirOf(price)).isSameAs(net);
+		assertThat(TreeTableHeader.keyInheritedFrom(price)).isEqualTo("Price");
+	}
+
+	@Test
+	public void passesKeyOfSplitColumnToFirstLeafOfInsertedSubtree() {
+		final NodeModel price = childOf(header, "Price");
+		final NodeModel net = childOf(childOf(price, "Amounts"), "Net");
+
+		assertThat(TreeTableHeader.heirOf(price)).isSameAs(net);
+		assertThat(TreeTableHeader.keyInheritedFrom(price)).isEqualTo("Price");
+	}
+
+	@Test
+	public void passesNoKeyToSubColumnWithoutName() {
+		final NodeModel price = childOf(header, "Price");
+		childOf(price, "");
+
+		assertThat(TreeTableHeader.keyInheritedFrom(price)).isNull();
+	}
+
+	@Test
+	public void passesNoKeyStillUsedByAnotherColumn() {
+		final NodeModel price = childOf(header, "Price");
+		childOf(price, "Net");
+		childOf(header, "Price");
+
+		assertThat(TreeTableHeader.keyInheritedFrom(price)).isNull();
+	}
+
+	@Test
+	public void passesNoKeyToSubColumnNamedLikeAnotherColumn() {
+		final NodeModel price = childOf(header, "Price");
+		childOf(price, "Net");
+		childOf(header, "Net");
+
+		assertThat(TreeTableHeader.keyInheritedFrom(price)).isNull();
+	}
+
+	@Test
+	public void passesNoKeyFromColumnWithoutSubColumnOrFromHeader() {
+		final NodeModel price = childOf(header, "Price");
+
+		assertThat(TreeTableHeader.keyInheritedFrom(price)).isNull();
+		assertThat(TreeTableHeader.keyInheritedFrom(header)).isNull();
+	}
+
+	@Test
 	public void findsLowestCommonAncestorOfColumns() {
 		final NodeModel analysis = childOf(header, "Analysis");
 		final NodeModel pros = childOf(analysis, "Pros");

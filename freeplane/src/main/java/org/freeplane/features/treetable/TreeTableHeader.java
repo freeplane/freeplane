@@ -122,6 +122,26 @@ public class TreeTableHeader {
 				&& columnsOf(treeTableRoot).acceptsRenaming(keyOf(columnNode), newKey == null ? null : newKey.trim());
 	}
 
+	public static String keyInheritedFrom(final NodeModel formerColumnNode) {
+		if (!isBelowHeaderRoot(formerColumnNode) || !formerColumnNode.hasChildren())
+			return null;
+		final String formerKey = keyOf(formerColumnNode);
+		final NodeModel heir = heirOf(formerColumnNode);
+		final String heirKey = keyOf(heir);
+		if (formerKey.isEmpty() || heirKey.isEmpty() || formerKey.equals(heirKey))
+			return null;
+		for (final NodeModel columnNode : columnNodesOf(headerRootAbove(formerColumnNode))) {
+			final String key = keyOf(columnNode);
+			if (key.equals(formerKey) || columnNode != heir && key.equals(heirKey))
+				return null;
+		}
+		return formerKey;
+	}
+
+	public static NodeModel heirOf(final NodeModel formerColumnNode) {
+		return columnNodesOf(formerColumnNode).get(0);
+	}
+
 	public static NodeModel lowestCommonAncestor(final NodeModel first, final NodeModel second) {
 		for (NodeModel ancestor = first; ancestor != null; ancestor = ancestor.getParentNode()) {
 			if (ancestor == second || second.isDescendantOf(ancestor))

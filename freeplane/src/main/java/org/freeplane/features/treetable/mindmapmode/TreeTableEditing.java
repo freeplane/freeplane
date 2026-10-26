@@ -39,6 +39,7 @@ public class TreeTableEditing {
 
 	public static void installColumnRenaming(final MapController mapController) {
 		mapController.addNodeChangeListener(new TreeTableColumnRenaming());
+		mapController.addMapChangeListener(new TreeTableColumnSplitting());
 	}
 
 	public static void setCellValue(final NodeModel row, final String attributeKey, final String value) {
@@ -63,6 +64,15 @@ public class TreeTableEditing {
 			return;
 		for (final NodeModel row : TreeTableNodes.rowsOf(treeTableRoot))
 			renameAttribute(row, oldKey, newKey);
+	}
+
+	static void inheritColumnValues(final NodeModel formerColumnNode) {
+		final String inheritedKey = TreeTableHeader.keyInheritedFrom(formerColumnNode);
+		if (inheritedKey == null)
+			return;
+		final String heirKey = TreeTableHeader.keyOf(TreeTableHeader.heirOf(formerColumnNode));
+		for (final NodeModel row : TreeTableNodes.rowsOf(TreeTableNodes.treeTableRootOf(formerColumnNode)))
+			renameAttribute(row, inheritedKey, heirKey);
 	}
 
 	private static boolean isUsedByAnotherColumn(final NodeModel columnNode, final String key) {
@@ -224,7 +234,7 @@ public class TreeTableEditing {
 			final String newAttributeKey) {
 		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(row);
 		final int index = attributes.getAttributeIndex(oldAttributeKey);
-		if (index >= 0)
+		if (index >= 0 && attributes.getAttributeIndex(newAttributeKey) < 0)
 			attributeController().performSetValueAt(row, attributes, newAttributeKey, index, ATTRIBUTE_NAME_COLUMN);
 	}
 
