@@ -39,9 +39,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.Vector;
 import java.util.function.Consumer;
 
@@ -125,19 +129,31 @@ import net.infonode.util.Direction;
 class MapViewDockingWindows implements IMapViewChangeListener {
 
 	private static final String FREEPLANE_FLOATING_WINDOW = "freeplaneFloatingWindow";
-	private static final String CUSTOMIZED_TAB_NAME_PROPERTY = MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY;
+	private static final String CUSTOMIZED_TAB_NAME_PROPERTY = "customizedDockingTabName";
+	private static final String TAB_TITLE_METADATA_PROPERTY = "dockingTabTitleMetadata_1.0";
 
 	private static final String OPENED_NOW = "openedNow_1.3.04";
 	private RootWindow rootWindow = null;
 	final private Vector<Component> mapViews;
+	private final Map<String, Deque<PendingTabTitle>> pendingTabTitles =
+			new HashMap<String, Deque<PendingTabTitle>>();
 	private boolean mPaneSelectionUpdate = true;
 	private boolean loadingLayoutFromObjectInputStream;
-	private boolean initialTabNameLoadingWasDone;
 	private byte[] emptyConfigurations;
 	private final MapViewSerializer viewSerializer;
 	private DockingWindowsTheme theme;
 	private Dimension capturedWindowSize = null;
 	private final ApplicationViewController applicationViewController;
+
+	private static final class PendingTabTitle {
+		private final String windowSignature;
+		private final String title;
+
+		private PendingTabTitle(String windowSignature, String title) {
+			this.windowSignature = windowSignature;
+			this.title = title;
+		}
+	}
 
     public MapViewDockingWindows(ApplicationViewController applicationViewController) {
 		this.applicationViewController = applicationViewController;
@@ -413,18 +429,26 @@ class MapViewDockingWindows implements IMapViewChangeListener {
                 });
                 menu.add(closeItem);
                 JMenuItem renameItem = new JMenuItem(TextUtils.getText("TabPopUpMenu.rename.text","Rename"));
-				renameItem.setToolTipText(TextUtils.getText("TabPopUpMenu.rename.tooltip","Windows layout changes may reset the tab title."));
+				renameItem.setToolTipText(TextUtils.getText("TabPopUpMenu.rename.tooltip",
+						"The tab name is saved with the window layout."));
 				renameItem.addActionListener(e -> {
-                	JComponent mapView = (JComponent) getContainedMapView(window);
-                	String customizedTabName = (String) mapView.getClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY);
-                	customizedTabName = customizedTabName!=null ? customizedTabName : mapView.getName();
-                	String newName = JOptionPane.showInputDialog(TextUtils.getText("TabPopUpMenu.rename.inputDialog","Input new temporary name: "), customizedTabName);
-                    if(Objects.equals(newName, "") || newName==null ){
-                        mapView.putClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY, null);
-                    } else {
-                        mapView.putClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY, newName);
-                    }
+					String customizedTabName = (String) window.getClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY);
+					if (customizedTabName == null) {
+						Component containedMapView = getContainedMapView(window);
+						customizedTabName = containedMapView instanceof MapView
+								? containedMapView.getName()
+								: window.getTitle();
+					}
+					String newName = JOptionPane.showInputDialog(
+							TextUtils.getText("TabPopUpMenu.rename.inputDialog","Input new tab name: "),
+							customizedTabName);
+					if (newName == null) {
+						return;
+					}
+					window.putClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY,
+							newName.isEmpty() ? null : newName);
                 	addTitleProvider(window);
+					persistTabTitleMetadata();
                     Controller.getCurrentController().getMapViewManager().setMapTitles();
                 });
 				menu.add(renameItem);
@@ -577,8 +601,8 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	}
 
     private String getCustomTitle(DockingWindow window){
-        String windowName = (String) window.getClientProperty(MapViewDockingWindows.CUSTOMIZED_TAB_NAME_PROPERTY);
-        if (windowName == null || (window instanceof ConnectedToMenuView)) {
+        String windowName = (String) window.getClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY);
+        if (windowName == null) {
             return SimpleDockingWindowTitleProvider.INSTANCE.getTitle(window);
         } else {
             boolean dirty = isAnyChildWindowDirty(window);
@@ -591,7 +615,12 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		if (window == null)
 			return false;
 		else if (window instanceof View) {
-			return window.getTitle().endsWith("*");
+			Component mapViewComponent = getContainedMapView((View) window);
+			if (mapViewComponent instanceof MapView) {
+				MapModel map = ((MapView) mapViewComponent).getMap();
+				return !map.isSaved() && !map.isReadOnly();
+			}
+			return false;
 		}
 		else {
 			for (int i = 0; i < window.getChildWindowCount(); i++) {
@@ -619,6 +648,102 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 
 	private void addTitleProvider(DockingWindow window){
 		window.getWindowProperties().setTitleProvider(this::getCustomTitle);
+	}
+
+	private void preserveCustomizedTitleForReopenedMap(Component mapViewComponent) {
+		if (loadingLayoutFromObjectInputStream || !(mapViewComponent instanceof MapView)) {
+			return;
+		}
+		String mapUrl = getMapUrlKey((MapView) mapViewComponent);
+		if (mapUrl == null) {
+			return;
+		}
+		View view = getContainingDockedWindow(mapViewComponent);
+		DockingWindow titleOwner = findCustomizedTitleOwner(view);
+		if (titleOwner == null) {
+			return;
+		}
+		String title = (String) titleOwner.getClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY);
+		Deque<PendingTabTitle> titles = pendingTabTitles.get(mapUrl);
+		if (titles == null) {
+			titles = new ArrayDeque<PendingTabTitle>();
+			pendingTabTitles.put(mapUrl, titles);
+		}
+		titles.addLast(new PendingTabTitle(getWindowSignature(titleOwner), title));
+	}
+
+	private void restorePendingCustomizedTitle(Component mapViewComponent, View newView) {
+		if (loadingLayoutFromObjectInputStream || !(mapViewComponent instanceof MapView)) {
+			return;
+		}
+		String mapUrl = getMapUrlKey((MapView) mapViewComponent);
+		Deque<PendingTabTitle> titles = mapUrl != null ? pendingTabTitles.get(mapUrl) : null;
+		if (titles == null || titles.isEmpty()) {
+			return;
+		}
+		PendingTabTitle pendingTitle = titles.removeFirst();
+		if (titles.isEmpty()) {
+			pendingTabTitles.remove(mapUrl);
+		}
+		DockingWindow titleOwner = findAncestorWithSignature(newView, pendingTitle.windowSignature);
+		if (titleOwner == null) {
+			titleOwner = newView;
+		}
+		titleOwner.putClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY, pendingTitle.title);
+		addTitleProvider(titleOwner);
+	}
+
+	private DockingWindow findCustomizedTitleOwner(DockingWindow window) {
+		DockingWindow current = window;
+		while (current != null) {
+			if (current.getClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY) instanceof String) {
+				return current;
+			}
+			current = current.getWindowParent();
+		}
+		return null;
+	}
+
+	private DockingWindow findAncestorWithSignature(DockingWindow window, String signature) {
+		DockingWindow current = window;
+		while (current != null) {
+			if (signature.equals(getWindowSignature(current))) {
+				return current;
+			}
+			current = current.getWindowParent();
+		}
+		return null;
+	}
+
+	private String getMapUrlKey(MapView mapView) {
+		return mapView.getMap().getURL() != null ? mapView.getMap().getURL().toExternalForm() : null;
+	}
+
+	private String getWindowSignature(DockingWindow window) {
+		StringBuilder signature = new StringBuilder();
+		appendSignaturePart(signature, window.getClass().getName());
+		if (window instanceof View) {
+			Component mapView = getContainedMapView((View) window);
+			String identity = mapView instanceof MapView
+					? getMapUrlKey((MapView) mapView)
+					: window.getTitle();
+			appendSignaturePart(signature, identity != null ? identity : "");
+		}
+		else {
+			List<String> childSignatures = new ArrayList<String>(window.getChildWindowCount());
+			for (int i = 0; i < window.getChildWindowCount(); i++) {
+				childSignatures.add(getWindowSignature(window.getChildWindow(i)));
+			}
+			Collections.sort(childSignatures);
+			for (String childSignature : childSignatures) {
+				appendSignaturePart(signature, childSignature);
+			}
+		}
+		return signature.toString();
+	}
+
+	private void appendSignaturePart(StringBuilder signature, String value) {
+		signature.append(value.length()).append(':').append(value);
 	}
 
 	static private View getContainingDockedWindow(final Component pNewMap) {
@@ -665,6 +790,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	private void addDockedWindow(final Component pOldMap, final Component pNewMap) {
 	    final View viewFrame = viewSerializer.newDockedView(pNewMap, createTitle(pNewMap));
 		addDockedView(pOldMap != null ? getContainingDockedWindow(pOldMap) : null, viewFrame);
+		restorePendingCustomizedTitle(pNewMap, viewFrame);
         updateTabTooltip(pNewMap);
     }
 
@@ -676,9 +802,10 @@ class MapViewDockingWindows implements IMapViewChangeListener {
     }
 
     @Override
-    public void afterViewClose(final Component pOldMapView) {
+	public void afterViewClose(final Component pOldMapView) {
         for (int i = 0; i < mapViews.size(); ++i) {
             if (mapViews.get(i) == pOldMapView) {
+				preserveCustomizedTitleForReopenedMap(pOldMapView);
                 mPaneSelectionUpdate = false;
                 getContainingDockedWindow(pOldMapView).close();
                 mapViews.remove(i);
@@ -722,6 +849,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			objectStream.close();
 			String encodedBytes = Base64.encodeBase64String(byteStream.toByteArray());
 			ResourceController.getResourceController().setProperty(OPENED_NOW, encodedBytes);
+			persistTabTitleMetadata();
         }
         catch (IOException e) {
 	        e.printStackTrace();
@@ -729,13 +857,26 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	}
 
 	public void loadLayout(){
-		String encodedBytes = ResourceController.getResourceController().getProperty(OPENED_NOW, null);
+		ResourceController resourceController = ResourceController.getResourceController();
+		String encodedBytes = resourceController.getProperty(OPENED_NOW, null);
 		if(encodedBytes != null){
+			String encodedTabTitles = resourceController.getProperty(TAB_TITLE_METADATA_PROPERTY, null);
+			List<DockingWindowTabTitleMetadata.Entry> tabTitles = null;
+			if (encodedTabTitles != null) {
+				try {
+					tabTitles = DockingWindowTabTitleMetadata.decode(encodedTabTitles);
+				}
+				catch (IOException e) {
+					LogUtils.severe(e);
+				}
+			}
 			byte[] bytes = Base64.decodeBase64(encodedBytes);
 			ByteArrayInputStream byteStream = new ByteArrayInputStream(bytes);
+			boolean layoutWasRead = false;
 			try {
 				loadingLayoutFromObjectInputStream = true;
 				rootWindow.read(new ObjectInputStream(byteStream));
+				layoutWasRead = true;
 			}
 			catch (Exception e) {
 				LogUtils.severe(e);
@@ -750,12 +891,20 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 				loadingLayoutFromObjectInputStream = false;
 			}
 			rootWindow.getWindowBar(Direction.DOWN).setEnabled(false);
-			initialTabNameLoadingWasDone = false;
+			if (layoutWasRead) {
+				if (tabTitles != null) {
+					restoreTabTitleMetadata(tabTitles);
+				}
+				else {
+					migrateLegacyTabTitles();
+					persistTabTitleMetadata();
+				}
+			}
 			setTitle();
 		}
 	}
 
-	private void loadInitialCustomTabNames(){
+	private void migrateLegacyTabTitles(){
 		for (Component mapViewComponent: mapViews) {
 			if (mapViewComponent instanceof MapView ) {
 				View containingDockedWindow = getContainingDockedWindow(mapViewComponent);
@@ -765,13 +914,70 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 					if(oldTitle != null && !oldTitle.equals("")){
 						String titleWithoutDirtyMarker = MapDisplayNameResolver.removeDirtyMarker(oldTitle);
 						if(!MapDisplayNameResolver.matchesAnyAutomaticLabel(mapView, titleWithoutDirtyMarker)) {
-							mapView.putClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY, titleWithoutDirtyMarker);
+							containingDockedWindow.putClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY, titleWithoutDirtyMarker);
+							addTitleProvider(containingDockedWindow);
 						}
 					}
 				}
 			}
 		}
-		initialTabNameLoadingWasDone = true;
+	}
+
+	private void persistTabTitleMetadata() {
+		try {
+			List<DockingWindowTabTitleMetadata.Entry> entries = new ArrayList<DockingWindowTabTitleMetadata.Entry>();
+			collectTabTitleMetadata(rootWindow, "", entries);
+			ResourceController.getResourceController().setProperty(TAB_TITLE_METADATA_PROPERTY,
+					DockingWindowTabTitleMetadata.encode(entries));
+		}
+		catch (IOException e) {
+			LogUtils.severe(e);
+		}
+	}
+
+	private void collectTabTitleMetadata(DockingWindow window, String path,
+			List<DockingWindowTabTitleMetadata.Entry> entries) {
+		Object title = window.getClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY);
+		if (title instanceof String && !((String) title).isEmpty()) {
+			entries.add(new DockingWindowTabTitleMetadata.Entry(path, getWindowSignature(window), (String) title));
+		}
+		for (int i = 0; i < window.getChildWindowCount(); i++) {
+			collectTabTitleMetadata(window.getChildWindow(i), childPath(path, i), entries);
+		}
+	}
+
+	private void restoreTabTitleMetadata(List<DockingWindowTabTitleMetadata.Entry> entries) {
+		for (DockingWindowTabTitleMetadata.Entry entry : entries) {
+			DockingWindow window = findWindowAtPath(entry.path);
+			if (window != null && entry.windowSignature.equals(getWindowSignature(window))) {
+				window.putClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY, entry.title);
+				addTitleProvider(window);
+			}
+		}
+	}
+
+	private DockingWindow findWindowAtPath(String path) {
+		DockingWindow window = rootWindow;
+		if (path.isEmpty()) {
+			return window;
+		}
+		for (String childIndex : path.split("/")) {
+			try {
+				int index = Integer.parseInt(childIndex);
+				if (index < 0 || index >= window.getChildWindowCount()) {
+					return null;
+				}
+				window = window.getChildWindow(index);
+			}
+			catch (NumberFormatException e) {
+				return null;
+			}
+		}
+		return window;
+	}
+
+	private String childPath(String parentPath, int childIndex) {
+		return parentPath.isEmpty() ? Integer.toString(childIndex) : parentPath + "/" + childIndex;
 	}
 
 	public void focusMapViewLater(final MapView mapView, Runnable onFocus) {
@@ -816,9 +1022,6 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	public void setTitle() {
 		if(loadingLayoutFromObjectInputStream)
 			return;
-		if(!initialTabNameLoadingWasDone){
-			loadInitialCustomTabNames();
-		}
 		for (Component mapViewComponent: mapViews) {
 			if (mapViewComponent instanceof MapView ) {
 	            updateTitle(mapViewComponent);

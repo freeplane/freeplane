@@ -11,7 +11,6 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.map.MapView;
 
 public final class MapDisplayNameResolver {
-    public static final String CUSTOMIZED_TAB_NAME_PROPERTY = "customizedTabName";
     public static final String MAP_DISPLAY_NAME_SOURCE_PROPERTY = "mapDisplayNameSource";
     public static final String MAP_DISPLAY_NAME_MAX_LENGTH_PROPERTY = "mapDisplayNameMaxLength";
 
@@ -25,8 +24,6 @@ public final class MapDisplayNameResolver {
     }
 
     interface OpenedMapNameAccess {
-        String getCustomizedTabName(MapView mapView);
-
         String getFileName(MapView mapView);
     }
 
@@ -57,11 +54,6 @@ public final class MapDisplayNameResolver {
     }
 
     private static final class DefaultOpenedMapNameAccess implements OpenedMapNameAccess {
-        @Override
-        public String getCustomizedTabName(MapView mapView) {
-            return (String) mapView.getClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY);
-        }
-
         @Override
         public String getFileName(MapView mapView) {
             return mapView.getName();
@@ -175,10 +167,6 @@ public final class MapDisplayNameResolver {
     }
 
     String resolveBaseLabelWithDependencies(MapView mapView) {
-        String customizedTabName = openedMapNameAccess.getCustomizedTabName(mapView);
-        if (customizedTabName != null) {
-            return customizedTabName;
-        }
         return resolveAutomaticBaseLabelWithDependencies(mapView, preferences.getDisplayNameSource());
     }
 

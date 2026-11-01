@@ -361,7 +361,6 @@ public class MModeControllerFactory {
 		MapDisplayNameRefreshCoordinator mapDisplayNameRefreshCoordinator = new MapDisplayNameRefreshCoordinator();
 		mapController.addUINodeChangeListener(mapDisplayNameRefreshCoordinator);
 		mapController.addUIMapChangeListener(mapDisplayNameRefreshCoordinator);
-		controller.getMapViewManager().addMapViewChangeListener(mapDisplayNameRefreshCoordinator);
 
 		modeController.addUiBuilder(Phase.ACTIONS, "main_toolbar_font_name", new ComponentBuilder(
 		    new ComponentProvider() {

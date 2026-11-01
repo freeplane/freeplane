@@ -8,22 +8,22 @@ import org.junit.Test;
 public class MapDisplayNameResolverTest {
 
     @Test
-    public void shouldUseCustomizedTabNameWithoutTruncation() {
+    public void shouldResolveTabNameIndependentlyFromDockingTitle() {
         MapDisplayNameResolver resolver = resolverWith(MapDisplayNameSource.FILE_NAME, 5,
-                new TestOpenedMapNameAccess("this custom title stays intact", "MapName"),
+                new TestOpenedMapNameAccess("MapName"),
                 (mapView, maximumLength, continuationMark) -> "ignored",
                 mapView -> "ignored",
                 (value, maximumLength, continuationMark) -> "truncated");
 
         String label = resolver.resolveBaseLabelWithDependencies(null);
 
-        assertThat(label).isEqualTo("this custom title stays intact");
+        assertThat(label).isEqualTo("truncated");
     }
 
     @Test
     public void shouldResolveFileNameSourceWithTruncation() {
         MapDisplayNameResolver resolver = resolverWith(MapDisplayNameSource.FILE_NAME, 12,
-                new TestOpenedMapNameAccess(null, "MapName"),
+                new TestOpenedMapNameAccess("MapName"),
                 (mapView, maximumLength, continuationMark) -> "ignored",
                 mapView -> "ignored",
                 (value, maximumLength, continuationMark) -> value + "|" + maximumLength + "|" + continuationMark);
@@ -36,7 +36,7 @@ public class MapDisplayNameResolverTest {
     @Test
     public void shouldUseCurrentViewRootNameWhenConfigured() {
         MapDisplayNameResolver resolver = resolverWith(MapDisplayNameSource.VIEW_ROOT_TEXT, 100,
-                new TestOpenedMapNameAccess(null, "MapName"),
+                new TestOpenedMapNameAccess("MapName"),
                 (mapView, maximumLength, continuationMark) -> "Current Root",
                 mapView -> "ignored",
                 (value, maximumLength, continuationMark) -> "shortened:" + value);
@@ -49,7 +49,7 @@ public class MapDisplayNameResolverTest {
     @Test
     public void shouldFallbackToFileNameWhenCurrentViewRootNameMissing() {
         MapDisplayNameResolver resolver = resolverWith(MapDisplayNameSource.VIEW_ROOT_TEXT, 7,
-                new TestOpenedMapNameAccess(null, "FallbackName"),
+                new TestOpenedMapNameAccess("FallbackName"),
                 (mapView, maximumLength, continuationMark) -> null,
                 mapView -> "ignored",
                 (value, maximumLength, continuationMark) -> "file:" + value + ":" + maximumLength);
@@ -62,7 +62,7 @@ public class MapDisplayNameResolverTest {
     @Test
     public void shouldUseCurrentViewRootBookmarkTitleWhenConfigured() {
         MapDisplayNameResolver resolver = resolverWith(MapDisplayNameSource.VIEW_ROOT_BOOKMARK, 9,
-                new TestOpenedMapNameAccess(null, "MapName"),
+                new TestOpenedMapNameAccess("MapName"),
                 (mapView, maximumLength, continuationMark) -> "ignored",
                 mapView -> "BookmarkTitle",
                 (value, maximumLength, continuationMark) -> "bookmark:" + value + ":" + maximumLength);
@@ -75,7 +75,7 @@ public class MapDisplayNameResolverTest {
     @Test
     public void shouldMatchAnyAutomaticLabelAcrossSources() {
         MapDisplayNameResolver resolver = resolverWith(MapDisplayNameSource.FILE_NAME, 100,
-                new TestOpenedMapNameAccess(null, "File Name"),
+                new TestOpenedMapNameAccess("File Name"),
                 (mapView, maximumLength, continuationMark) -> "Root Name",
                 mapView -> "Bookmark Name",
                 (value, maximumLength, continuationMark) -> value);
@@ -120,17 +120,10 @@ public class MapDisplayNameResolverTest {
     }
 
     private static class TestOpenedMapNameAccess implements MapDisplayNameResolver.OpenedMapNameAccess {
-        private final String customizedTabName;
         private final String fileName;
 
-        private TestOpenedMapNameAccess(String customizedTabName, String fileName) {
-            this.customizedTabName = customizedTabName;
+        private TestOpenedMapNameAccess(String fileName) {
             this.fileName = fileName;
-        }
-
-        @Override
-        public String getCustomizedTabName(MapView mapView) {
-            return customizedTabName;
         }
 
         @Override

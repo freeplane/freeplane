@@ -2,15 +2,6 @@ package org.freeplane.view.swing.ui;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.awt.Component;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.JPanel;
-
 import org.freeplane.features.bookmarks.mindmapmode.MapBookmarks;
 import org.freeplane.features.bookmarks.mindmapmode.NodeBookmark;
 import org.freeplane.features.map.MapChangeEvent;
@@ -29,9 +20,8 @@ public class MapDisplayNameRefreshCoordinatorTest {
     public void shouldRefreshForRelevantPropertyChangesOnly() {
         MutablePreferences preferences = new MutablePreferences(MapDisplayNameSource.FILE_NAME);
         RecordingRefresher refresher = new RecordingRefresher();
-        RecordingBinder binder = new RecordingBinder();
 
-        MapDisplayNameRefreshCoordinator coordinator = newCoordinator(preferences, refresher, binder, null);
+        MapDisplayNameRefreshCoordinator coordinator = newCoordinator(preferences, refresher);
 
         coordinator.propertyChanged(MapDisplayNameResolver.MAP_DISPLAY_NAME_SOURCE_PROPERTY, "a", "b");
         coordinator.propertyChanged(MapDisplayNameResolver.MAP_DISPLAY_NAME_MAX_LENGTH_PROPERTY, "1", "2");
@@ -45,7 +35,7 @@ public class MapDisplayNameRefreshCoordinatorTest {
         MutablePreferences preferences = new MutablePreferences(MapDisplayNameSource.FILE_NAME);
         RecordingRefresher refresher = new RecordingRefresher();
 
-        MapDisplayNameRefreshCoordinator coordinator = newCoordinator(preferences, refresher, new RecordingBinder(), null);
+        MapDisplayNameRefreshCoordinator coordinator = newCoordinator(preferences, refresher);
 
         coordinator.mapChanged(new MapChangeEvent(this, IMapViewManager.MapChangeEventProperty.MAP_VIEW_ROOT, null, null));
         coordinator.mapChanged(new MapChangeEvent(this, MapBookmarks.class, null, null));
@@ -60,7 +50,7 @@ public class MapDisplayNameRefreshCoordinatorTest {
         MutablePreferences preferences = new MutablePreferences(MapDisplayNameSource.VIEW_ROOT_TEXT);
         RecordingRefresher refresher = new RecordingRefresher();
 
-        MapDisplayNameRefreshCoordinator coordinator = newCoordinator(preferences, refresher, new RecordingBinder(), null);
+        MapDisplayNameRefreshCoordinator coordinator = newCoordinator(preferences, refresher);
         NodeModel node = createNodeModel();
 
         coordinator.nodeChanged(new NodeChangeEvent(node, NodeModel.NODE_TEXT, null, null, false, false));
@@ -74,7 +64,7 @@ public class MapDisplayNameRefreshCoordinatorTest {
         MutablePreferences preferences = new MutablePreferences(MapDisplayNameSource.VIEW_ROOT_BOOKMARK);
         RecordingRefresher refresher = new RecordingRefresher();
 
-        MapDisplayNameRefreshCoordinator coordinator = newCoordinator(preferences, refresher, new RecordingBinder(), null);
+        MapDisplayNameRefreshCoordinator coordinator = newCoordinator(preferences, refresher);
         NodeModel node = createNodeModel();
 
         coordinator.nodeChanged(new NodeChangeEvent(node, NodeBookmark.class, null, null, false, false));
@@ -91,8 +81,7 @@ public class MapDisplayNameRefreshCoordinatorTest {
 
         MutablePreferences fileNamePreferences = new MutablePreferences(MapDisplayNameSource.FILE_NAME);
         RecordingRefresher fileNameRefresher = new RecordingRefresher();
-        MapDisplayNameRefreshCoordinator fileNameCoordinator = newCoordinator(fileNamePreferences, fileNameRefresher,
-                new RecordingBinder(), null);
+        MapDisplayNameRefreshCoordinator fileNameCoordinator = newCoordinator(fileNamePreferences, fileNameRefresher);
 
         fileNameCoordinator.onNodeInserted(node, node, 0);
         fileNameCoordinator.onNodeMoved(moveEvent);
@@ -100,8 +89,7 @@ public class MapDisplayNameRefreshCoordinatorTest {
 
         MutablePreferences rootPreferences = new MutablePreferences(MapDisplayNameSource.VIEW_ROOT_TEXT);
         RecordingRefresher rootRefresher = new RecordingRefresher();
-        MapDisplayNameRefreshCoordinator rootCoordinator = newCoordinator(rootPreferences, rootRefresher,
-                new RecordingBinder(), null);
+        MapDisplayNameRefreshCoordinator rootCoordinator = newCoordinator(rootPreferences, rootRefresher);
 
         rootCoordinator.onNodeInserted(node, node, 0);
         rootCoordinator.onNodeMoved(moveEvent);
@@ -111,62 +99,12 @@ public class MapDisplayNameRefreshCoordinatorTest {
         assertThat(rootRefresher.callCount).isEqualTo(3);
     }
 
-    @Test
-    public void shouldRegisterAndUnregisterCustomizedTitleListeners() {
-        MutablePreferences preferences = new MutablePreferences(MapDisplayNameSource.FILE_NAME);
-        RecordingRefresher refresher = new RecordingRefresher();
-        RecordingBinder binder = new RecordingBinder();
-        JPanel existingView = new JPanel();
-
-        MapDisplayNameRefreshCoordinator coordinator = newCoordinator(preferences, refresher, binder,
-                Arrays.<Component>asList(existingView));
-
-        assertThat(binder.registerCount).isEqualTo(1);
-
-        JPanel newView = new JPanel();
-        coordinator.afterViewCreated(newView);
-        coordinator.afterViewClose(newView);
-
-        assertThat(binder.registerCount).isEqualTo(2);
-        assertThat(binder.unregisterCount).isEqualTo(1);
-    }
-
-    @Test
-    public void shouldRefreshOnCustomizedTitlePropertyChange() {
-        MutablePreferences preferences = new MutablePreferences(MapDisplayNameSource.FILE_NAME);
-        RecordingRefresher refresher = new RecordingRefresher();
-        RecordingBinder binder = new RecordingBinder();
-        JPanel view = new JPanel();
-
-        newCoordinator(preferences, refresher, binder, Arrays.<Component>asList(view));
-
-        PropertyChangeListener listener = binder.listenerFor(view);
-        listener.propertyChange(new PropertyChangeEvent(view,
-                MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY,
-                "old",
-                "new"));
-        listener.propertyChange(new PropertyChangeEvent(view,
-                MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY,
-                "same",
-                "same"));
-        listener.propertyChange(new PropertyChangeEvent(view,
-                "otherProperty",
-                "old",
-                "new"));
-
-        assertThat(refresher.callCount).isEqualTo(1);
-    }
-
     private MapDisplayNameRefreshCoordinator newCoordinator(MutablePreferences preferences,
-                                                            RecordingRefresher refresher,
-                                                            RecordingBinder binder,
-                                                            Iterable<? extends Component> existingViews) {
+                                                            RecordingRefresher refresher) {
         return new MapDisplayNameRefreshCoordinator(preferences,
                 refresher,
                 listener -> {
-                },
-                existingViews,
-                binder);
+                });
     }
 
     private NodeModel createNodeModel() {
@@ -195,25 +133,4 @@ public class MapDisplayNameRefreshCoordinatorTest {
         }
     }
 
-    private static class RecordingBinder implements MapDisplayNameRefreshCoordinator.CustomizedTitleListenerBinder {
-        private int registerCount;
-        private int unregisterCount;
-        private final Map<Component, PropertyChangeListener> listeners = new HashMap<Component, PropertyChangeListener>();
-
-        @Override
-        public void register(Component view, PropertyChangeListener listener) {
-            registerCount++;
-            listeners.put(view, listener);
-        }
-
-        @Override
-        public void unregister(Component view, PropertyChangeListener listener) {
-            unregisterCount++;
-            listeners.remove(view);
-        }
-
-        private PropertyChangeListener listenerFor(Component view) {
-            return listeners.get(view);
-        }
-    }
 }
