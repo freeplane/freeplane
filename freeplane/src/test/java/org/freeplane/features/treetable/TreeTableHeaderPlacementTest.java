@@ -22,4 +22,14 @@ public class TreeTableHeaderPlacementTest {
 		assertThat(TreeTableHeaderPlacement.treeColumnRight(300, new int[] { 20 }, new int[] { 100 }, 10))
 			.isEqualTo(300);
 	}
+
+	@Test
+	public void startsRowsBelowHeaderTallerThanTableRoot() {
+		assertThat(TreeTableHeaderPlacement.firstRowY(120, 40)).isEqualTo(120);
+	}
+
+	@Test
+	public void startsRowsBelowTableRootTallerThanHeader() {
+		assertThat(TreeTableHeaderPlacement.firstRowY(30, 40)).isEqualTo(40);
+	}
 }

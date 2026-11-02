@@ -91,6 +91,7 @@ class VerticalNodeViewLayoutStrategy {
 	private int lastMinimumDistanceConsideringHandles;
 
 	private int childCloudHeight;
+	private boolean isTreeTableHeaderLaidOutFirst;
 
 
 
@@ -287,6 +288,7 @@ class VerticalNodeViewLayoutStrategy {
         lastMinimumDistanceConsideringHandles = 0;
         childCloudHeight = 0;
         visibleLaidOutChildCounter = 0;
+        isTreeTableHeaderLaidOutFirst = false;
         groupStartIndex = new int[level];
         groupStartBoundaries = new StepFunction[level];
         groupUpperYCoordinate = new int[level];
@@ -309,7 +311,7 @@ class VerticalNodeViewLayoutStrategy {
                 }
                 boolean isFreeNode = child.isFree();
                 boolean isItem = level == 0;
-                int childShiftY = calculateDistance(child, NodeViewLayoutHelper::getShift);
+                int childShiftY = isTreeTableHeader(child) ? 0 : calculateDistance(child, NodeViewLayoutHelper::getShift);
 
                 if (level == 0) {
                 	if (isFreeNode) {
@@ -404,6 +406,14 @@ class VerticalNodeViewLayoutStrategy {
         return contentSize.height + distance;
     }
 
+    private int yBelowContent() {
+        return calculateAddedDistanceFromParentToChildren(minimalGapBetweenChildren, contentSize) + childCloudHeight/2;
+    }
+
+    private boolean isTreeTableHeader(final NodeViewLayoutHelper child) {
+        return TreeTableHeader.isHeaderRoot(child.getNode());
+    }
+
     private int calculateExtraGapForChildren(final int minimalDistanceBetweenChildren) {
         if(3 * defaultVGap > minimalDistanceBetweenChildren)
             return minimalDistanceBetweenChildren + 2 * defaultVGap;
@@ -443,10 +453,13 @@ class VerticalNodeViewLayoutStrategy {
     	final int spaceBetweenContent = topContentY - bottomContentY;
     	int lastChildCloudHeight = this.childCloudHeight;
     	this.childCloudHeight = CloudHeightCalculator.INSTANCE.getAdditionalCloudHeight(child);
-    	if (isFirstVisibleLaidOutChild()
-		        && childNodesAlignment == ChildNodesAlignment.AFTER_PARENT
-		        && contentSize.height > 0) {
-		    y += calculateAddedDistanceFromParentToChildren(minimalGapBetweenChildren, contentSize) + childCloudHeight/2;
+    	final boolean placesChildrenBelowContent = childNodesAlignment == ChildNodesAlignment.AFTER_PARENT
+    			&& contentSize.height > 0;
+    	final boolean followsTreeTableHeader = isTreeTableHeaderLaidOutFirst && visibleLaidOutChildCounter == 1;
+    	if (isFirstVisibleLaidOutChild() && isTreeTableHeader(child))
+    		isTreeTableHeaderLaidOutFirst = true;
+    	else if (isFirstVisibleLaidOutChild() && placesChildrenBelowContent) {
+		    y += yBelowContent();
 		}
     	int availableSpace = 0;
     	int currentChildExtraGap = 0;
@@ -473,6 +486,8 @@ class VerticalNodeViewLayoutStrategy {
 			}
 			upperGap = lastChildExtraGap + currentChildExtraGap;
 			y += vGap + upperGap;
+			if (followsTreeTableHeader && placesChildrenBelowContent)
+				y = TreeTableHeaderPlacement.firstRowY(y, yBelowContent());
     	}
 
     	int yBegin = calculateChildY(childShiftY);

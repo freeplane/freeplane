@@ -15,6 +15,10 @@ public class TreeTableHeaderPlacement {
 		return right;
 	}
 
+	public static int firstRowY(final int yAfterHeader, final int yBelowTreeTableRoot) {
+		return Math.max(yAfterHeader, yBelowTreeTableRoot);
+	}
+
 	private TreeTableHeaderPlacement() {
 	}
 }
