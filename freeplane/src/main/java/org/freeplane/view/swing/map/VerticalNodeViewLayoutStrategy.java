@@ -34,6 +34,7 @@ import org.freeplane.features.filter.Filter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryLevels;
 import org.freeplane.features.nodelocation.LocationModel;
+import org.freeplane.features.treetable.TreeTableCells;
 import org.freeplane.features.treetable.TreeTableHeader;
 import org.freeplane.features.treetable.TreeTableHeaderPlacement;
 import org.freeplane.features.treetable.TreeTableModel;
@@ -140,7 +141,7 @@ class VerticalNodeViewLayoutStrategy {
         for (int i = 0; i < childViewCount; i++) {
             final NodeViewLayoutHelper child = view.getComponent(i);
             if (child.isLeft() == laysOutLeftSide)
-                this.isChildFreeNode[i] = child.isFree();
+                this.isChildFreeNode[i] = child.isFree() || isTreeTableCell(child);
         }
     }
     public void calculateLayoutData() {
@@ -157,6 +158,7 @@ class VerticalNodeViewLayoutStrategy {
     private void calculateLayoutData(final boolean isLeft) {
         setFreeChildNodes(isLeft);
         calculateLayoutX(isLeft);
+        placeTreeTableCells(isLeft);
         placeTreeTableHeader(isLeft);
         calculateLayoutY(isLeft);
 
@@ -174,9 +176,9 @@ class VerticalNodeViewLayoutStrategy {
                 continue;
             if (TreeTableHeader.isHeaderRoot(child.getNode()))
                 headerIndex = i;
-            else {
+            else if (!isTreeTableCell(child)) {
                 rowXs.add(xCoordinates[i]);
-                rowWidths.add(child.getWidth());
+                rowWidths.add(TreeTableCellPlacement.treeWidthOf(child.getView()));
             }
         }
         if (headerIndex < 0)
@@ -185,6 +187,16 @@ class VerticalNodeViewLayoutStrategy {
             rowXs.build().toArray(), rowWidths.build().toArray(), spaceAround);
         xCoordinates[headerIndex] = TreeTableHeaderPlacement.headerX(treeColumnRight,
             view.getZoomed(TreeTableHeaderPlacement.GAP), spaceAround);
+    }
+
+    private void placeTreeTableCells(final boolean laysOutLeftSide) {
+        if (laysOutLeftSide)
+            return;
+        for (int i = 0; i < childViewCount; i++) {
+            final NodeViewLayoutHelper child = view.getComponent(i);
+            if (isTreeTableCell(child))
+                xCoordinates[i] = TreeTableCellPlacement.xInRowOf(child.getView());
+        }
     }
 
     private void calculateLayoutX(final boolean laysOutLeftSide) {
@@ -309,9 +321,9 @@ class VerticalNodeViewLayoutStrategy {
                         System.err.println(component);
                     }
                 }
-                boolean isFreeNode = child.isFree();
+                boolean isFreeNode = isChildFreeNode[index];
                 boolean isItem = level == 0;
-                int childShiftY = isTreeTableHeader(child) ? 0 : calculateDistance(child, NodeViewLayoutHelper::getShift);
+                int childShiftY = isTreeTableHeader(child) || isTreeTableCell(child) ? 0 : calculateDistance(child, NodeViewLayoutHelper::getShift);
 
                 if (level == 0) {
                 	if (isFreeNode) {
@@ -414,6 +426,10 @@ class VerticalNodeViewLayoutStrategy {
         return TreeTableHeader.isHeaderRoot(child.getNode());
     }
 
+    private boolean isTreeTableCell(final NodeViewLayoutHelper child) {
+        return TreeTableCells.isCell(child.getNode());
+    }
+
     private int calculateExtraGapForChildren(final int minimalDistanceBetweenChildren) {
         if(3 * defaultVGap > minimalDistanceBetweenChildren)
             return minimalDistanceBetweenChildren + 2 * defaultVGap;
@@ -439,7 +455,10 @@ class VerticalNodeViewLayoutStrategy {
     }
 
     private void assignFreeChildVerticalPosition(int childIndex, int shiftY, NodeViewLayoutHelper child) {
-        this.yCoordinates[childIndex] = shiftY - child.getContentY();
+        if (isTreeTableCell(child))
+            this.yCoordinates[childIndex] = TreeTableCellPlacement.yInRowOf(child.getView());
+        else
+            this.yCoordinates[childIndex] = shiftY - child.getContentY();
     }
 
 

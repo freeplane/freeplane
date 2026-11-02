@@ -13,14 +13,29 @@ import org.freeplane.features.treetable.TreeTableNodes;
 class TreeTableRowSize {
 
 	static Dimension preferredSize(final MainView mainView, final Dimension size) {
-		final NodeView row = mainView.getNodeView();
-		if (row == null || !TreeTableNodes.isRow(row.getNode()))
+		final NodeView view = mainView.getNodeView();
+		if (view == null)
 			return size;
-		final NodeModel treeTableRoot = TreeTableNodes.treeTableRootOf(row.getNode());
-		if (!TreeTableModel.wrapsText(treeTableRoot))
+		if (TreeTableHeader.isColumnNode(view.getNode()))
+			return TreeTableColumnSize.preferredSize(view, size);
+		if (!TreeTableNodes.isRow(view.getNode()))
 			return size;
-		final int requiredHeight = requiredHeight(row, treeTableRoot);
+		final NodeModel treeTableRoot = TreeTableNodes.treeTableRootOf(view.getNode());
+		int requiredHeight = requiredCellHeight(view);
+		if (TreeTableModel.wrapsText(treeTableRoot))
+			requiredHeight = Math.max(requiredHeight, requiredHeight(view, treeTableRoot));
 		return requiredHeight > size.height ? new Dimension(size.width, requiredHeight) : size;
+	}
+
+	private static int requiredCellHeight(final NodeView row) {
+		final int textPadding = row.getMap().getZoomed(TreeTableView.TEXT_PADDING);
+		int requiredHeight = 0;
+		for (final NodeView cellView : TreeTableCellPlacement.cellViewsOf(row)) {
+			cellView.validate();
+			requiredHeight = Math.max(requiredHeight,
+				TreeTableCellPlacement.contentBoundsOf(cellView).height + 2 * textPadding);
+		}
+		return requiredHeight;
 	}
 
 	private static int requiredHeight(final NodeView row, final NodeModel treeTableRoot) {

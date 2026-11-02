@@ -14,11 +14,13 @@ import org.freeplane.features.styles.StyleFactory;
 public class TreeTableAutoStyle {
 	private static final int PRIORITY = (IPropertyHandler.STYLE + IPropertyHandler.AUTO) / 2;
 
-	public static final TreeTableAutoStyle ROW = new TreeTableAutoStyle("TreeNode", PRIORITY, TreeTableNodes::isRow);
+	public static final TreeTableAutoStyle ROW = new TreeTableAutoStyle("TreeNode", PRIORITY,
+		node -> TreeTableNodes.isRow(node) || TreeTableCells.isCellContent(node));
 	public static final TreeTableAutoStyle TABLE = new TreeTableAutoStyle("TreeTable", PRIORITY + 1, TreeTableModel::isTreeTableRoot);
 	public static final TreeTableAutoStyle COLUMN = new TreeTableAutoStyle("TreeColumn", PRIORITY + 2,
 		TreeTableHeader::isBelowHeaderRoot);
-	public static final TreeTableAutoStyle CELL = new TreeTableAutoStyle("TreeCell", PRIORITY + 3, TreeTableCells::isCell);
+	public static final TreeTableAutoStyle CELL = new TreeTableAutoStyle("TreeCell", PRIORITY + 3,
+		TreeTableCells::isCellContent);
 
 	private final String name;
 	private final int priority;

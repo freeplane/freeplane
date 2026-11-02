@@ -83,7 +83,7 @@ class TreeTableView {
 		return new TreeTableView(mapView, treeTableRoot, header, columnViews, rows);
 	}
 
-	private static NodeView headerViewOf(final NodeView treeTableRoot) {
+	static NodeView headerViewOf(final NodeView treeTableRoot) {
 		for (final NodeView child : treeTableRoot.getChildrenViews()) {
 			if (child.isContentVisible() && TreeTableHeader.isHeaderRoot(child.getNode()))
 				return child;
@@ -91,7 +91,7 @@ class TreeTableView {
 		return null;
 	}
 
-	private static List<NodeView> distinctColumnViews(final NodeView header) {
+	static List<NodeView> distinctColumnViews(final NodeView header) {
 		final List<NodeView> leaves = new ArrayList<NodeView>();
 		for (final NodeView child : visibleChildrenOf(header))
 			collectLeaves(child, leaves);
@@ -128,9 +128,9 @@ class TreeTableView {
 		return children;
 	}
 
-	private static void collectRows(final NodeView view, final List<NodeView> rows) {
+	static void collectRows(final NodeView view, final List<NodeView> rows) {
 		for (final NodeView child : view.getChildrenViews()) {
-			if (TreeTableHeader.isHeaderRoot(child.getNode()))
+			if (TreeTableHeader.isHeaderRoot(child.getNode()) || TreeTableCellPlacement.isCellView(child))
 				continue;
 			if (child.isContentVisible())
 				rows.add(child);

@@ -21,7 +21,7 @@ public class TreeTableCells {
 	}
 
 	public static boolean isCell(final NodeModel node) {
-		return cellAbove(node) == node;
+		return TreeTableCellModel.isMarkedAsCell(node) && cellAbove(node) == node;
 	}
 
 	public static boolean isInCell(final NodeModel node) {

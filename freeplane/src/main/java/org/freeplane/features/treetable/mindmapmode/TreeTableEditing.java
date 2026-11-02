@@ -37,9 +37,10 @@ public class TreeTableEditing {
 	private static final int ATTRIBUTE_NAME_COLUMN = 0;
 	private static final int ATTRIBUTE_VALUE_COLUMN = 1;
 
-	public static void installColumnRenaming(final MapController mapController) {
+	public static void installListeners(final MapController mapController) {
 		mapController.addNodeChangeListener(new TreeTableColumnRenaming());
 		mapController.addMapChangeListener(new TreeTableColumnSplitting());
+		mapController.addMapLifeCycleListener(new TreeTableCellMigrationOnLoad());
 	}
 
 	public static void setCellValue(final NodeModel row, final String attributeKey, final String value) {
