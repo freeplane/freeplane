@@ -29,7 +29,7 @@ public class TreeTableNodes {
 	}
 
 	public static boolean isRow(final NodeModel node) {
-		return treeTableRootOf(node) != null && !TreeTableHeader.isInHeader(node);
+		return treeTableRootOf(node) != null && !TreeTableHeader.isInHeader(node) && !TreeTableCells.isInCell(node);
 	}
 
 	public static List<NodeModel> rowsOf(final NodeModel treeTableRoot) {
@@ -49,7 +49,7 @@ public class TreeTableNodes {
 
 	private static void collectRows(final NodeModel parent, final List<NodeModel> rows) {
 		for (final NodeModel child : parent.getChildren()) {
-			if (TreeTableHeader.isHeaderRoot(child))
+			if (TreeTableHeader.isHeaderRoot(child) || TreeTableCells.isCell(child))
 				continue;
 			rows.add(child);
 			if (!TreeTableModel.isTreeTableRoot(child))
