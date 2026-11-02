@@ -99,6 +99,7 @@ import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
+import org.freeplane.features.treetable.TreeTableCells;
 import org.freeplane.view.swing.map.attribute.AttributeView;
 import org.freeplane.view.swing.map.cloud.CloudView;
 import org.freeplane.view.swing.map.cloud.CloudViewFactory;
@@ -1243,17 +1244,26 @@ public class NodeView extends JComponent implements INodeView, EdgeColorContext 
     }
 
     void addChildViews() {
-        if(isFolded())
-            return;
+        final int shownChildCount = isFolded() ? leadingTreeTableCellCount() : viewedNode.getChildCount();
         int index = 0;
         for (NodeModel child : getNode().getChildren()) {
-            if(isChildHidden(child))
+            if(index >= shownChildCount || isChildHidden(child))
                 return;
             if(getComponentCount() <= index
                     || ! (getComponent(index) instanceof NodeView))
                 addChildView(child, index);
             index++;
         }
+    }
+
+    private int leadingTreeTableCellCount() {
+        int count = 0;
+        for (NodeModel child : viewedNode.getChildren()) {
+            if (! TreeTableCells.isCell(child))
+                break;
+            count++;
+        }
+        return count;
     }
 
     NodeView addChildView(final NodeModel newNode, int index) {
@@ -1515,8 +1525,10 @@ public class NodeView extends JComponent implements INodeView, EdgeColorContext 
                     childNodeViewIndex = nodeDeletionEvent.index - 1;
             }
         }
-        else
+        else if (nodeDeletionEvent.index < getComponentCount() - 1)
             childNodeViewIndex = nodeDeletionEvent.index;
+        else
+            return;
         final NodeView node = (NodeView) getComponent(childNodeViewIndex);
         if(node.viewedNode != nodeDeletionEvent.node) {
             throw new IllegalStateException("Inconsistent child node view after deletion");
@@ -1545,6 +1557,8 @@ public class NodeView extends JComponent implements INodeView, EdgeColorContext 
     public void onNodeInserted(final NodeModel parent, final NodeModel child, final int index) {
         assert parent == viewedNode;
         if (isFolded()) {
+            if (TreeTableCells.isCell(child))
+                treeStructureChanged();
             return;
         }
         if(child == map.getRoot().getNode())
@@ -1980,9 +1994,12 @@ public class NodeView extends JComponent implements INodeView, EdgeColorContext 
      */
     private void treeStructureChanged() {
         if(isFolded() || ! viewedNode.hasChildren()) {
-            for (NodeView child : getChildrenViews()) {
-                child.remove();
+            final LinkedList<NodeView> childrenViews = getChildrenViews();
+            final int keptChildViewCount = viewedNode.hasChildren() ? leadingTreeTableCellCount() : 0;
+            for (int index = keptChildViewCount; index < childrenViews.size(); index++) {
+                childrenViews.get(index).remove();
             }
+            addChildViews();
             map.updateSelectedNode();
             map.revalidateSelecteds();
         }
