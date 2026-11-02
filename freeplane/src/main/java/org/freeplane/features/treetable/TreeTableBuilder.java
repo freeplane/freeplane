@@ -14,10 +14,11 @@ import org.freeplane.n3.nanoxml.XMLElement;
 class TreeTableBuilder implements IElementDOMHandler {
 	static final String XML_TREE_TABLE = "tree_table";
 	static final String XML_WRAP_TEXT = "WRAP_TEXT";
+	static final String XML_TREE_CELL = "tree_cell";
 
 	@Override
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
-		if (XML_TREE_TABLE.equals(tag))
+		if (XML_TREE_TABLE.equals(tag) || XML_TREE_CELL.equals(tag))
 			return parent;
 		return null;
 	}
@@ -27,10 +28,13 @@ class TreeTableBuilder implements IElementDOMHandler {
 		if (XML_TREE_TABLE.equals(tag) && element instanceof NodeModel)
 			TreeTableModel.createFor((NodeModel) element)
 				.setTextWrapped(Boolean.parseBoolean(dom.getAttribute(XML_WRAP_TEXT, "false")));
+		else if (XML_TREE_CELL.equals(tag) && element instanceof NodeModel)
+			TreeTableCellModel.markAsCell((NodeModel) element);
 	}
 
 	void registerBy(final ReadManager readManager, final WriteManager writeManager) {
 		readManager.addElementHandler(XML_TREE_TABLE, this);
+		readManager.addElementHandler(XML_TREE_CELL, this);
 		writeManager.addExtensionElementWriter(TreeTableModel.class, new IExtensionElementWriter() {
 			@Override
 			public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
@@ -39,6 +43,13 @@ class TreeTableBuilder implements IElementDOMHandler {
 				if (((TreeTableModel) extension).isTextWrapped())
 					element.setAttribute(XML_WRAP_TEXT, "true");
 				writer.addElement(extension, element);
+			}
+		});
+		writeManager.addExtensionElementWriter(TreeTableCellModel.class, new IExtensionElementWriter() {
+			@Override
+			public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
+					throws IOException {
+				writer.addElement(extension, new XMLElement(XML_TREE_CELL));
 			}
 		});
 	}

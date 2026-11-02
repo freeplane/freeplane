@@ -4,16 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.styles.IStyle;
-import org.freeplane.features.styles.LogicalStyleModel;
-import org.freeplane.features.styles.StyleFactory;
 
 public class TreeTableCells {
-	public static final String STYLE_NAME = "TreeCell";
-
-	public static IStyle style() {
-		return StyleFactory.create(STYLE_NAME);
-	}
 
 	public static NodeModel cellAbove(final NodeModel node) {
 		NodeModel cell = null;
@@ -22,14 +14,10 @@ public class TreeTableCells {
 				return cell != null && cell.getParentNode() != ancestor ? cell : null;
 			if (TreeTableHeader.isHeaderRoot(ancestor))
 				return null;
-			if (hasCellStyle(ancestor))
+			if (TreeTableCellModel.isMarkedAsCell(ancestor))
 				cell = ancestor;
 		}
 		return null;
-	}
-
-	private static boolean hasCellStyle(final NodeModel node) {
-		return style().equals(LogicalStyleModel.getStyle(node));
 	}
 
 	public static boolean isCell(final NodeModel node) {

@@ -39,7 +39,9 @@ public class TreeTableCellsTest {
 	}
 
 	private NodeModel cellOf(final NodeModel parent, final String key) {
-		return styledChildOf(parent, key, TreeTableCells.style());
+		final NodeModel cell = childOf(parent, key);
+		TreeTableCellModel.markAsCell(cell);
+		return cell;
 	}
 
 	@Test
@@ -76,6 +78,14 @@ public class TreeTableCellsTest {
 	}
 
 	@Test
+	public void keepsCellWhateverStyleUserApplies() {
+		final NodeModel price = cellOf(row, "Prix");
+		LogicalStyleModel.createExtension(price).setStyle(TreeTableHeader.style());
+
+		assertThat(TreeTableCells.isCell(price)).isTrue();
+	}
+
+	@Test
 	public void findsCellOfRowByColumnKey() {
 		final NodeModel price = cellOf(row, "Prix");
 		cellOf(row, "Delai");
@@ -85,7 +95,7 @@ public class TreeTableCellsTest {
 	}
 
 	@Test
-	public void usesOutermostCellStyledNodeAsCell() {
+	public void usesOutermostMarkedNodeAsCell() {
 		final NodeModel price = cellOf(row, "Prix");
 		final NodeModel nested = cellOf(price, "Prix");
 
@@ -94,7 +104,7 @@ public class TreeTableCellsTest {
 	}
 
 	@Test
-	public void ignoresCellStyleOnTableRootChildAndOutsideTables() {
+	public void ignoresCellMarkOnTableRootChildAndOutsideTables() {
 		final NodeModel directChild = cellOf(table, "Prix");
 		final NodeModel outside = cellOf(mapFake.getRoot(), "Prix");
 
@@ -103,7 +113,7 @@ public class TreeTableCellsTest {
 	}
 
 	@Test
-	public void ignoresCellStyleInHeader() {
+	public void ignoresCellMarkInHeader() {
 		final NodeModel inHeader = cellOf(header, "Prix");
 
 		assertThat(TreeTableCells.isCell(inHeader)).isFalse();
