@@ -2,6 +2,7 @@ package org.freeplane.features.treetable;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.map.MapFake;
 import org.freeplane.features.map.NodeModel;
@@ -34,14 +35,23 @@ public class TreeTableCellMigrationTest {
 		return child;
 	}
 
+	private static void setAttribute(final NodeModel row, final String key, final String value) {
+		NodeAttributeTableModel attributes = row.getExtension(NodeAttributeTableModel.class);
+		if (attributes == null) {
+			attributes = new NodeAttributeTableModel();
+			row.addExtension(attributes);
+		}
+		attributes.silentlyAddRowNoUndo(row, new Attribute(key, value));
+	}
+
 	private static String contentOf(final NodeModel cell) {
 		return cell.getChildAt(0).getText();
 	}
 
 	@Test
 	public void turnsColumnValuesIntoCellsInColumnOrder() {
-		TreeTableSheetExportTest.setValue(row, "Delai", "3 jours");
-		TreeTableSheetExportTest.setValue(row, "Prix", "12");
+		setAttribute(row, "Delai", "3 jours");
+		setAttribute(row, "Prix", "12");
 
 		assertThat(TreeTableCellMigration.migrate(table)).isTrue();
 
@@ -53,8 +63,8 @@ public class TreeTableCellMigrationTest {
 
 	@Test
 	public void keepsAttributesWhichAreNotColumnValues() {
-		TreeTableSheetExportTest.setValue(row, "Prix", "12");
-		TreeTableSheetExportTest.setValue(row, "Auteur", "Jean");
+		setAttribute(row, "Prix", "12");
+		setAttribute(row, "Auteur", "Jean");
 
 		TreeTableCellMigration.migrate(table);
 
@@ -65,8 +75,8 @@ public class TreeTableCellMigrationTest {
 	@Test
 	public void migratesSubRowsAndPlacesCellsBeforeThem() {
 		final NodeModel subRow = childOf(row, "Tache 1");
-		TreeTableSheetExportTest.setValue(row, "Prix", "12");
-		TreeTableSheetExportTest.setValue(subRow, "Prix", "5");
+		setAttribute(row, "Prix", "12");
+		setAttribute(subRow, "Prix", "5");
 
 		TreeTableCellMigration.migrate(table);
 
@@ -86,7 +96,7 @@ public class TreeTableCellMigrationTest {
 		final NodeModel price = childOf(row, "Prix");
 		TreeTableCellModel.markAsCell(price);
 		childOf(price, "10");
-		TreeTableSheetExportTest.setValue(row, "Prix", "12");
+		setAttribute(row, "Prix", "12");
 
 		TreeTableCellMigration.migrate(table);
 

@@ -6,11 +6,14 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.treetable.TreeTableCells;
 import org.freeplane.features.treetable.TreeTableHeader;
+import org.freeplane.features.treetable.TreeTableModel;
 import org.freeplane.features.treetable.TreeTableNodes;
 
 class TreeTableColumnSize {
 
 	static Dimension preferredSize(final NodeView columnView, final Dimension size) {
+		if (TreeTableModel.wrapsText(TreeTableNodes.treeTableRootOf(columnView.getNode())))
+			return size;
 		final int requiredWidth = Math.min(requiredWidth(columnView), maxWidthOf(columnView));
 		return requiredWidth > size.width ? new Dimension(requiredWidth, size.height) : size;
 	}
@@ -32,6 +35,30 @@ class TreeTableColumnSize {
 			}
 		}
 		return requiredWidth;
+	}
+
+	static int maxCellContentWidth(final NodeView view, final int maxNodeWidth) {
+		final NodeModel cell = TreeTableCells.cellAbove(view.getNode());
+		if (cell == null || cell == view.getNode())
+			return maxNodeWidth;
+		final NodeModel treeTableRoot = TreeTableNodes.treeTableRootOf(cell);
+		if (!TreeTableModel.wrapsText(treeTableRoot))
+			return maxNodeWidth;
+		final NodeModel columnNode = columnNodeOf(treeTableRoot, TreeTableCells.keyOf(cell));
+		if (columnNode == null)
+			return maxNodeWidth;
+		final MapView map = view.getMap();
+		final int columnWidth = map.getZoomed(NodeStyleController.getController()
+			.getMinWidth(columnNode, view.getStyleOption()).toBaseUnits());
+		return Math.max(map.getZoomed(TreeTableView.TEXT_PADDING), columnWidth - 2 * map.getZoomed(TreeTableView.TEXT_PADDING));
+	}
+
+	private static NodeModel columnNodeOf(final NodeModel treeTableRoot, final String key) {
+		for (final NodeModel columnNode : TreeTableHeader.distinctColumnNodesOf(treeTableRoot)) {
+			if (TreeTableHeader.keyOf(columnNode).equals(key))
+				return columnNode;
+		}
+		return null;
 	}
 
 	private static int maxWidthOf(final NodeView columnView) {

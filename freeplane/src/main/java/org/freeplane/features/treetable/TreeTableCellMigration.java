@@ -29,17 +29,10 @@ public class TreeTableCellMigration {
 			if (attributeIndex < 0 || TreeTableCells.cellOf(row, key) != null)
 				continue;
 			final Object value = rowAttributes.remove(attributeIndex).getValue();
-			row.insert(cellWithContent(row, key, value), cellIndex++);
+			row.insert(TreeTableCells.newCell(row.getMap(), key, value), cellIndex++);
 			migrated = true;
 		}
 		return migrated;
-	}
-
-	private static NodeModel cellWithContent(final NodeModel row, final String key, final Object value) {
-		final NodeModel cell = new NodeModel(key, row.getMap());
-		TreeTableCellModel.markAsCell(cell);
-		cell.insert(new NodeModel(value, row.getMap()));
-		return cell;
 	}
 
 	private TreeTableCellMigration() {

@@ -118,4 +118,28 @@ public class TreeTableCellsTest {
 
 		assertThat(TreeTableCells.isCell(inHeader)).isFalse();
 	}
+
+	@Test
+	public void exportsSingleContentAsIs() {
+		final NodeModel price = cellOf(row, "Prix");
+		final NodeModel amount = childOf(price, "<html><body><b>12</b></body></html>");
+
+		assertThat(TreeTableCells.contentOf(price)).isEqualTo(amount.getText());
+	}
+
+	@Test
+	public void exportsCellTreeAsIndentedLines() {
+		final NodeModel delay = cellOf(row, "Delai");
+		final NodeModel days = childOf(delay, "3 jours");
+		childOf(days, "ouvres");
+		childOf(delay, "ou 4 jours");
+
+		assertThat(TreeTableCells.contentOf(delay)).isEqualTo("3 jours\n  ouvres\nou 4 jours");
+	}
+
+	@Test
+	public void exportsNothingForEmptyOrMissingCell() {
+		assertThat(TreeTableCells.contentOf(cellOf(row, "Prix"))).isNull();
+		assertThat(TreeTableNodes.cellValueOf(row, "Delai")).isNull();
+	}
 }

@@ -3,9 +3,12 @@ package org.freeplane.features.treetable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
 public class TreeTableCells {
+	private static final String CONTENT_INDENT = "  ";
 
 	public static NodeModel cellAbove(final NodeModel node) {
 		NodeModel cell = null;
@@ -31,6 +34,35 @@ public class TreeTableCells {
 	public static boolean isCellContent(final NodeModel node) {
 		final NodeModel cell = cellAbove(node);
 		return cell != null && cell != node;
+	}
+
+	public static NodeModel newCell(final MapModel map, final String columnKey, final Object content) {
+		final NodeModel cell = new NodeModel(columnKey, map);
+		markAsCell(cell);
+		cell.insert(new NodeModel(content, map));
+		return cell;
+	}
+
+	public static void markAsCell(final NodeModel node) {
+		TreeTableCellModel.markAsCell(node);
+	}
+
+	public static String contentOf(final NodeModel cell) {
+		if (cell == null || !cell.hasChildren())
+			return null;
+		final NodeModel firstContent = cell.getChildAt(0);
+		if (cell.getChildCount() == 1 && !firstContent.hasChildren())
+			return firstContent.getText();
+		final List<String> lines = new ArrayList<String>();
+		collectContentLines(cell, "", lines);
+		return String.join("\n", lines);
+	}
+
+	private static void collectContentLines(final NodeModel parent, final String indent, final List<String> lines) {
+		for (final NodeModel child : parent.getChildren()) {
+			lines.add(indent + HtmlUtils.htmlToPlain(child.getText()));
+			collectContentLines(child, indent + CONTENT_INDENT, lines);
+		}
 	}
 
 	public static String keyOf(final NodeModel cell) {

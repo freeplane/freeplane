@@ -3,7 +3,6 @@ package org.freeplane.features.treetable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.map.NodeModel;
 
 public class TreeTableNodes {
@@ -38,13 +37,8 @@ public class TreeTableNodes {
 		return rows;
 	}
 
-	public static String cellValueOf(final NodeModel row, final String attributeKey) {
-		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(row);
-		final int index = attributes.getAttributeIndex(attributeKey);
-		if (index < 0)
-			return null;
-		final Object value = attributes.getValue(index);
-		return value != null ? value.toString() : null;
+	public static String cellValueOf(final NodeModel row, final String columnKey) {
+		return TreeTableCells.contentOf(TreeTableCells.cellOf(row, columnKey));
 	}
 
 	private static void collectRows(final NodeModel parent, final List<NodeModel> rows) {

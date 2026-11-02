@@ -1742,7 +1742,7 @@ public class NodeView extends JComponent implements INodeView, EdgeColorContext 
                 else
                     edge.paint(g);
             }
-            else {
+            else if (! TreeTableCellPlacement.isCellView(nodeView)) {
                 nodeView.paintEdges(g, source);
             }
         }
@@ -2031,7 +2031,8 @@ public class NodeView extends JComponent implements INodeView, EdgeColorContext 
         final NodeStyleController nsc = NodeStyleController.getController(modeController);
         StyleOption styleOption = getStyleOption();
         final int minNodeWidth = map.getZoomed(nsc.getMinWidth(getNode(), styleOption).toBaseUnits());
-        final int maxNodeWidth = Math.max(map.getLayoutSpecificMaxNodeWidth(), map.getZoomed(nsc.getMaxWidth(getNode(), styleOption).toBaseUnits()));
+        final int maxNodeWidth = TreeTableColumnSize.maxCellContentWidth(this,
+            Math.max(map.getLayoutSpecificMaxNodeWidth(), map.getZoomed(nsc.getMaxWidth(getNode(), styleOption).toBaseUnits())));
         mainView.setMinimumWidth(minNodeWidth);
         mainView.setMaximumWidth(maxNodeWidth);
 

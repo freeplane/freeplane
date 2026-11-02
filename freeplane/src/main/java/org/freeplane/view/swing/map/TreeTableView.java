@@ -14,7 +14,6 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleShape;
-import org.freeplane.features.treetable.TreeTableCellLayout;
 import org.freeplane.features.treetable.TreeTableColumn;
 import org.freeplane.features.treetable.TreeTableColumns;
 import org.freeplane.features.treetable.TreeTableGrid;
@@ -270,10 +269,6 @@ class TreeTableView {
 		return SwingUtilities.convertRectangle(content, bounds, mapView);
 	}
 
-	int getTextPadding() {
-		return textPadding;
-	}
-
 	NodeView getTreeTableRootView() {
 		return treeTableRootView;
 	}
@@ -288,12 +283,6 @@ class TreeTableView {
 
 	int getColumnNodeLeft(final int columnIndex) {
 		return columnBounds.get(columnIndex).x;
-	}
-
-	int getWrapWidth(final int columnIndex) {
-		return TreeTableModel.wrapsText(treeTableRootView.getNode())
-				? TreeTableCellLayout.wrapWidth(columnBounds.get(columnIndex).width, textPadding)
-				: -1;
 	}
 
 	List<NodeView> getRows() {
