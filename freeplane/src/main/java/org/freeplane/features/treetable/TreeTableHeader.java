@@ -138,6 +138,21 @@ public class TreeTableHeader {
 		return formerKey;
 	}
 
+	public static String keyReturnedTo(final NodeModel formerParent, final NodeModel removedNode) {
+		if (!isBelowHeaderRoot(formerParent) || formerParent.hasChildren())
+			return null;
+		final String parentKey = keyOf(formerParent);
+		final String removedKey = keyOf(removedNode.hasChildren() ? heirOf(removedNode) : removedNode);
+		if (parentKey.isEmpty() || removedKey.isEmpty() || parentKey.equals(removedKey))
+			return null;
+		for (final NodeModel columnNode : columnNodesOf(headerRootAbove(formerParent))) {
+			final String key = keyOf(columnNode);
+			if (key.equals(removedKey) || columnNode != formerParent && key.equals(parentKey))
+				return null;
+		}
+		return removedKey;
+	}
+
 	public static NodeModel heirOf(final NodeModel formerColumnNode) {
 		return columnNodesOf(formerColumnNode).get(0);
 	}

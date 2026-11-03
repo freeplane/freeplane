@@ -18,5 +18,6 @@ class TreeTableColumnRenaming implements INodeChangeListener {
 			TreeTableEditing.inheritColumnValues(node.getParentNode());
 		else
 			TreeTableEditing.renameColumnValues(node, oldKey, TreeTableHeader.keyOfText(event.getNewValue()));
+		TreeTableEditing.completeCells(node);
 	}
 }

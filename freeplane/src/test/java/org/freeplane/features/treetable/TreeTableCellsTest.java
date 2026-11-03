@@ -134,7 +134,7 @@ public class TreeTableCellsTest {
 		childOf(days, "ouvres");
 		childOf(delay, "ou 4 jours");
 
-		assertThat(TreeTableCells.contentOf(delay)).isEqualTo("3 jours\n  ouvres\nou 4 jours");
+		assertThat(TreeTableCells.contentOf(delay)).isEqualTo("3 jours\n\u00A0\u00A0\u00A0\u00A0ouvres\nou 4 jours");
 	}
 
 	@Test

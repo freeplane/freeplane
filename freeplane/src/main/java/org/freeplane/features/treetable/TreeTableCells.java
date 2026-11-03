@@ -8,7 +8,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
 public class TreeTableCells {
-	private static final String CONTENT_INDENT = "  ";
+	private static final String CONTENT_INDENT = "\u00A0\u00A0\u00A0\u00A0";
 
 	public static NodeModel cellAbove(final NodeModel node) {
 		NodeModel cell = null;
@@ -84,6 +84,16 @@ public class TreeTableCells {
 				return cell;
 		}
 		return null;
+	}
+
+	public static int leadingCellCount(final NodeModel row) {
+		int count = 0;
+		for (final NodeModel child : row.getChildren()) {
+			if (!isCell(child))
+				break;
+			count++;
+		}
+		return count;
 	}
 
 	public static List<NodeModel> subRowsOf(final NodeModel row) {
