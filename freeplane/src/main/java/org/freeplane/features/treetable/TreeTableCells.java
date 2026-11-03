@@ -8,7 +8,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
 public class TreeTableCells {
-	private static final String CONTENT_INDENT = "  ";
+	private static final String CONTENT_INDENT = "\u00A0\u00A0\u00A0\u00A0";
 
 	public static NodeModel cellAbove(final NodeModel node) {
 		NodeModel cell = null;

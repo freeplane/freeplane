@@ -57,6 +57,19 @@ public class TreeTableSheetExportTest {
 	}
 
 	@Test
+	public void keepsIndentationOfCellTreeForExcel() {
+		childOf(header, "Delay");
+		final NodeModel car = childOf(table, "Car");
+		final NodeModel delay = TreeTableCells.newCell(car.getMap(), "Delay", "3 days");
+		car.insert(delay);
+		childOf(delay.getChildAt(0), "working");
+
+		final TreeTableSheet sheet = TreeTableSheetExport.sheetOf(table);
+
+		assertThat(sheet.toHtml()).contains("3 days<br style=\"mso-data-placement:same-cell;\">&nbsp;&nbsp;&nbsp;&nbsp;working");
+	}
+
+	@Test
 	public void exportsRowHierarchyAsOneColumnPerLevel() {
 		childOf(header, "Cost");
 		final NodeModel phase = childOf(table, "Phase");
