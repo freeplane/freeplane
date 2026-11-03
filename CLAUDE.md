@@ -252,9 +252,9 @@ Then:
 - **No branch matches**: create a new one.
 
 ### Commits, push and merge
-- **Commits**: Messages in casual French, single line, no Conventional Commits, no Co-Authored-By. Stage files automatically when committing (except files not managed by Git). Never merge automatically while committing.
+- **Commits**: Messages in English, single line, no Conventional Commits, no Co-Authored-By. Stage files automatically when committing (except files not managed by Git). Never merge automatically while committing.
 - **Push**: On a **feature branch**, commit and push automatically without asking. On any other branch, never push unless asked.
-- **Merge**: Never fast-forward (except when pulling). Never merge unless asked.
+- **Merge**: Never fast-forward: always merge with `git merge --no-ff`. The only exception is pulling (`git pull`), where fast-forward is allowed. Never merge unless asked.
 
 ### Git ignore rules
 Never manage in Git, unless explicitly asked:
