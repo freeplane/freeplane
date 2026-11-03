@@ -187,6 +187,55 @@ public class TreeTableHeaderTest {
 	}
 
 	@Test
+	public void returnsKeyOfLastRemovedSubColumnToParent() {
+		final NodeModel cons = childOf(header, "Cons");
+		final NodeModel financial = childOf(cons, "Financial");
+		cons.remove(cons.getIndex(financial));
+
+		assertThat(TreeTableHeader.keyReturnedTo(cons, financial)).isEqualTo("Financial");
+	}
+
+	@Test
+	public void returnsFirstLeafKeyOfRemovedSubColumnGroup() {
+		final NodeModel cons = childOf(header, "Cons");
+		final NodeModel group = childOf(cons, "Group");
+		childOf(group, "Financial");
+		childOf(group, "Planning");
+		cons.remove(cons.getIndex(group));
+
+		assertThat(TreeTableHeader.keyReturnedTo(cons, group)).isEqualTo("Financial");
+	}
+
+	@Test
+	public void returnsNoKeyWhileParentKeepsSubColumns() {
+		final NodeModel cons = childOf(header, "Cons");
+		childOf(cons, "Financial");
+		final NodeModel planning = childOf(cons, "Planning");
+		cons.remove(cons.getIndex(planning));
+
+		assertThat(TreeTableHeader.keyReturnedTo(cons, planning)).isNull();
+	}
+
+	@Test
+	public void returnsNoKeyWhenRemovingTopLevelColumn() {
+		childOf(header, "Pros");
+		final NodeModel cons = childOf(header, "Cons");
+		header.remove(header.getIndex(cons));
+
+		assertThat(TreeTableHeader.keyReturnedTo(header, cons)).isNull();
+	}
+
+	@Test
+	public void returnsNoKeyStillShownByAnotherColumn() {
+		final NodeModel cons = childOf(header, "Cons");
+		final NodeModel financial = childOf(cons, "Financial");
+		childOf(header, "Financial");
+		cons.remove(cons.getIndex(financial));
+
+		assertThat(TreeTableHeader.keyReturnedTo(cons, financial)).isNull();
+	}
+
+	@Test
 	public void findsLowestCommonAncestorOfColumns() {
 		final NodeModel analysis = childOf(header, "Analysis");
 		final NodeModel pros = childOf(analysis, "Pros");

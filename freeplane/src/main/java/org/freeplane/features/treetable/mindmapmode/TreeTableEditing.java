@@ -77,6 +77,15 @@ public class TreeTableEditing {
 			renameCell(row, inheritedKey, heirKey);
 	}
 
+	static void returnColumnValues(final NodeModel formerParent, final NodeModel removedNode) {
+		final String returnedKey = TreeTableHeader.keyReturnedTo(formerParent, removedNode);
+		if (returnedKey == null)
+			return;
+		final String parentKey = TreeTableHeader.keyOf(formerParent);
+		for (final NodeModel row : TreeTableNodes.rowsOf(TreeTableNodes.treeTableRootOf(formerParent)))
+			renameCell(row, returnedKey, parentKey);
+	}
+
 	private static boolean isUsedByAnotherColumn(final NodeModel columnNode, final String key) {
 		for (final NodeModel other : TreeTableHeader.columnNodesOf(TreeTableHeader.headerRootAbove(columnNode))) {
 			if (other != columnNode && TreeTableHeader.keyOf(other).equals(key))
