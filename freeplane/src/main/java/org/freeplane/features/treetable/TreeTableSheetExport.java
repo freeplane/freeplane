@@ -81,7 +81,7 @@ public class TreeTableSheetExport {
 				continue;
 			final int sheetColumn = treeColumnCount + firstColumn;
 			final boolean isColumn = !child.hasChildren();
-			sheet.set(sheetRow, sheetColumn, TreeTableHeader.keyOf(child));
+			sheet.set(sheetRow, sheetColumn, TreeTableHeader.keyOfText(child.getText()));
 			sheet.span(sheetRow, sheetColumn, isColumn ? headerRowCount - sheetRow : 1,
 				columnCountUnder(child, firstColumn));
 			if (!isColumn)

@@ -7,6 +7,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 public class TreeTableHeaderTest {
 
@@ -21,6 +22,8 @@ public class TreeTableHeaderTest {
 		TreeTableModel.createFor(table);
 		header = childOf(table, "Columns");
 		LogicalStyleModel.createExtension(header).setStyle(TreeTableHeader.style());
+		Mockito.when(table.getMap().registryNode(Mockito.any()))
+			.thenAnswer(invocation -> "ID_" + System.identityHashCode(invocation.getArgument(0)));
 	}
 
 	private NodeModel childOf(final NodeModel parent, final String text) {
@@ -84,16 +87,6 @@ public class TreeTableHeaderTest {
 	}
 
 	@Test
-	public void skipsBlankAndDuplicateColumnKeys() {
-		final NodeModel pros = childOf(header, "Pros");
-		childOf(header, " ");
-		childOf(header, "Pros");
-		final NodeModel cons = childOf(header, "Cons");
-
-		assertThat(TreeTableHeader.distinctColumnNodesOf(table)).containsExactly(pros, cons);
-	}
-
-	@Test
 	public void trimsColumnKeys() {
 		assertThat(TreeTableHeader.keyOf(childOf(header, "  Pros "))).isEqualTo("Pros");
 	}
@@ -150,14 +143,6 @@ public class TreeTableHeaderTest {
 
 		assertThat(TreeTableHeader.heirOf(price)).isSameAs(net);
 		assertThat(TreeTableHeader.keyInheritedFrom(price)).isEqualTo("Price");
-	}
-
-	@Test
-	public void passesNoKeyToSubColumnWithoutName() {
-		final NodeModel price = childOf(header, "Price");
-		childOf(price, "");
-
-		assertThat(TreeTableHeader.keyInheritedFrom(price)).isNull();
 	}
 
 	@Test
@@ -233,6 +218,46 @@ public class TreeTableHeaderTest {
 		cons.remove(cons.getIndex(financial));
 
 		assertThat(TreeTableHeader.keyReturnedTo(cons, financial)).isNull();
+	}
+
+	@Test
+	public void keepsUnnamedColumnsButSkipsDuplicateKeys() {
+		final NodeModel pros = childOf(header, "Pros");
+		final NodeModel unnamed = childOf(header, " ");
+		childOf(header, "Pros");
+		final NodeModel cons = childOf(header, "Cons");
+
+		assertThat(TreeTableHeader.distinctColumnNodesOf(table)).containsExactly(pros, unnamed, cons);
+	}
+
+	@Test
+	public void identifiesUnnamedColumnByItsNode() {
+		final NodeModel first = childOf(header, "");
+		final NodeModel second = childOf(header, "");
+
+		assertThat(TreeTableHeader.keyOf(first)).isNotEmpty().isNotEqualTo(TreeTableHeader.keyOf(second))
+			.isEqualTo(TreeTableHeader.keyOf(first, "  "));
+		assertThat(TreeTableHeader.keyOf(first, "Named")).isEqualTo("Named");
+		assertThat(TreeTableHeader.keyOf(table, "")).isEmpty();
+	}
+
+	@Test
+	public void passesKeyOfSplitColumnToSubColumnStillWithoutName() {
+		final NodeModel price = childOf(header, "Price");
+		final NodeModel unnamed = childOf(price, "");
+
+		assertThat(TreeTableHeader.keyInheritedFrom(price)).isEqualTo("Price");
+		assertThat(TreeTableHeader.keyOf(TreeTableHeader.heirOf(price))).isEqualTo(TreeTableHeader.keyOf(unnamed));
+	}
+
+	@Test
+	public void returnsValuesOfRemovedUnnamedSubColumnToParent() {
+		final NodeModel cons = childOf(header, "Cons");
+		final NodeModel unnamed = childOf(cons, "");
+		final String unnamedKey = TreeTableHeader.keyOf(unnamed);
+		cons.remove(cons.getIndex(unnamed));
+
+		assertThat(TreeTableHeader.keyReturnedTo(cons, unnamed)).isEqualTo(unnamedKey);
 	}
 
 	@Test
