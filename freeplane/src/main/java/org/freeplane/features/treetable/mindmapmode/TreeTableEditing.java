@@ -23,6 +23,7 @@ import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.treetable.TreeTableCells;
 import org.freeplane.features.treetable.TreeTableColumnNames;
+import org.freeplane.features.treetable.TreeTableGridCompletion;
 import org.freeplane.features.treetable.TreeTableHeader;
 import org.freeplane.features.treetable.TreeTableModel;
 import org.freeplane.features.treetable.TreeTableNodes;
@@ -31,6 +32,7 @@ import org.freeplane.features.treetable.TreeTableSheetImport;
 import org.freeplane.main.mindmapmode.stylemode.EditStylesAction;
 
 public class TreeTableEditing {
+	private static boolean completesCells;
 
 	public static void installListeners(final MapController mapController) {
 		mapController.addNodeChangeListener(new TreeTableColumnRenaming());
@@ -38,20 +40,11 @@ public class TreeTableEditing {
 		mapController.addMapLifeCycleListener(new TreeTableCellMigrationOnLoad());
 	}
 
-	public static void selectOrCreateCellContent(final NodeModel row, final String columnKey) {
+	public static void selectCellContent(final NodeModel row, final String columnKey) {
+		completeCells(row);
 		final NodeModel cell = TreeTableCells.cellOf(row, columnKey);
-		if (cell != null && cell.hasChildren()) {
+		if (cell != null && cell.hasChildren())
 			mapController().select(cell.getChildAt(0));
-			return;
-		}
-		final NodeModel parent = cell != null ? cell : mapController().addNewNode(row,
-			TreeTableCells.cellsOf(row).size(), node -> {
-				node.setUserObject(columnKey);
-				TreeTableCells.markAsCell(node);
-			});
-		final NodeModel content = mapController().addNewNode(parent, 0, node -> node.setUserObject(""));
-		mapController().select(content);
-		((MTextController) MTextController.getController()).edit(content, row, true, false, false);
 	}
 
 	public static void renameColumn(final NodeModel columnNode, final String newKey) {
@@ -75,6 +68,35 @@ public class TreeTableEditing {
 		final String heirKey = TreeTableHeader.keyOf(TreeTableHeader.heirOf(formerColumnNode));
 		for (final NodeModel row : TreeTableNodes.rowsOf(TreeTableNodes.treeTableRootOf(formerColumnNode)))
 			renameCell(row, inheritedKey, heirKey);
+	}
+
+	static void completeCells(final NodeModel changedNode) {
+		final NodeModel treeTableRoot = TreeTableNodes.enclosingTreeTableRoot(changedNode);
+		if (treeTableRoot == null || completesCells)
+			return;
+		completesCells = true;
+		try {
+			for (final NodeModel emptyCell : TreeTableGridCompletion.emptyCellsOutsideColumnsOf(treeTableRoot))
+				mapController().deleteNode(emptyCell);
+			for (final TreeTableGridCompletion.Gap gap : TreeTableGridCompletion.gapsOf(treeTableRoot))
+				fill(gap);
+		}
+		finally {
+			completesCells = false;
+		}
+	}
+
+	private static void fill(final TreeTableGridCompletion.Gap gap) {
+		if (gap.getEmptyCell() != null) {
+			mapController().addNewNode(gap.getEmptyCell(), 0, node -> node.setUserObject(""));
+			return;
+		}
+		final NodeModel row = gap.getRow();
+		mapController().addNewNode(row, TreeTableCells.leadingCellCount(row), node -> {
+			node.setUserObject(gap.getColumnKey());
+			TreeTableCells.markAsCell(node);
+			node.insert(new NodeModel("", node.getMap()));
+		});
 	}
 
 	static void returnColumnValues(final NodeModel formerParent, final NodeModel removedNode) {

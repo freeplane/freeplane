@@ -20,7 +20,7 @@ class TreeTableCellEditor extends MouseAdapter {
 			final TreeTableCell cell = treeTable.cellAt(event.getX(), event.getY());
 			if (cell != null) {
 				event.consume();
-				TreeTableEditing.selectOrCreateCellContent(cell.getRow(), cell.getAttributeKey());
+				TreeTableEditing.selectCellContent(cell.getRow(), cell.getAttributeKey());
 				return;
 			}
 		}

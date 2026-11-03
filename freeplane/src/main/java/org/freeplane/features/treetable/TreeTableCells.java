@@ -86,6 +86,16 @@ public class TreeTableCells {
 		return null;
 	}
 
+	public static int leadingCellCount(final NodeModel row) {
+		int count = 0;
+		for (final NodeModel child : row.getChildren()) {
+			if (!isCell(child))
+				break;
+			count++;
+		}
+		return count;
+	}
+
 	public static List<NodeModel> subRowsOf(final NodeModel row) {
 		final List<NodeModel> subRows = new ArrayList<NodeModel>();
 		for (final NodeModel child : row.getChildren()) {

@@ -18,6 +18,12 @@ public class TreeTableNavigation {
 	}
 
 	public NodeModel target(final NodeModel selected, final Direction direction) {
+		if (TreeTableModel.isTreeTableRoot(selected))
+			return targetFromTreeTableRoot(selected, direction);
+		if (TreeTableHeader.isColumnNode(selected))
+			return targetFromColumn(selected, direction);
+		if (TreeTableHeader.isInHeader(selected))
+			return targetFromHeaderGroup(selected, direction);
 		if (TreeTableNodes.isRow(selected))
 			return targetFromRow(selected, direction);
 		final NodeModel cell = TreeTableCells.cellAbove(selected);
@@ -26,12 +32,69 @@ public class TreeTableNavigation {
 		return targetFromCellContent(selected, cell, direction);
 	}
 
+	private NodeModel targetFromTreeTableRoot(final NodeModel treeTableRoot, final Direction direction) {
+		switch (direction) {
+		case RIGHT:
+			final NodeModel header = TreeTableHeader.headerOf(treeTableRoot);
+			return header != null && isShown.test(header) ? header : null;
+		case DOWN:
+			final List<NodeModel> rows = shownRowsOf(treeTableRoot);
+			return rows.isEmpty() ? null : rows.get(0);
+		default:
+			return null;
+		}
+	}
+
+	private NodeModel targetFromHeaderGroup(final NodeModel group, final Direction direction) {
+		final boolean isHeaderRoot = TreeTableHeader.isHeaderRoot(group);
+		switch (direction) {
+		case DOWN:
+			final List<NodeModel> children = shownChildrenOf(group);
+			return children.isEmpty() ? null : children.get(0);
+		case UP:
+			return isHeaderRoot ? null : group.getParentNode();
+		case LEFT:
+			return isHeaderRoot ? group.getParentNode() : shownSibling(group, -1);
+		case RIGHT:
+			return isHeaderRoot ? null : shownSibling(group, 1);
+		default:
+			return null;
+		}
+	}
+
+	private NodeModel shownSibling(final NodeModel node, final int step) {
+		final List<NodeModel> siblings = shownChildrenOf(node.getParentNode());
+		final int index = siblings.indexOf(node) + step;
+		return index >= 0 && index < siblings.size() ? siblings.get(index) : null;
+	}
+
+	private NodeModel targetFromColumn(final NodeModel column, final Direction direction) {
+		final NodeModel treeTableRoot = TreeTableNodes.treeTableRootOf(column);
+		final List<NodeModel> columns = shownColumnsOf(treeTableRoot);
+		final int index = columns.indexOf(column);
+		if (index < 0)
+			return null;
+		switch (direction) {
+		case DOWN:
+			return firstContentBelow(shownRowsOf(treeTableRoot), -1, TreeTableHeader.keyOf(column));
+		case LEFT:
+			return index > 0 ? columns.get(index - 1) : null;
+		case RIGHT:
+			return index < columns.size() - 1 ? columns.get(index + 1) : null;
+		case UP:
+			return column.getParentNode();
+		default:
+			return null;
+		}
+	}
+
 	private NodeModel targetFromRow(final NodeModel row, final Direction direction) {
 		switch (direction) {
 		case RIGHT:
 			return firstContentOfCellAfter(row, -1);
 		case UP:
-			return adjacentRow(row, -1);
+			final NodeModel previousRow = adjacentRow(row, -1);
+			return previousRow != null ? previousRow : TreeTableNodes.treeTableRootOf(row);
 		case DOWN:
 			return adjacentRow(row, 1);
 		default:
@@ -41,42 +104,87 @@ public class TreeTableNavigation {
 
 	private NodeModel targetFromCellContent(final NodeModel content, final NodeModel cell, final Direction direction) {
 		final NodeModel row = cell.getParentNode();
-		final int columnIndex = columnKeysOf(row).indexOf(TreeTableCells.keyOf(cell));
+		final String key = TreeTableCells.keyOf(cell);
+		final int columnIndex = columnKeysOf(row).indexOf(key);
 		switch (direction) {
 		case RIGHT:
-			return shownChildrenOf(content).isEmpty() ? firstContentOfCellAfter(row, columnIndex) : null;
+			final NodeModel next = firstContentOfCellAfter(row, columnIndex);
+			return next != null ? next : content;
 		case LEFT:
 			if (content.getParentNode() != cell)
 				return null;
 			final NodeModel previous = firstContentOfCellBefore(row, columnIndex);
 			return previous != null ? previous : row;
 		case UP:
-			return isFirstShownIn(content, cell) ? contentInAdjacentRow(row, cell, -1) : null;
+			if (!isFirstShownIn(content, cell))
+				return null;
+			final NodeModel above = lastContentAbove(row, key);
+			return above != null ? above : columnOrSelf(row, key, content);
 		case DOWN:
-			return isLastShownIn(content, cell) ? contentInAdjacentRow(row, cell, 1) : null;
+			if (!isLastShownIn(content, cell))
+				return null;
+			final List<NodeModel> rows = shownRowsOf(TreeTableNodes.treeTableRootOf(row));
+			final NodeModel below = firstContentBelow(rows, rows.indexOf(row), key);
+			return below != null ? below : content;
 		default:
 			return null;
 		}
 	}
 
-	private NodeModel contentInAdjacentRow(final NodeModel row, final NodeModel cell, final int step) {
-		final NodeModel adjacentRow = adjacentRow(row, step);
-		if (adjacentRow == null)
-			return null;
-		final List<NodeModel> contents = shownChildrenOf(TreeTableCells.cellOf(adjacentRow, TreeTableCells.keyOf(cell)));
-		if (contents.isEmpty())
-			return adjacentRow;
-		return step < 0 ? contents.get(contents.size() - 1) : contents.get(0);
+	private NodeModel columnOrSelf(final NodeModel row, final String key, final NodeModel content) {
+		for (final NodeModel column : shownColumnsOf(TreeTableNodes.treeTableRootOf(row))) {
+			if (TreeTableHeader.keyOf(column).equals(key))
+				return column;
+		}
+		return content;
+	}
+
+	private NodeModel firstContentBelow(final List<NodeModel> rows, final int rowIndex, final String key) {
+		for (int index = rowIndex + 1; index < rows.size(); index++) {
+			final List<NodeModel> contents = shownChildrenOf(TreeTableCells.cellOf(rows.get(index), key));
+			if (!contents.isEmpty())
+				return contents.get(0);
+		}
+		return null;
+	}
+
+	private NodeModel lastContentAbove(final NodeModel row, final String key) {
+		final List<NodeModel> rows = shownRowsOf(TreeTableNodes.treeTableRootOf(row));
+		for (int index = rows.indexOf(row) - 1; index >= 0; index--) {
+			final List<NodeModel> contents = shownChildrenOf(TreeTableCells.cellOf(rows.get(index), key));
+			if (!contents.isEmpty())
+				return lastShownDescendantOf(contents.get(contents.size() - 1));
+		}
+		return null;
+	}
+
+	private NodeModel lastShownDescendantOf(final NodeModel node) {
+		final List<NodeModel> children = shownChildrenOf(node);
+		return children.isEmpty() ? node : lastShownDescendantOf(children.get(children.size() - 1));
 	}
 
 	private NodeModel adjacentRow(final NodeModel row, final int step) {
-		final List<NodeModel> rows = new ArrayList<NodeModel>();
-		for (final NodeModel candidate : TreeTableNodes.rowsOf(TreeTableNodes.treeTableRootOf(row))) {
-			if (isShown.test(candidate))
-				rows.add(candidate);
-		}
+		final List<NodeModel> rows = shownRowsOf(TreeTableNodes.treeTableRootOf(row));
 		final int index = rows.indexOf(row) + step;
 		return index >= 0 && index < rows.size() && rows.contains(row) ? rows.get(index) : null;
+	}
+
+	private List<NodeModel> shownRowsOf(final NodeModel treeTableRoot) {
+		final List<NodeModel> rows = new ArrayList<NodeModel>();
+		for (final NodeModel row : TreeTableNodes.rowsOf(treeTableRoot)) {
+			if (isShown.test(row))
+				rows.add(row);
+		}
+		return rows;
+	}
+
+	private List<NodeModel> shownColumnsOf(final NodeModel treeTableRoot) {
+		final List<NodeModel> columns = new ArrayList<NodeModel>();
+		for (final NodeModel column : TreeTableHeader.distinctColumnNodesOf(treeTableRoot)) {
+			if (isShown.test(column))
+				columns.add(column);
+		}
+		return columns;
 	}
 
 	private NodeModel firstContentOfCellAfter(final NodeModel row, final int columnIndex) {
