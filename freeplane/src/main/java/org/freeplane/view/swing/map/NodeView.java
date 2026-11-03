@@ -100,6 +100,7 @@ import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.treetable.TreeTableCells;
+import org.freeplane.features.treetable.TreeTableNodes;
 import org.freeplane.view.swing.map.attribute.AttributeView;
 import org.freeplane.view.swing.map.cloud.CloudView;
 import org.freeplane.view.swing.map.cloud.CloudViewFactory;
@@ -2546,7 +2547,7 @@ public class NodeView extends JComponent implements INodeView, EdgeColorContext 
     }
 
     public boolean isAutoCompactLayoutEnabled() {
-        return map.isAutoCompactLayoutEnabled();
+        return map.isAutoCompactLayoutEnabled() && TreeTableNodes.enclosingTreeTableRoot(viewedNode) == null;
     }
 
     public boolean allowsCompactLayout() {
