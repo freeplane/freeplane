@@ -316,7 +316,7 @@ public class MModeControllerFactory {
 		modeController.addAction(new TreeTablePropertiesAction());
 		modeController.addAction(new ToggleTreeTableTextWrapAction());
 		TreeTableColumnActions.addTo(modeController);
-		TreeTableEditing.installColumnRenaming(modeController.getMapController());
+		TreeTableEditing.installListeners(modeController.getMapController());
 		AttributeController.install(new MAttributeController(modeController));
 		userInputListenerFactory.setNodeKeyListener(new DefaultNodeKeyListener(new IEditHandler() {
 			@Override

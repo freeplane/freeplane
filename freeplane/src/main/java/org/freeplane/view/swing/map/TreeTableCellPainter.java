@@ -1,21 +1,17 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.util.List;
 
-import org.freeplane.features.treetable.TreeTableColumns;
 import org.freeplane.features.treetable.TreeTableGrid;
 
 class TreeTableCellPainter {
 	private final MapView mapView;
-	private final TreeTableCellEditor cellEditor;
 
-	TreeTableCellPainter(final MapView mapView, final TreeTableCellEditor cellEditor) {
+	TreeTableCellPainter(final MapView mapView) {
 		this.mapView = mapView;
-		this.cellEditor = cellEditor;
 	}
 
 	void paintTreeTables(final Graphics2D graphics) {
@@ -24,11 +20,6 @@ class TreeTableCellPainter {
 	}
 
 	private void paintTreeTable(final Graphics2D graphics, final TreeTableView treeTable) {
-		final Font previousFont = graphics.getFont();
-		final Color previousColor = graphics.getColor();
-		paintRows(graphics, treeTable);
-		graphics.setFont(previousFont);
-		graphics.setColor(previousColor);
 		paintGrid(graphics, treeTable);
 	}
 
@@ -63,24 +54,5 @@ class TreeTableCellPainter {
 	private static void useLineStyle(final Graphics2D graphics, final TreeTableLineStyle lineStyle) {
 		graphics.setColor(lineStyle.getColor());
 		graphics.setStroke(lineStyle.stroke());
-	}
-
-	private void paintRows(final Graphics2D graphics, final TreeTableView treeTable) {
-		final TreeTableColumns columns = treeTable.getColumns();
-		final List<NodeView> rows = treeTable.getRows();
-		for (int rowIndex = 0; rowIndex < rows.size(); rowIndex++) {
-			final NodeView rowView = rows.get(rowIndex);
-			final Font font = TreeTableCellText.zoomedFontOf(rowView);
-			final Color color = rowView.getTextColor(rowView.getStyleOption());
-			for (int columnIndex = 0; columnIndex < columns.size(); columnIndex++) {
-				final String attributeKey = columns.get(columnIndex).getAttributeKey();
-				if (cellEditor.isEditing(rowView.getNode(), attributeKey))
-					continue;
-				final String value = TreeTableCellText.valueOf(rowView.getNode(), attributeKey);
-				if (value != null)
-					TreeTableCellText.paint(graphics, value, font, color, treeTable.getCellBounds(rowIndex, columnIndex),
-						treeTable.getTextPadding(), treeTable.getWrapWidth(columnIndex));
-			}
-		}
 	}
 }

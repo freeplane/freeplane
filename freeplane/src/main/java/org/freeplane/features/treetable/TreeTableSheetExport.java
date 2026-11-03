@@ -48,7 +48,7 @@ public class TreeTableSheetExport {
 
 	private void collectRows(final NodeModel parent, final int depth) {
 		for (final NodeModel child : parent.getChildren()) {
-			if (TreeTableHeader.isHeaderRoot(child))
+			if (TreeTableHeader.isHeaderRoot(child) || TreeTableCells.isCell(child))
 				continue;
 			rows.add(new Row(child, depth));
 			if (!TreeTableModel.isTreeTableRoot(child))

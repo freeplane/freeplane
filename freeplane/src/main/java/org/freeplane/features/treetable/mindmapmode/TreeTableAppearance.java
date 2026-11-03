@@ -15,6 +15,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.nodestyle.NodeStyleShape;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.treetable.TreeTableAutoStyle;
@@ -32,6 +33,8 @@ class TreeTableAppearance {
 	static final Color TABLE_BORDER_COLOR = Color.GRAY;
 	static final Quantity<LengthUnit> TABLE_BORDER_WIDTH = new Quantity<LengthUnit>(2, LengthUnit.px);
 	static final Dash TABLE_BORDER_DASH = Dash.SOLID;
+	static final NodeStyleShape CELL_CONTENT_SHAPE = NodeStyleShape.rectangle;
+	static final Color CELL_CONTENT_BORDER_COLOR = new Color(0, 0, 0, 0);
 
 	static class NodeAppearance {
 		private final NodeModel node;
@@ -56,6 +59,8 @@ class TreeTableAppearance {
 		styleController.addUserStyleIfAbsent(map, TreeTableHeader.STYLE_NAME, TreeTableAppearance::initHeaderStyle);
 		styleController.addUserStyleIfAbsent(map, TreeTableAutoStyle.COLUMN.getName(),
 			TreeTableAppearance::initColumnStyle);
+		styleController.addUserStyleIfAbsent(map, TreeTableAutoStyle.CELL.getName(),
+			TreeTableAppearance::initCellContentStyle);
 	}
 
 	private static void initRowStyle(final NodeModel styleNode) {
@@ -76,6 +81,13 @@ class TreeTableAppearance {
 		final NodeBorderModel border = NodeBorderModel.createNodeBorderModel(styleNode);
 		border.setBorderColorMatchesEdgeColor(false);
 		border.setBorderColor(COLUMN_BORDER_COLOR);
+	}
+
+	private static void initCellContentStyle(final NodeModel styleNode) {
+		NodeStyleModel.createNodeStyleModel(styleNode).setShape(CELL_CONTENT_SHAPE);
+		final NodeBorderModel border = NodeBorderModel.createNodeBorderModel(styleNode);
+		border.setBorderColorMatchesEdgeColor(false);
+		border.setBorderColor(CELL_CONTENT_BORDER_COLOR);
 	}
 
 	private static void initTableStyle(final NodeModel styleNode) {

@@ -5,8 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
 import java.util.Collections;
 
-import org.freeplane.features.attribute.Attribute;
-import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.map.MapFake;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.styles.LogicalStyleModel;
@@ -35,12 +33,7 @@ public class TreeTableSheetExportTest {
 	}
 
 	static void setValue(final NodeModel row, final String key, final String value) {
-		NodeAttributeTableModel attributes = row.getExtension(NodeAttributeTableModel.class);
-		if (attributes == null) {
-			attributes = new NodeAttributeTableModel();
-			row.addExtension(attributes);
-		}
-		attributes.silentlyAddRowNoUndo(row, new Attribute(key, value));
+		row.insert(TreeTableCells.newCell(row.getMap(), key, value));
 	}
 
 	@Test

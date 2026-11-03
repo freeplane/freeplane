@@ -14,7 +14,6 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleShape;
-import org.freeplane.features.treetable.TreeTableCellLayout;
 import org.freeplane.features.treetable.TreeTableColumn;
 import org.freeplane.features.treetable.TreeTableColumns;
 import org.freeplane.features.treetable.TreeTableGrid;
@@ -83,7 +82,7 @@ class TreeTableView {
 		return new TreeTableView(mapView, treeTableRoot, header, columnViews, rows);
 	}
 
-	private static NodeView headerViewOf(final NodeView treeTableRoot) {
+	static NodeView headerViewOf(final NodeView treeTableRoot) {
 		for (final NodeView child : treeTableRoot.getChildrenViews()) {
 			if (child.isContentVisible() && TreeTableHeader.isHeaderRoot(child.getNode()))
 				return child;
@@ -91,7 +90,7 @@ class TreeTableView {
 		return null;
 	}
 
-	private static List<NodeView> distinctColumnViews(final NodeView header) {
+	static List<NodeView> distinctColumnViews(final NodeView header) {
 		final List<NodeView> leaves = new ArrayList<NodeView>();
 		for (final NodeView child : visibleChildrenOf(header))
 			collectLeaves(child, leaves);
@@ -128,9 +127,9 @@ class TreeTableView {
 		return children;
 	}
 
-	private static void collectRows(final NodeView view, final List<NodeView> rows) {
+	static void collectRows(final NodeView view, final List<NodeView> rows) {
 		for (final NodeView child : view.getChildrenViews()) {
-			if (TreeTableHeader.isHeaderRoot(child.getNode()))
+			if (TreeTableHeader.isHeaderRoot(child.getNode()) || TreeTableCellPlacement.isCellView(child))
 				continue;
 			if (child.isContentVisible())
 				rows.add(child);
@@ -270,10 +269,6 @@ class TreeTableView {
 		return SwingUtilities.convertRectangle(content, bounds, mapView);
 	}
 
-	int getTextPadding() {
-		return textPadding;
-	}
-
 	NodeView getTreeTableRootView() {
 		return treeTableRootView;
 	}
@@ -288,12 +283,6 @@ class TreeTableView {
 
 	int getColumnNodeLeft(final int columnIndex) {
 		return columnBounds.get(columnIndex).x;
-	}
-
-	int getWrapWidth(final int columnIndex) {
-		return TreeTableModel.wrapsText(treeTableRootView.getNode())
-				? TreeTableCellLayout.wrapWidth(columnBounds.get(columnIndex).width, textPadding)
-				: -1;
 	}
 
 	List<NodeView> getRows() {
