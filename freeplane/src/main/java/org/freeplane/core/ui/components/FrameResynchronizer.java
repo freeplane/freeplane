@@ -5,6 +5,8 @@ import java.awt.Frame;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ComponentEvent;
@@ -13,13 +15,14 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JRootPane;
 
 /**
  * Repairs the stale AWT window coordinate cache on the X11 toolkit so that
- * heavyweight FlatLaf popup windows (menus, combo box dropdowns) open at the
- * correct screen position after the window manager changes the frame geometry
- * (maximize, unmaximize, or arbitrary move). OpenJDK 11 with KWin/X11 keeps
- * reporting the pre-change origin via {@link java.awt.Component#getLocationOnScreen()}
+ * popup placement and menu hit-testing remain correct after the window manager
+ * changes the frame geometry (maximize, unmaximize, or arbitrary move). OpenJDK 11
+ * with KWin/X11 keeps reporting the pre-change origin via
+ * {@link java.awt.Component#getLocationOnScreen()}
  * long after the native window moved, which misplaces popups and makes them
  * dismiss on release.
  *
@@ -43,13 +46,6 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		frame.addComponentListener(frameResynchronizer);
 	}
 
-	static boolean needsFrameResynchronization(final boolean isX11Toolkit, final int windowState,
-			final Rectangle frameBounds, final Rectangle targetBounds) {
-		return isX11Toolkit && (windowState & Frame.ICONIFIED) == 0
-				&& frameBounds != null && targetBounds != null
-				&& (frameBounds.x != targetBounds.x || frameBounds.y != targetBounds.y);
-	}
-
 	static boolean needsNormalWindowResynchronization(final boolean isX11Toolkit, final int windowState,
 			final Rectangle frameBounds, final Rectangle nativeBounds) {
 		if (!isX11Toolkit
@@ -68,17 +64,26 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 				|| Math.abs(frameBounds.y - nativeBounds.y) > RESYNCHRONIZATION_TOLERANCE;
 	}
 
+	/**
+	 * Decides whether a maximized frame still needs a bounds request.
+	 *
+	 * <p>The decision is based on the geometry the window manager reports, not on
+	 * the AWT bounds. On X11 the window manager maximizes the <em>client</em> area to
+	 * the work area while AWT keeps reporting the decorated <em>outer</em> frame
+	 * (for example AWT {@code -4,-34 1928x1120} for a client {@code 0,0 1920x1080}).
+	 * Comparing AWT bounds against the work area therefore never matches on a
+	 * correctly maximized window, and the frame is re-requested over and over for
+	 * geometry the window manager already produced.</p>
+	 *
+	 * @param nativeBounds the geometry reported by the window manager
+	 * @param targetBounds the work area the maximized frame should cover
+	 */
 	static boolean needsMaximizedFrameResynchronization(final boolean isX11Toolkit, final int windowState,
-			final Rectangle frameBounds, final Rectangle screenBounds) {
+			final Rectangle nativeBounds, final Rectangle targetBounds) {
 		return (windowState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH
-				&& needsFrameResynchronization(isX11Toolkit, windowState, frameBounds, screenBounds);
-	}
-
-	static boolean needsNormalFrameResynchronization(final boolean isX11Toolkit, final int oldState,
-			final int newState, final Rectangle frameBounds, final Rectangle normalBounds) {
-		return (oldState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH
-				&& (newState & Frame.MAXIMIZED_BOTH) != Frame.MAXIMIZED_BOTH
-				&& needsFrameResynchronization(isX11Toolkit, newState, frameBounds, normalBounds);
+				&& isX11Toolkit && (windowState & Frame.ICONIFIED) == 0
+				&& nativeBounds != null && targetBounds != null
+				&& !nativeBounds.equals(targetBounds);
 	}
 
 	static Rectangle findTargetScreenBounds(final Rectangle frameBounds, final Rectangle[] screenBounds) {
@@ -102,59 +107,221 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		return targetBounds == null ? null : new Rectangle(targetBounds);
 	}
 
+	/**
+	 * Returns the usable work area of a screen, derived by shrinking the screen
+	 * rectangle by the given screen insets. Zero insets mean the complete screen
+	 * rectangle is usable. Returns {@code null} when the inputs are missing or the
+	 * derived rectangle has no area.
+	 */
+	static Rectangle getWorkAreaBounds(final Rectangle screenBounds, final Insets insets) {
+		if (screenBounds == null || insets == null) {
+			return null;
+		}
+		final int width = screenBounds.width - insets.left - insets.right;
+		final int height = screenBounds.height - insets.top - insets.bottom;
+		if (width <= 0 || height <= 0) {
+			return null;
+		}
+		return new Rectangle(screenBounds.x + insets.left, screenBounds.y + insets.top, width, height);
+	}
+
+	/**
+	 * Resolves the work area a maximized frame belongs to: the work area matching the
+	 * native window geometry first, the one matching the remembered normal bounds
+	 * second, and a copy of the given fallback work area last. Returns {@code null}
+	 * when no work area can be determined, so that callers keep the frame stable
+	 * instead of falling back to the full screen.
+	 */
+	static Rectangle findTargetMaximizedBounds(final Rectangle nativeBounds, final Rectangle normalBounds,
+			final Rectangle[] workAreaBounds, final Rectangle fallbackWorkArea) {
+		Rectangle targetBounds = findTargetScreenBounds(nativeBounds, workAreaBounds);
+		if (targetBounds == null) {
+			targetBounds = findTargetScreenBounds(normalBounds, workAreaBounds);
+		}
+		if (targetBounds != null) {
+			return targetBounds;
+		}
+		return fallbackWorkArea == null ? null : new Rectangle(fallbackWorkArea);
+	}
+
 	private static boolean isX11Toolkit() {
 		return X11_TOOLKIT_CLASS_NAME.equals(Toolkit.getDefaultToolkit().getClass().getName());
 	}
 
-	private static boolean resynchronizeMaximizedFrame(final JFrame frame, final int windowState,
-			final Rectangle nativeBounds, final Rectangle normalBounds) {
-		Rectangle targetBounds = null;
-		if (nativeBounds != null) {
-			targetBounds = findTargetScreenBounds(nativeBounds, getScreenBounds());
-		}
-		if (targetBounds == null) {
-			targetBounds = findTargetScreenBounds(normalBounds, getScreenBounds());
-		}
-		if (targetBounds != null) {
-			if (needsMaximizedFrameResynchronization(isX11Toolkit(), windowState, frame.getBounds(), targetBounds)) {
-				resynchronizeFrame(frame, windowState, targetBounds);
+	static final class MaximizedResynchronizationGuard {
+		private static final int MAX_ATTEMPTS = 10;
+		private Rectangle targetBounds;
+		private int attempts;
+
+		boolean shouldRequest(final Rectangle currentBounds, final Rectangle targetBounds) {
+			if (currentBounds == null || targetBounds == null || currentBounds.equals(targetBounds)) {
+				reset();
 				return false;
 			}
+			if (!targetBounds.equals(this.targetBounds)) {
+				this.targetBounds = new Rectangle(targetBounds);
+				attempts = 0;
+			}
+			if (attempts >= MAX_ATTEMPTS) {
+				return false;
+			}
+			attempts++;
 			return true;
 		}
-		final GraphicsConfiguration graphicsConfiguration = frame.getGraphicsConfiguration();
-		if (graphicsConfiguration == null) {
-			return true;
+
+		boolean isExhausted() {
+			return attempts >= MAX_ATTEMPTS;
 		}
-		if (needsMaximizedFrameResynchronization(isX11Toolkit(), windowState, frame.getBounds(), graphicsConfiguration.getBounds())) {
-			resynchronizeFrame(frame, windowState, graphicsConfiguration.getBounds());
-			return false;
+
+		void reset() {
+			targetBounds = null;
+			attempts = 0;
 		}
-		return true;
 	}
 
-	private static void resynchronizeNormalFrame(final JFrame frame, final int windowState,
+	static boolean shouldScheduleDeferredResynchronization(final boolean maximized, final boolean stable) {
+		return !maximized || !stable;
+	}
+
+	interface FrameGeometry {
+		boolean isX11Toolkit();
+
+		Rectangle getNativeWindowBounds(Component component);
+
+		Point getNativeClientOrigin(JFrame frame);
+
+		Point getAwtClientOrigin(JFrame frame);
+
+		Rectangle[] getScreenWorkAreas();
+
+		Insets getScreenInsets(GraphicsConfiguration graphicsConfiguration);
+	}
+
+	private static final FrameGeometry DEFAULT_FRAME_GEOMETRY = new FrameGeometry() {
+		@Override
+		public boolean isX11Toolkit() {
+			return FrameResynchronizer.isX11Toolkit();
+		}
+
+		@Override
+		public Rectangle getNativeWindowBounds(final Component component) {
+			return FrameResynchronizer.getNativeWindowBounds(component);
+		}
+
+		@Override
+		public Point getNativeClientOrigin(final JFrame frame) {
+			return FrameResynchronizer.getNativeClientOrigin(frame);
+		}
+
+		@Override
+		public Point getAwtClientOrigin(final JFrame frame) {
+			final JRootPane rootPane = frame.getRootPane();
+			if (rootPane == null) {
+				return null;
+			}
+			try {
+				return rootPane.getLocationOnScreen();
+			}
+			catch (RuntimeException unavailableLocation) {
+				return null;
+			}
+		}
+
+		@Override
+		public Rectangle[] getScreenWorkAreas() {
+			return FrameResynchronizer.getScreenWorkAreas();
+		}
+
+		@Override
+		public Insets getScreenInsets(final GraphicsConfiguration graphicsConfiguration) {
+			return FrameResynchronizer.getScreenInsets(graphicsConfiguration);
+		}
+	};
+
+	private boolean resynchronizeMaximizedFrame(final JFrame frame, final int windowState,
+			final Rectangle nativeBounds, final Rectangle normalBounds) {
+		final Rectangle[] workAreaBounds = frameGeometry.getScreenWorkAreas();
+		final GraphicsConfiguration graphicsConfiguration = frame.getGraphicsConfiguration();
+		final Rectangle fallbackWorkArea = graphicsConfiguration == null ? null
+				: getScreenWorkAreaBounds(graphicsConfiguration, frameGeometry);
+		final Rectangle targetBounds = findTargetMaximizedBounds(nativeBounds, normalBounds, workAreaBounds,
+				fallbackWorkArea);
+		if (targetBounds == null) {
+			return true;
+		}
+		if (nativeBounds == null) {
+			return true;
+		}
+		if (nativeBounds.equals(targetBounds)) {
+			maximizedResynchronizationGuard.reset();
+			return resynchronizeAwtClientOrigin(frame, targetBounds);
+		}
+		clearAwtCacheResynchronizationRequestIfConverged(frame);
+		// Ask the window manager what the window actually covers. AWT bounds are
+		// the decorated outer frame and never equal the client work area, so they
+		// cannot tell a correctly maximized window from a displaced one.
+		if (!needsMaximizedFrameResynchronization(frameGeometry.isX11Toolkit(), windowState, nativeBounds,
+				targetBounds)
+				|| !maximizedResynchronizationGuard.shouldRequest(nativeBounds, targetBounds)) {
+			return true;
+		}
+		frame.setBounds(targetBounds);
+		frame.validate();
+		return false;
+	}
+
+	private boolean resynchronizeAwtClientOrigin(final JFrame frame, final Rectangle targetBounds) {
+		final Point nativeOrigin = frameGeometry.getNativeClientOrigin(frame);
+		final Point awtOrigin = frameGeometry.getAwtClientOrigin(frame);
+		if (nativeOrigin == null || awtOrigin == null) {
+			return true;
+		}
+		if (!needsAwtClientOriginResynchronization(awtOrigin, nativeOrigin)) {
+			awtCacheResynchronizationRequested = false;
+			return true;
+		}
+		if (!awtCacheResynchronizationRequested) {
+			awtCacheResynchronizationRequested = true;
+			frame.setBounds(targetBounds);
+			frame.validate();
+		}
+		return false;
+	}
+
+	private void clearAwtCacheResynchronizationRequestIfConverged(final JFrame frame) {
+		if (!awtCacheResynchronizationRequested) {
+			return;
+		}
+		final Point nativeOrigin = frameGeometry.getNativeClientOrigin(frame);
+		final Point awtOrigin = frameGeometry.getAwtClientOrigin(frame);
+		if (nativeOrigin != null && awtOrigin != null
+				&& !needsAwtClientOriginResynchronization(awtOrigin, nativeOrigin)) {
+			awtCacheResynchronizationRequested = false;
+		}
+	}
+
+	static boolean needsAwtClientOriginResynchronization(final Point awtOrigin, final Point nativeOrigin) {
+		return awtOrigin != null && nativeOrigin != null
+				&& (Math.abs(awtOrigin.x - nativeOrigin.x) > RESYNCHRONIZATION_TOLERANCE
+						|| Math.abs(awtOrigin.y - nativeOrigin.y) > RESYNCHRONIZATION_TOLERANCE);
+	}
+
+	private void resynchronizeNormalFrame(final JFrame frame, final int windowState,
 			final Rectangle nativeBounds) {
-		if (needsNormalWindowResynchronization(isX11Toolkit(), windowState, frame.getBounds(), nativeBounds)) {
+		if (needsNormalWindowResynchronization(frameGeometry.isX11Toolkit(), windowState, frame.getBounds(), nativeBounds)) {
 			frame.setBounds(nativeBounds);
 			frame.validate();
 		}
 	}
 
 	/**
-	 * Returns the current window manager frame bounds (including decorations) of the
-	 * given component as a screen rectangle in logical pixels, or {@code null} if the
-	 * bounds cannot be queried or are implausible (e.g. while the window is still
-	 * being placed). Only available on the X11 toolkit and only when the component
-	 * has a native shell window.
+	 * Returns the native X11 shell window identifier of the given component, or
+	 * {@code 0} when the identifier is inaccessible or unavailable. The X11 toolkit
+	 * gate is enforced by the callers of this helper, not here.
 	 */
-	static Rectangle getNativeWindowBounds(final Component component) {
-		if (!isX11Toolkit() || component == null) {
-			return null;
-		}
-		com.sun.jna.platform.unix.X11.Display display = null;
+	static long getShellWindowId(final Component component) {
 		try {
-			final long shell = java.security.AccessController.doPrivileged(
+			return java.security.AccessController.doPrivileged(
 					new java.security.PrivilegedExceptionAction<Long>() {
 						@Override
 						public Long run() throws Exception {
@@ -172,6 +339,78 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 							return ((Number) getShell.invoke(peer)).longValue();
 						}
 					});
+		}
+		catch (Throwable unavailableShell) {
+			return 0L;
+		}
+	}
+
+	/**
+	 * Returns the origin of the native client area of the given component's shell
+	 * window in logical screen coordinates, or {@code null} when it cannot be
+	 * queried. This origin belongs to the same coordinate space as
+	 * {@code java.awt.Component#getLocationOnScreen()}, so a position expressed
+	 * relative to the root pane can be added to it directly.
+	 */
+	static Point getNativeClientOrigin(final Component component) {
+		if (!isX11Toolkit() || component == null) {
+			return null;
+		}
+		com.sun.jna.platform.unix.X11.Display display = null;
+		try {
+			final long shell = getShellWindowId(component);
+			if (shell == 0) {
+				return null;
+			}
+			display = com.sun.jna.platform.unix.X11.INSTANCE.XOpenDisplay(null);
+			if (display == null) {
+				return null;
+			}
+			final com.sun.jna.platform.unix.X11.Window root = com.sun.jna.platform.unix.X11.INSTANCE.XDefaultRootWindow(display);
+			final com.sun.jna.platform.unix.X11.Window shellWindow = new com.sun.jna.platform.unix.X11.Window(shell);
+			final com.sun.jna.ptr.IntByReference x = new com.sun.jna.ptr.IntByReference();
+			final com.sun.jna.ptr.IntByReference y = new com.sun.jna.ptr.IntByReference();
+			final com.sun.jna.platform.unix.X11.WindowByReference child = new com.sun.jna.platform.unix.X11.WindowByReference();
+			final boolean translated = com.sun.jna.platform.unix.X11.INSTANCE.XTranslateCoordinates(
+					display, shellWindow, root, 0, 0, x, y, child);
+			if (!translated) {
+				return null;
+			}
+			final GraphicsConfiguration gc = component.getGraphicsConfiguration();
+			final java.awt.geom.AffineTransform transform = gc == null ? null : gc.getDefaultTransform();
+			final double scaleX = transform == null ? 1.0 : transform.getScaleX();
+			final double scaleY = transform == null ? 1.0 : transform.getScaleY();
+			return new Point((int) Math.round(x.getValue() / (scaleX > 0 ? scaleX : 1.0)),
+					(int) Math.round(y.getValue() / (scaleY > 0 ? scaleY : 1.0)));
+		}
+		catch (Throwable throwable) {
+			return null;
+		}
+		finally {
+			if (display != null) {
+				try {
+					com.sun.jna.platform.unix.X11.INSTANCE.XCloseDisplay(display);
+				}
+				catch (Throwable ignored) {
+				}
+			}
+		}
+	}
+
+	/**
+	 * Returns the current window manager frame bounds (including decorations) of the
+	 * given component as a screen rectangle in logical pixels, or {@code null} if the
+	 * bounds cannot be queried or are implausible (e.g. while the window is still
+	 * being placed). Only available on the X11 toolkit and only when the component
+	 * has a native shell window.
+	 */
+	static Rectangle getNativeWindowBounds(final Component component) {
+		if (!isX11Toolkit() || component == null) {
+			return null;
+		}
+		com.sun.jna.platform.unix.X11.Display display = null;
+		try {
+			final long shell = getShellWindowId(component);
 			if (shell == 0) {
 				return null;
 			}
@@ -280,26 +519,59 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		return result;
 	}
 
-	private static Rectangle[] getScreenBounds() {
+	private static Rectangle[] getScreenWorkAreas() {
 		final GraphicsDevice[] screenDevices = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
-		final Rectangle[] screenBounds = new Rectangle[screenDevices.length];
+		final GraphicsConfiguration[] graphicsConfigurations = new GraphicsConfiguration[screenDevices.length];
 		for (int i = 0; i < screenDevices.length; i++) {
-			final GraphicsConfiguration graphicsConfiguration = screenDevices[i].getDefaultConfiguration();
-			screenBounds[i] = graphicsConfiguration == null ? null : graphicsConfiguration.getBounds();
+			graphicsConfigurations[i] = screenDevices[i].getDefaultConfiguration();
 		}
-		return screenBounds;
+		return getScreenWorkAreas(graphicsConfigurations, DEFAULT_FRAME_GEOMETRY);
 	}
 
-	private static void resynchronizeFrame(final JFrame frame, final int windowState,
-			final Rectangle targetBounds) {
-		if (needsFrameResynchronization(isX11Toolkit(), windowState, frame.getBounds(), targetBounds)) {
-			frame.setBounds(targetBounds);
-			frame.validate();
+	static Rectangle[] getScreenWorkAreas(final GraphicsConfiguration[] graphicsConfigurations,
+			final FrameGeometry frameGeometry) {
+		final Rectangle[] workAreaBounds = new Rectangle[graphicsConfigurations.length];
+		for (int i = 0; i < graphicsConfigurations.length; i++) {
+			final GraphicsConfiguration graphicsConfiguration = graphicsConfigurations[i];
+			workAreaBounds[i] = graphicsConfiguration == null ? null
+					: getScreenWorkAreaBounds(graphicsConfiguration, frameGeometry);
+		}
+		return workAreaBounds;
+	}
+
+	private static Rectangle getScreenWorkAreaBounds(final GraphicsConfiguration graphicsConfiguration,
+			final FrameGeometry frameGeometry) {
+		final Rectangle screenBounds = graphicsConfiguration.getBounds();
+		final Insets screenInsets;
+		try {
+			screenInsets = frameGeometry.getScreenInsets(graphicsConfiguration);
+		}
+		catch (RuntimeException runtimeException) {
+			return null;
+		}
+		return getWorkAreaBounds(screenBounds, screenInsets);
+	}
+
+	/**
+	 * Returns the screen insets of the given configuration, or {@code null} when they
+	 * cannot be determined. A missing result makes the screen's work area
+	 * unavailable instead of silently treating the full screen as usable.
+	 */
+	private static Insets getScreenInsets(final GraphicsConfiguration graphicsConfiguration) {
+		try {
+			return Toolkit.getDefaultToolkit().getScreenInsets(graphicsConfiguration);
+		}
+		catch (RuntimeException runtimeException) {
+			return null;
 		}
 	}
 
 	private final JFrame frame;
+	private final FrameGeometry frameGeometry;
 	private Rectangle normalBounds;
+	private final MaximizedResynchronizationGuard maximizedResynchronizationGuard =
+			new MaximizedResynchronizationGuard();
+	private boolean awtCacheResynchronizationRequested;
 	private int lastKnownWindowState;
 	private boolean isResynchronizing;
 	private javax.swing.Timer deferredResynchronizationTimer;
@@ -307,7 +579,12 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 	private static final int MAX_DEFERRED_RESYNCHRONIZATION_ATTEMPTS = 10;
 
 	private FrameResynchronizer(final JFrame frame) {
+		this(frame, DEFAULT_FRAME_GEOMETRY);
+	}
+
+	FrameResynchronizer(final JFrame frame, final FrameGeometry frameGeometry) {
 		this.frame = frame;
+		this.frameGeometry = frameGeometry;
 		normalBounds = new Rectangle(frame.getBounds());
 		lastKnownWindowState = frame.getExtendedState();
 	}
@@ -315,8 +592,11 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 	@Override
 	public void windowOpened(final WindowEvent event) {
 		lastKnownWindowState = frame.getExtendedState();
-		resynchronizeOnStableState();
-		scheduleDeferredResynchronization();
+		final boolean maximized = (lastKnownWindowState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
+		final boolean stable = resynchronizeOnStableState();
+		if (shouldScheduleDeferredResynchronization(maximized, stable)) {
+			scheduleDeferredResynchronization();
+		}
 	}
 
 	@Override
@@ -328,15 +608,15 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 				&& (newState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
 			resynchronizeOnStableState();
 		}
-		else if (needsNormalFrameResynchronization(isX11Toolkit(), oldState, newState,
-				frame.getBounds(), normalBounds)) {
-			runGuardedResynchronization(new Runnable() {
-				@Override
-				public void run() {
-					resynchronizeFrame(frame, newState, normalBounds);
-					rememberNormalBounds();
-				}
-			});
+		else if ((oldState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH
+				&& (newState & Frame.MAXIMIZED_BOTH) != Frame.MAXIMIZED_BOTH) {
+			maximizedResynchronizationGuard.reset();
+			// AWT's remembered origin can include the decoration offset. Restore
+			// through the native-geometry path instead of moving the window there.
+			if (isNormalWindowState(newState) && frameGeometry.isX11Toolkit()
+					&& !resynchronizeOnStableState()) {
+				scheduleDeferredResynchronization();
+			}
 		}
 	}
 
@@ -363,16 +643,21 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 			return;
 		}
 		final int windowState = frame.getExtendedState();
-		if ((windowState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
-			resynchronizeOnStableState();
+		final boolean maximized = (windowState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
+		final boolean stable;
+		if (maximized) {
+			stable = resynchronizeOnStableState();
 		}
 		else if (isNormalWindowState(windowState)) {
-			resynchronizeOnStableState();
+			clearAwtCacheResynchronizationRequestIfConverged(frame);
+			stable = resynchronizeOnStableState();
 		}
 		else {
-			rememberNormalBounds();
+			stable = true;
 		}
-		scheduleDeferredResynchronization();
+		if (shouldScheduleDeferredResynchronization(maximized, stable)) {
+			scheduleDeferredResynchronization();
+		}
 	}
 
 	private void scheduleDeferredResynchronization() {
@@ -410,7 +695,7 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 			public void run() {
 				final int windowState = frame.getExtendedState();
 				lastKnownWindowState = windowState;
-				final Rectangle nativeBounds = getNativeWindowBounds(frame);
+				final Rectangle nativeBounds = frameGeometry.getNativeWindowBounds(frame);
 				if ((windowState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
 					stable[0] = resynchronizeMaximizedFrame(frame, windowState, nativeBounds, normalBounds);
 				}
@@ -425,13 +710,13 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 						final boolean sizesMatch =
 								Math.abs(frameBounds.width - nativeBounds.width) <= RESYNCHRONIZATION_TOLERANCE
 										&& Math.abs(frameBounds.height - nativeBounds.height) <= RESYNCHRONIZATION_TOLERANCE;
-						stable[0] = sizesMatch && !needsNormalWindowResynchronization(isX11Toolkit(),
+						stable[0] = sizesMatch && !needsNormalWindowResynchronization(frameGeometry.isX11Toolkit(),
 								windowState, frameBounds, nativeBounds);
+						if (sizesMatch) {
+							resynchronizeNormalFrame(frame, windowState, nativeBounds);
+							rememberNormalBounds(nativeBounds);
+						}
 					}
-					if (nativeBounds != null) {
-						resynchronizeNormalFrame(frame, windowState, nativeBounds);
-					}
-					rememberNormalBounds();
 				}
 				else {
 					stable[0] = true;
@@ -454,9 +739,10 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		}
 	}
 
-	private void rememberNormalBounds() {
+	private void rememberNormalBounds(final Rectangle nativeBounds) {
 		if (isNormalWindowState(lastKnownWindowState) && isNormalWindowState(frame.getExtendedState())) {
-			normalBounds = new Rectangle(frame.getBounds());
+			// Never seed the next cycle from AWT's potentially inset-offset cache.
+			normalBounds = new Rectangle(nativeBounds);
 		}
 	}
 
