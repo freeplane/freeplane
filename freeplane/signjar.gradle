@@ -6,31 +6,36 @@ if (signJarPropertyFile.exists())
     signJarProperties.load(new FileInputStream(signJarPropertyFile))
 }
 
-def signJarTask(String name, String signedJarName) {
-	return tasks.create(name, Exec) {
+void createSignAndVerifyJarTasks(String name, String signedJarName) {
+	def signedJar = file(globalBin + '/core/' + pluginid + '/lib/' + signedJarName)
+	def signTask = tasks.create(name, Exec) {
 		onlyIf { signJarProperties['signjar.cardpass'] }
 		commandLine 'jarsigner', '-keystore',  'NONE', '-tsa', signJarProperties['signjar.tsaurl'],
 			'-storetype', 'PKCS11', '-providerClass', 'sun.security.pkcs11.SunPKCS11',
 			'-providerArg', signJarProperties['signjar.cfg'], '-storepass',  signJarProperties['signjar.cardpass'], 
 			'-certchain', signJarProperties['signjar.certchain'],
-			file(globalBin + '/core/' + pluginid + '/lib/' + signedJarName), 
+			signedJar,
 			signJarProperties['signjar.owner']
 		dependsOn copyOSGiJars
+	}
+	tasks.create('verifySigned' + name.substring('sign'.length()), Exec) {
+		commandLine 'jarsigner', '-verify', '-strict', '-verbose', '-certs', signedJar
+		dependsOn signTask
 	}
 }
 
 if (signJarProperties['signjar.cardpass'])
 {
 
-	signJarTask('signViewerJar', 'freeplaneviewer.jar')
+	createSignAndVerifyJarTasks('signViewerJar', 'freeplaneviewer.jar')
 
-	signJarTask('signViewerApiJar', 'freeplaneapi_viewer.jar')
+	createSignAndVerifyJarTasks('signViewerApiJar', 'freeplaneapi_viewer.jar')
 
-	signJarTask('signSvgJar', 'svgSalamander-1.1.4.jar')
+	createSignAndVerifyJarTasks('signSvgJar', 'svgSalamander-1.1.4.jar')
 
-	build.dependsOn signViewerJar
-	build.dependsOn signViewerApiJar
-	build.dependsOn signSvgJar
+	build.dependsOn verifySignedViewerJar
+	build.dependsOn verifySignedViewerApiJar
+	build.dependsOn verifySignedSvgJar
 }
 else
 {
