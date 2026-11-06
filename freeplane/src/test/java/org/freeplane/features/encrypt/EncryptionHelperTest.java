@@ -19,6 +19,7 @@ package org.freeplane.features.encrypt;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
@@ -78,7 +79,7 @@ public class EncryptionHelperTest {
 	}
 
 	@Test
-	public void createDecrypterFallsBackToSingleDesForLegacyContent() {
+	public void createDecrypterSelectsSingleDesForLegacyContent() {
 		final StringBuilder password = new StringBuilder("test123");
 		final IEncrypter desEncrypter = new SingleDesEncrypter(password);
 		final String encrypted = desEncrypter.encrypt("Hello World");
@@ -100,7 +101,7 @@ public class EncryptionHelperTest {
 	}
 
 	@Test
-	public void tryDecryptWithAllAlgorithmsDecryptsAes256() {
+	public void createDecrypterDecryptsAes256() {
 		final StringBuilder password = new StringBuilder("test123");
 		final IEncrypter aesEncrypter = new Aes256Encrypter(password);
 		final String plaintext = "Hello World";
@@ -113,7 +114,7 @@ public class EncryptionHelperTest {
 	}
 
 	@Test
-	public void tryDecryptWithAllAlgorithmsDecryptsSingleDes() {
+	public void createDecrypterDecryptsSingleDes() {
 		final StringBuilder password = new StringBuilder("test123");
 		final IEncrypter desEncrypter = new SingleDesEncrypter(password);
 		final String plaintext = "<node TEXT=\"test\"/>";
@@ -126,7 +127,7 @@ public class EncryptionHelperTest {
 	}
 
 	@Test
-	public void tryDecryptWithAllAlgorithmsReturnsNullForWrongPassword() {
+	public void createDecrypterRejectsWrongAesPassword() {
 		final StringBuilder password1 = new StringBuilder("correct");
 		final IEncrypter aesEncrypter = new Aes256Encrypter(password1);
 		final String encrypted = aesEncrypter.encrypt("Secret");
@@ -139,7 +140,7 @@ public class EncryptionHelperTest {
 	}
 
 	@Test
-	public void tryDecryptWithAllAlgorithmsReturnsNullForNull() {
+	public void createDecrypterReturnsNullForNull() {
 		final StringBuilder password = new StringBuilder("test123");
 		final String decrypted = EncryptionHelper.createDecrypter(password, null).decrypt(null);
 		
@@ -147,7 +148,7 @@ public class EncryptionHelperTest {
 	}
 
 	@Test
-	public void tryDecryptWithAllAlgorithmsReturnsNullForInvalidData() {
+	public void createDecrypterRejectsMalformedLegacyCiphertext() {
 		final StringBuilder password = new StringBuilder("test123");
 		final String decrypted = EncryptionHelper.createDecrypter(password, "not-encrypted-data").decrypt("not-encrypted-data");
 		
@@ -155,7 +156,7 @@ public class EncryptionHelperTest {
 	}
 
 	@Test
-	public void tryDecryptWithAllAlgorithmsHandlesEmptyEncryptedContent() {
+	public void createDecrypterDecryptsEmptyAesContent() {
 		final StringBuilder password = new StringBuilder("test123");
 		final IEncrypter aesEncrypter = new Aes256Encrypter(password);
 		final String encrypted = aesEncrypter.encrypt("");
@@ -166,20 +167,20 @@ public class EncryptionHelperTest {
 		assertThat(decrypted, equalTo(""));
 	}
 
-	@Test
-	public void tryDecryptWithAllAlgorithmsRejectsInvalidXml() {
-		final StringBuilder password = new StringBuilder("test123");
-		
-		// Create a DES-encrypted content that's not valid XML
-		// (This simulates what might happen with wrong password producing garbage)
-		final String decrypted = EncryptionHelper.createDecrypter(password, "invalid").decrypt("invalid");
-		
-		// Should return null because validation fails
-		assertThat(decrypted, nullValue());
-	}
+    @Test
+    public void createDecrypterDoesNotValidateLegacyXml() {
+        final StringBuilder password = new StringBuilder("test123");
+        encrypter = new SingleDesEncrypter(password);
+        final String malformedXml = "<node>";
+        final String encrypted = encrypter.encrypt(malformedXml);
+        encrypter.destroy();
+        encrypter = EncryptionHelper.createDecrypter(password, encrypted);
+
+        assertThat(encrypter.decrypt(encrypted), equalTo(malformedXml));
+    }
 
 	@Test
-	public void tryDecryptWithAllAlgorithmsAcceptsValidXml() {
+	public void createDecrypterDecryptsNestedDesNodes() {
 		final StringBuilder password = new StringBuilder("test123");
 		final IEncrypter desEncrypter = new SingleDesEncrypter(password);
 		final String validXml = "<node TEXT=\"test\"><node TEXT=\"child\"/></node>";
@@ -192,7 +193,7 @@ public class EncryptionHelperTest {
 	}
 
 	@Test
-	public void tryDecryptWithAllAlgorithmsAcceptsSelfClosingNode() {
+	public void createDecrypterDecryptsSelfClosingDesNode() {
 		final StringBuilder password = new StringBuilder("test123");
 		final IEncrypter desEncrypter = new SingleDesEncrypter(password);
 		final String validXml = "<node TEXT=\"test\"/>";
@@ -245,7 +246,7 @@ public class EncryptionHelperTest {
 		final String encrypted = desEncrypter.encrypt(plaintext);
 		desEncrypter.destroy();
 		
-		// Use helper to decrypt (should work with fallback)
+		// Use the helper to select the legacy DES decrypter.
 		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
 		
 		assertThat(decrypted, equalTo(plaintext));
@@ -290,43 +291,17 @@ public class EncryptionHelperTest {
 		assertThat(decrypted2, equalTo(plaintext2));
 	}
 
-	@Test
-	public void tryDecryptWithAllAlgorithmsFallsBackToDESWhenAES256Fails() {
-		final StringBuilder password = new StringBuilder("test123");
-		
-		final IEncrypter desEncrypter = new SingleDesEncrypter(password);
-		final String plaintext = "<node TEXT=\"legacy content\"/>";
-		final String encrypted = desEncrypter.encrypt(plaintext);
-		desEncrypter.destroy();
-		
-		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
-		
-		assertThat(decrypted, equalTo(plaintext));
-	}
-	
-	/**
-	 * Test that ensures even when AES-256 is attempted first and fails,
-	 * the fallback to legacy algorithms still works.
-	 */
-	@Test
-	public void tryDecryptWithAllAlgorithmsTriesAllAlgorithmsWhenFirstFails() {
-		final StringBuilder correctPassword = new StringBuilder("correct");
-		final StringBuilder wrongPassword = new StringBuilder("wrong");
-		
-		// Encrypt with DES
-		final IEncrypter desEncrypter = new SingleDesEncrypter(correctPassword);
-		final String plaintext = "<node TEXT=\"test content\"/>";
-		final String encrypted = desEncrypter.encrypt(plaintext);
-		desEncrypter.destroy();
-		
-		// First verify that wrong password fails with all algorithms
-		final String decryptedWrong = EncryptionHelper.createDecrypter(wrongPassword, encrypted).decrypt(encrypted);
-		assertThat(decryptedWrong, nullValue());
-		
-		// Then verify that correct password succeeds (tests the fallback chain)
-		final String decryptedCorrect = EncryptionHelper.createDecrypter(correctPassword, encrypted).decrypt(encrypted);
-		assertThat(decryptedCorrect, equalTo(plaintext));
-	}
+    @Test
+    public void createDecrypterDoesNotAuthenticateLegacyDesContent() {
+        final StringBuilder password = new StringBuilder(LegacyDesTestData.WRONG_PASSWORD);
+        encrypter = EncryptionHelper.createDecrypter(password, LegacyDesTestData.ENCRYPTED_CONTENT);
+
+        final String decrypted = encrypter.decrypt(LegacyDesTestData.ENCRYPTED_CONTENT);
+
+        assertThat(encrypter.getClass().getSimpleName(), equalTo("SingleDesEncrypter"));
+        assertThat(decrypted, notNullValue());
+        assertThat(decrypted, not(equalTo(LegacyDesTestData.PLAINTEXT)));
+    }
 
 	@Test
 	public void complexXmlWithMultipleNodesCanBeEncryptedAndDecrypted() {

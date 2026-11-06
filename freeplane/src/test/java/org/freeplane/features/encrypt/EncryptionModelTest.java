@@ -329,7 +329,7 @@ public class EncryptionModelTest {
 	}
 
 	@Test
-	public void canDecryptLegacyDesContentWithFallback() {
+	public void canDecryptLegacyDesContentWithHelper() {
 		final StringBuilder password = new StringBuilder("test123");
 		
 		// Create legacy DES encrypted content
@@ -338,7 +338,7 @@ public class EncryptionModelTest {
 		final String encrypted = desEncrypter.encrypt(plaintext);
 		desEncrypter.destroy();
 		
-		// Try to decrypt with helper (should work via fallback)
+		// Use the helper to select the legacy DES decrypter.
 		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
 		
 		assertThat(decrypted).isEqualTo(plaintext);
