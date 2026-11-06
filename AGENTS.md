@@ -8,7 +8,9 @@
 - Project task directory is `ai-specs/tasks`
 
 ## Build, Test, and Development Commands
-- For build use `java` from Java from `~/.sdkman/candidates/java/21.0.8-zulu`
+- Use any Java 21 installation for builds and tests.
+- If the default `java` is Java 21, keep it. Do not change `JAVA_HOME` or `PATH` to select another Java installation.
+- If the default `java` is not Java 21, select an available Java 21 installation. `~/.sdkman/candidates/java/` is one possible location; SDKMAN is not required.
 - Use `gradle` (not `gradlew`/`maven`). Examples:
   - Compile app: `gradle :freeplane:compileJava`
   - Test all or module: `gradle test` / `gradle :freeplane:test`
