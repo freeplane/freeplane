@@ -37,8 +37,10 @@ import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.ui.IMapViewManager;
@@ -55,6 +57,7 @@ public class EditStylesAction extends AFreeplaneAction {
 	protected JDialog dialog;
 	private Component currentMapView;
 	private MapModel currentMap;
+	private IStyle styleToSelect;
 
 	public EditStylesAction() {
 		super("EditStylesAction");
@@ -85,7 +88,26 @@ public class EditStylesAction extends AFreeplaneAction {
 		IMapViewManager styleMapViewManager = controller.getMapViewManager();
         Component mapViewComponent = styleMapViewManager.getMapViewComponent();
 		((DialogController) controller.getViewController()).setMapView(mapViewComponent);
+		selectRequestedStyle(mapStyleModel);
 		dialog.setVisible(true);
+	}
+
+	public void editStyle(final ActionEvent e, final IStyle style) {
+		styleToSelect = style;
+		try {
+			actionPerformed(e);
+		}
+		finally {
+			styleToSelect = null;
+		}
+	}
+
+	private void selectRequestedStyle(final MapStyleModel mapStyleModel) {
+		if (styleToSelect == null)
+			return;
+		final NodeModel styleNode = mapStyleModel.getStyleNode(styleToSelect);
+		if (styleNode != null)
+			getModeController().getMapController().select(styleNode);
 	}
 
 	void commit() {

@@ -12,7 +12,10 @@ dependencies {
 
 test {
 	// TestApp is not a JUnit test, just a debugging app
-	failOnNoDiscoveredTests = false
+	// (property does not exist before Gradle 9.0, so guard it for compatibility with older Gradle)
+	if (hasProperty('failOnNoDiscoveredTests')) {
+		failOnNoDiscoveredTests = false
+	}
 }
 
 task freeplanelauncherJar(type: Jar) {

@@ -127,6 +127,7 @@ import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
+import org.freeplane.features.treetable.TreeTableNavigation;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.features.filepreview.IViewerFactory;
@@ -369,6 +370,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private PaintingMode paintingMode = null;
+	private final TreeTableCellEditor treeTableCellEditor;
 
 	@Override
 	public void refresh() {
@@ -991,6 +993,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         setAutoscrolls(true);
         this.repaintsViewOnSelectionChange = highlightAscendantEdgesEnabled;
         final IUserInputListenerFactory userInputListenerFactory = getModeController().getUserInputListenerFactory();
+        final TreeTableColumnResizer treeTableColumnResizer = new TreeTableColumnResizer(this);
+        addMouseListener(treeTableColumnResizer);
+        addMouseMotionListener(treeTableColumnResizer);
+        treeTableCellEditor = new TreeTableCellEditor(this);
+        addMouseListener(treeTableCellEditor);
         addMouseListener(userInputListenerFactory.getMapMouseListener());
         addMouseMotionListener(userInputListenerFactory.getMapMouseListener());
         addMouseWheelListener(userInputListenerFactory.getMapMouseWheelListener());
@@ -2041,6 +2048,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         if(selection.getSelectionEnd() == null)
             return false;
 	    return  selectSingleNode(direction, continious)
+	                || selectTreeTableNeighbour(direction, continious)
 	                || selectPreferredVisibleChild(direction, continious)
 	                || selectSiblingOnTheOtherSide(direction, continious)
 	                || selectPreferredVisibleSiblingOrAncestor(direction, continious)
@@ -2049,6 +2057,23 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	                || scroll(direction);
 
 	}
+
+    private boolean selectTreeTableNeighbour(SelectionDirection direction, boolean continious) {
+        if(continious)
+            return false;
+        final NodeModel target = new TreeTableNavigation(this::isShown)
+            .target(selection.getSelectionEnd().getNode(), TreeTableNavigation.Direction.valueOf(direction.name()));
+        final NodeView targetView = target == null ? null : getNodeView(target);
+        if(targetView == null)
+            return false;
+        select(targetView, false);
+        return true;
+    }
+
+    private boolean isShown(NodeModel node) {
+        final NodeView view = getNodeView(node);
+        return view != null && view.isContentVisible();
+    }
 
     private boolean selectSingleNode(SelectionDirection direction, boolean continious) {
         if(continious)
@@ -2557,6 +2582,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    		};
 	    final Graphics2D g2 = (Graphics2D) g;
 	    paintChildren(g2, paintModes);
+	    new TreeTableCellPainter(this).paintTreeTables(g2);
 	    if(isSpotlightEnabled())
 	    	paintDimmer(g2, paintModes);
 		paintSelecteds(g2);

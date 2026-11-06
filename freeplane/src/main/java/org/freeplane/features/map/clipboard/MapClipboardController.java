@@ -49,6 +49,8 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.IStyle;
+import org.freeplane.features.treetable.TreeTableSheet;
+import org.freeplane.features.treetable.TreeTableSheetExport;
 
 /**
  * @author Dimitry Polivaev
@@ -87,6 +89,10 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 			CopiedNodeSet copiedNodeSet, CopiedNodeSet copiedTextNodeSet) {
 		try {
 			final String forNodesFlavor = createForNodesFlavor(selectedNodes, copiedNodeSet);
+			if (TreeTableSheetExport.exportsAsSheet(selectedNodes)) {
+				final TreeTableSheet sheet = TreeTableSheetExport.sheetOf(selectedNodes.iterator().next());
+				return new MindMapNodesSelection(forNodesFlavor, sheet.toTabSeparatedText(), sheet.toHtml());
+			}
 			final String plainText = MindMapPlainTextWriter.INSTANCE.getAsPlainText(selectedNodes, copiedTextNodeSet);
 			return new MindMapNodesSelection(forNodesFlavor, plainText,
 			    getAsHTML(selectedNodes));
