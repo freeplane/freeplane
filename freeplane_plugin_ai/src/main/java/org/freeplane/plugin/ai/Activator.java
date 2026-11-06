@@ -130,8 +130,13 @@ public class Activator implements BundleActivator {
                     AIModelListPreferenceMigration.migrate(resourceController);
                     properties.keySet()
                         .stream()
-                        .filter(key -> !AiEditsSettings.AI_EDITS_STATE_ICON_VISIBLE_PROPERTY.equals(key))
-                        .forEach(key -> resourceController.securePropertyForReadingAndModification((String) key));
+                        .map(String.class::cast)
+                        .forEach(key -> {
+                        if (AiEditsSettings.containsProperty(key))
+                            resourceController.securePropertyForModification(key);
+                        else
+                            resourceController.securePropertyForReadingAndModification(key);
+                        });
                     markSecretsForSeparatePersistence(resourceController);
                     setSystemMessageDefault(resourceController);
                 }

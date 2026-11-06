@@ -21,12 +21,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.freeplane.features.map.IEncrypter;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * Comprehensive tests for encryption functionality.
- * Tests all encryption algorithms (AES-256, TripleDES, SingleDES) and backward compatibility.
+ * Tests AES-256, legacy DES, and backward compatibility.
  *
  * @author Freeplane team
  */
@@ -117,7 +116,6 @@ public class EncryptionTest {
 		assertThat(decrypted).isEqualTo(plaintext);
 	}
 
-	@Ignore
 	@Test
 	public void aes256DecryptWithWrongPassword() {
 		final StringBuilder password1 = new StringBuilder("correct");
@@ -207,22 +205,14 @@ public class EncryptionTest {
 		assertThat(decrypted).isEqualTo(plaintext);
 	}
 
-	@Ignore
-	@Test
-	public void singleDesDecryptWithWrongPassword() {
-		final StringBuilder password1 = new StringBuilder("correct");
-		final IEncrypter encrypter1 = new SingleDesEncrypter(password1);
+    @Test
+    public void singleDesWrongPasswordCanProduceTextWithValidPadding() {
+        encrypter = new SingleDesEncrypter(new StringBuilder(LegacyDesTestData.WRONG_PASSWORD));
 
-		final String plaintext = "Secret message";
-		final String encrypted = encrypter1.encrypt(plaintext);
-		encrypter1.destroy();
+        final String decrypted = encrypter.decrypt(LegacyDesTestData.ENCRYPTED_CONTENT);
 
-		final StringBuilder password2 = new StringBuilder("wrong");
-		encrypter = new SingleDesEncrypter(password2);
-		final String decrypted = encrypter.decrypt(encrypted);
-
-		assertThat(decrypted).isNull();
-	}
+        assertThat(decrypted).isNotNull().isNotEqualTo(LegacyDesTestData.PLAINTEXT);
+    }
 
 	@Test
 	public void encryptWithEmptyPassword() {
