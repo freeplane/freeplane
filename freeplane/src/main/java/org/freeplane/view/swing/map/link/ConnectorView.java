@@ -476,6 +476,18 @@ public class ConnectorView extends AConnectorView{
         return showedControlPoints;
     }
 
+    public ConnectorEnd endToRevealFrom(Point p) {
+        if (source == target)
+            return null;
+        if (!isSourceVisible())
+            return ConnectorEnd.SOURCE;
+        if (!isTargetVisible())
+            return ConnectorEnd.TARGET;
+        if (arrowLinkCurve == null)
+            return null;
+        return CurvePosition.endToReveal(CurvePosition.fractionAlong(arrowLinkCurve, p));
+    }
+
     public ConnectorEnd controlPointAt(Point p) {
         final double reach = Math.max(handleRadius + 3, 6);
         final double sourceDistance = startHandle == null ? Double.POSITIVE_INFINITY : startHandle.distance(p);

@@ -242,9 +242,28 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 				((MMapController)modeController.getMapController()).addFreeNode(root.getNode(), pt, newNodeIsLeft ? Side.TOP_OR_LEFT : Side.BOTTOM_OR_RIGHT);
 			}
 		}
+		else if(e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1 && revealOtherEnd(e))
+			e.consume();
 		else
 			super.mouseClicked(e);
     }
+
+	private boolean revealOtherEnd(MouseEvent e) {
+		final MapView mapView = (MapView) e.getComponent();
+		final Object object = mapView.detectView(e.getPoint());
+		if (!(object instanceof ConnectorView))
+			return false;
+		final ConnectorView view = (ConnectorView) object;
+		final ConnectorEnd end = view.endToRevealFrom(e.getPoint());
+		if (end == null)
+			return false;
+		final ConnectorModel connector = view.getConnector();
+		final NodeModel node = end == ConnectorEnd.SOURCE ? connector.getSource() : connector.getTarget();
+		if (node == null)
+			return false;
+		linkController().goToLinkedNode(node);
+		return true;
+	}
 
 
 }
