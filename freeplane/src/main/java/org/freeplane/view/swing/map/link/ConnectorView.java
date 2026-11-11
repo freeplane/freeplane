@@ -455,6 +455,12 @@ public class ConnectorView extends AConnectorView{
     }
 
 
+    public static boolean showsControlPoints(MapView map) {
+        @SuppressWarnings("unchecked")
+        final WeakReference<ConnectorModel> connectorReference = (WeakReference<ConnectorModel>) map.getClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS);
+        return connectorReference != null && connectorReference.get() != null;
+    }
+
     public static boolean disableControlPoints(MapView map) {
         final boolean showedControlPoints = map.getClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS) != null;
         map.putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, null);
