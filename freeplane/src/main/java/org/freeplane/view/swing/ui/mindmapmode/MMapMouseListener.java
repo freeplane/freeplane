@@ -184,7 +184,7 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 			connectorOldStartPoint = connector.getStartInclination();
 			connectorOldEndPoint = connector.getEndInclination();
 			connectorView.enableControlPoints();
-			SelectedConnectorKeyDispatcher.install(mapView);
+			SelectedConnectorListener.install(mapView);
 			mapView.repaintVisible();
 		}
 		else if (ConnectorView.disableControlPoints(mapView))

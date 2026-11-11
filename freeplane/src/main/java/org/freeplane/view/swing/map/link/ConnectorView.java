@@ -86,7 +86,8 @@ public class ConnectorView extends AConnectorView{
 		color =  ColorUtils.alphaToColor(alpha, connectorColor);
 
 		final MapView map = getMap();
-		paintsConnectorLine = map.showsConnectorLines((source != null && source.isSelected()) || (target != null && target.isSelected()));
+		paintsConnectorLine = map.showsConnectorLines((source != null && source.isSelected()) || (target != null && target.isSelected())
+				|| selectedConnector(map) == connectorModel);
 		final int width = paintsConnectorLine ? linkController.getWidth(connectorModel) : 1;
 
 		if (! paintsConnectorLine || !isSourceVisible() || !isTargetVisible()) {
@@ -451,19 +452,27 @@ public class ConnectorView extends AConnectorView{
 	}
 
     public void enableControlPoints() {
-        getMap().putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, new WeakReference<>(viewedConnector));
+        final MapView map = getMap();
+        map.putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, new WeakReference<>(viewedConnector));
+        map.updateSelectedNodesAppearance();
     }
 
 
     public static boolean showsControlPoints(MapView map) {
+        return selectedConnector(map) != null;
+    }
+
+    public static ConnectorModel selectedConnector(MapView map) {
         @SuppressWarnings("unchecked")
         final WeakReference<ConnectorModel> connectorReference = (WeakReference<ConnectorModel>) map.getClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS);
-        return connectorReference != null && connectorReference.get() != null;
+        return connectorReference == null ? null : connectorReference.get();
     }
 
     public static boolean disableControlPoints(MapView map) {
         final boolean showedControlPoints = map.getClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS) != null;
         map.putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, null);
+        if (showedControlPoints)
+            map.updateSelectedNodesAppearance();
         return showedControlPoints;
     }
 

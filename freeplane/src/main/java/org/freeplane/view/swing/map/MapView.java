@@ -1719,7 +1719,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public boolean isSelected(final NodeView n) {
-		if(isPrinting() || (! selectedsValid &&
+		if(isPrinting() || ConnectorView.showsControlPoints(this) || (! selectedsValid &&
 				(selection.selectedNode == null || ! SwingUtilities.isDescendingFrom(selection.selectedNode, this)  || ! selection.selectedNode.getContent().isVisible())))
 			return false;
 		return selection.contains(n);
@@ -2679,7 +2679,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					final ILinkView arrowLink;
 					final boolean areBothNodesVisible = sourceView != null && targetView != null
 							&& sourceView.isContentVisible() && targetView.isContentVisible();
-					boolean b = sourceView != null && sourceView.isSelected() || targetView != null && targetView.isSelected();
+					boolean b = sourceView != null && sourceView.isSelected() || targetView != null && targetView.isSelected()
+							|| ConnectorView.selectedConnector(this) == ref;
                     final boolean showsConnectorLinesOrArrows = showsConnectorLinesOrArrows(b);
 					if(showsConnectorLinesOrArrows) {
 						LinkController linkController = LinkController.getController(getModeController());
@@ -2876,6 +2877,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 		} else
 			updatePrintedSelectedNodes();
+	}
+
+	public void updateSelectedNodesAppearance() {
+		if(! drawsRectangleForSelection)
+			selection.selectedSet.forEach(n -> n.update(UpdateCause.SELECTION));
+		repaintVisible();
 	}
 
 	private void updatePrintedSelectedNodes() {
