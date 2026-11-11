@@ -823,6 +823,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         private void fireSelectionChanged() {
             if(selectionChanged) {
                 selectionChanged = false;
+                if(ConnectorView.disableControlPoints(MapView.this))
+                    repaint(getVisibleRect());
                 if (isSelected()) {
                     updateSelectionDrivenFolding();
                     if(selection.selectedNode != null)
@@ -1325,6 +1327,18 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             final ILinkView arrowView = arrowLinkViews.get(i);
             if (arrowView.detectCollision(p, false)) {
                 return arrowView;
+            }
+        }
+        return null;
+    }
+
+    public ConnectorView detectConnectorControlPoint(final Point p) {
+        if (arrowLinkViews == null) {
+            return null;
+        }
+        for (final ILinkView arrowView : arrowLinkViews) {
+            if (arrowView instanceof ConnectorView && ((ConnectorView) arrowView).controlPointAt(p) != null) {
+                return (ConnectorView) arrowView;
             }
         }
         return null;

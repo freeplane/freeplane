@@ -73,6 +73,9 @@ public class ConnectorView extends AConnectorView{
 	final private Color bgColor;
     private final LinkController linkController;
     private boolean paintsConnectorLine;
+	private Point startHandle;
+	private Point endHandle;
+	private int handleRadius;
 	/* Note, that source and target are nodeviews and not nodemodels!. */
 	public ConnectorView(final ConnectorModel connectorModel, final NodeView source, final NodeView target, Color bgColor) {
 		super(connectorModel, source, target);
@@ -424,6 +427,10 @@ public class ConnectorView extends AConnectorView{
 				if (startPoint != null) {
 					g.drawLine(startPoint.x, startPoint.y, startPoint2.x, startPoint2.y);
 					drawCircle(g, startPoint2, source.getZoomedFoldingMarkHalfSize());
+					if (showsControlPoints) {
+						startHandle = startPoint2;
+						handleRadius = source.getZoomedFoldingMarkHalfSize();
+					}
 					if (arrowLinkCurve == null) {
 						arrowLinkCurve = createLine(startPoint, startPoint2);
 					}
@@ -431,6 +438,10 @@ public class ConnectorView extends AConnectorView{
 				if (endPoint != null && !(selfLink && isLine)) {
 					g.drawLine(endPoint.x, endPoint.y, endPoint2.x, endPoint2.y);
 					drawCircle(g, endPoint2, target.getZoomedFoldingMarkHalfSize());
+					if (showsControlPoints) {
+						endHandle = endPoint2;
+						handleRadius = target.getZoomedFoldingMarkHalfSize();
+					}
 					if (arrowLinkCurve == null) {
 						arrowLinkCurve = createLine(endPoint, endPoint2);
 					}
@@ -444,10 +455,19 @@ public class ConnectorView extends AConnectorView{
     }
 
 
-    public void disableControlPoints() {
-        MapView map = getMap();
-        if(showsControlPoints())
-            map.putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, null);
+    public static boolean disableControlPoints(MapView map) {
+        final boolean showedControlPoints = map.getClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS) != null;
+        map.putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, null);
+        return showedControlPoints;
+    }
+
+    public ConnectorEnd controlPointAt(Point p) {
+        final double reach = Math.max(handleRadius + 3, 6);
+        final double sourceDistance = startHandle == null ? Double.POSITIVE_INFINITY : startHandle.distance(p);
+        final double targetDistance = endHandle == null ? Double.POSITIVE_INFINITY : endHandle.distance(p);
+        if (Math.min(sourceDistance, targetDistance) > reach)
+            return null;
+        return sourceDistance <= targetDistance ? ConnectorEnd.SOURCE : ConnectorEnd.TARGET;
     }
 
 	private boolean showsControlPoints() {

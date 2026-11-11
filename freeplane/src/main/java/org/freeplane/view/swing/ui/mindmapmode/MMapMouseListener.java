@@ -20,7 +20,9 @@
 package org.freeplane.view.swing.ui.mindmapmode;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.util.Objects;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
@@ -43,6 +45,8 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.view.swing.map.link.ConnectorEnd;
+import org.freeplane.view.swing.map.link.ConnectorTangent;
 import org.freeplane.view.swing.map.link.ConnectorView;
 import org.freeplane.view.swing.map.link.InclinationRecommender;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
@@ -50,6 +54,7 @@ import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 /** */
 public class MMapMouseListener extends DefaultMapMouseListener{
     ConnectorView connectorView = null;
+	private ConnectorEnd draggedControlPoint;
 	private Point connectorOldEndPoint;
 	private Point connectorOldStartPoint;
 
@@ -66,14 +71,18 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 			super.mouseDragged(e);
 			return;
 		}
-		if(originX == -1)
-			return;
 		ConnectorModel connector = connectorView.getConnector();
 		final NodeModel target = connector.getTarget();
 		if(target == null) {
 			super.mouseDragged(e);
 			return;
 		}
+		if(draggedControlPoint != null) {
+			dragControlPoint(e, mapView, connector);
+			return;
+		}
+		if(originX == -1)
+			return;
 		final int deltaX = (int) ((e.getX() - originX) / mapView.getZoom());
 		final int deltaY = (int) ((e.getY() - originY) / mapView.getZoom());
 		double distSqToTarget = 0;
@@ -86,13 +95,7 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 			distSqToTarget = targetLinkPoint.distanceSq(originX, originY);
 			distSqToSource = sourceLinkPoint.distanceSq(originX, originY);
 		}
-		if(connector.getStartInclination() == null || connector.getEndInclination() == null) {
-		    InclinationRecommender recommender = new InclinationRecommender(linkController(), connectorView);
-            if(connector.getStartInclination() == null)
-                connector.setStartInclination(recommender.calcStartInclination());
-            if(connector.getEndInclination() == null)
-                connector.setEndInclination(recommender.calcEndInclination());
-		}
+		initializeMissingInclinations(connector);
 		if ((targetView == null || sourceView != null) && distSqToSource <= distSqToTarget * 2.25) {
 			final Point changedInclination = connector.getStartInclination();
 			connector.changeInclination(deltaX, deltaY, mapView.getRoot().getNode(), connector.getSource(), changedInclination);
@@ -109,6 +112,44 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 
 	}
 
+	private void dragControlPoint(final MouseEvent e, final MapView mapView, ConnectorModel connector) {
+		initializeMissingInclinations(connector);
+		final boolean dragsSource = draggedControlPoint == ConnectorEnd.SOURCE;
+		final NodeView nodeView = mapView.getNodeView(dragsSource ? connector.getSource() : connector.getTarget());
+		if (nodeView == null)
+			return;
+		final Point oldInclination = dragsSource ? connectorOldStartPoint : connectorOldEndPoint;
+		final Point currentInclination = dragsSource ? connector.getStartInclination() : connector.getEndInclination();
+		final ConnectorTangent tangent = new ConnectorTangent(contentBounds(mapView, nodeView), mapView.getZoom(), nodeView.isTopOrLeft())
+				.snappingAngle(e.isShiftDown());
+		if (Compat.isCtrlEvent(e))
+			tangent.keepingLengthOf(oldInclination != null ? oldInclination : currentInclination);
+		final Point inclination = tangent.inclinationWithHandleAt(e.getPoint(), currentInclination);
+		if (dragsSource)
+			connector.setStartInclination(inclination);
+		else
+			connector.setEndInclination(inclination);
+		mapView.repaintVisible();
+		e.consume();
+	}
+
+	private Rectangle contentBounds(final MapView mapView, final NodeView nodeView) {
+		final JComponent content = nodeView.getContent();
+		final Point location = content.getLocation();
+		UITools.convertPointToAncestor(nodeView, location, mapView);
+		return new Rectangle(location.x, location.y, content.getWidth(), content.getHeight());
+	}
+
+	private void initializeMissingInclinations(ConnectorModel connector) {
+		if(connector.getStartInclination() == null || connector.getEndInclination() == null) {
+		    InclinationRecommender recommender = new InclinationRecommender(linkController(), connectorView);
+            if(connector.getStartInclination() == null)
+                connector.setStartInclination(recommender.calcStartInclination());
+            if(connector.getEndInclination() == null)
+                connector.setEndInclination(recommender.calcEndInclination());
+		}
+	}
+
 	@Override
 	public void mousePressed(final MouseEvent e) {
 		super.mousePressed(e);
@@ -121,7 +162,18 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 			return;
 		if(mapView.getClientProperty(Connectors.class) != null)
 			return;
-		final Object object = mapView.detectView(new Point(originX, originY));
+		if(e.getButton() != MouseEvent.BUTTON1)
+			return;
+		final ConnectorView controlPointOwner = mapView.getLayoutType().equals(MapViewLayout.MAP)
+				? mapView.detectConnectorControlPoint(e.getPoint()) : null;
+		if (controlPointOwner != null) {
+			connectorView = controlPointOwner;
+			draggedControlPoint = controlPointOwner.controlPointAt(e.getPoint());
+			connectorOldStartPoint = connectorView.getConnector().getStartInclination();
+			connectorOldEndPoint = connectorView.getConnector().getEndInclination();
+			return;
+		}
+		final Object object = mapView.detectView(e.getPoint());
 		if (object instanceof ConnectorView) {
 			connectorView = ((ConnectorView) object);
 			ConnectorModel connector = connectorView.getConnector();
@@ -134,6 +186,8 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 			connectorView.enableControlPoints();
 			mapView.repaintVisible();
 		}
+		else if (ConnectorView.disableControlPoints(mapView))
+			mapView.repaintVisible();
 	}
 
 	public void mouseReleased(final MouseEvent e) {
@@ -144,12 +198,14 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 			final Point connectorNewEndPoint = connector.getEndInclination();
 			connector.setStartInclination(connectorOldStartPoint);
 			connector.setEndInclination(connectorOldEndPoint);
-			linkController().setArrowLinkEndPoints(connector,
-				connectorNewStartPoint, connectorNewEndPoint);
-			connectorView.disableControlPoints();
+			if (! Objects.equals(connectorNewStartPoint, connectorOldStartPoint)
+					|| ! Objects.equals(connectorNewEndPoint, connectorOldEndPoint))
+				linkController().setArrowLinkEndPoints(connector,
+					connectorNewStartPoint, connectorNewEndPoint);
 			final MapView mapView = (MapView) e.getComponent();
 			mapView.repaintVisible();
 			connectorView = null;
+			draggedControlPoint = null;
 		}
 	}
 
