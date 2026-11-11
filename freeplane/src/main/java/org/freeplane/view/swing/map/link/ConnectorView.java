@@ -73,6 +73,9 @@ public class ConnectorView extends AConnectorView{
 	final private Color bgColor;
     private final LinkController linkController;
     private boolean paintsConnectorLine;
+	private Point startHandle;
+	private Point endHandle;
+	private int handleRadius;
 	/* Note, that source and target are nodeviews and not nodemodels!. */
 	public ConnectorView(final ConnectorModel connectorModel, final NodeView source, final NodeView target, Color bgColor) {
 		super(connectorModel, source, target);
@@ -83,7 +86,8 @@ public class ConnectorView extends AConnectorView{
 		color =  ColorUtils.alphaToColor(alpha, connectorColor);
 
 		final MapView map = getMap();
-		paintsConnectorLine = map.showsConnectorLines((source != null && source.isSelected()) || (target != null && target.isSelected()));
+		paintsConnectorLine = map.showsConnectorLines((source != null && source.isSelected()) || (target != null && target.isSelected())
+				|| selectedConnector(map) == connectorModel);
 		final int width = paintsConnectorLine ? linkController.getWidth(connectorModel) : 1;
 
 		if (! paintsConnectorLine || !isSourceVisible() || !isTargetVisible()) {
@@ -424,6 +428,10 @@ public class ConnectorView extends AConnectorView{
 				if (startPoint != null) {
 					g.drawLine(startPoint.x, startPoint.y, startPoint2.x, startPoint2.y);
 					drawCircle(g, startPoint2, source.getZoomedFoldingMarkHalfSize());
+					if (showsControlPoints) {
+						startHandle = startPoint2;
+						handleRadius = source.getZoomedFoldingMarkHalfSize();
+					}
 					if (arrowLinkCurve == null) {
 						arrowLinkCurve = createLine(startPoint, startPoint2);
 					}
@@ -431,6 +439,10 @@ public class ConnectorView extends AConnectorView{
 				if (endPoint != null && !(selfLink && isLine)) {
 					g.drawLine(endPoint.x, endPoint.y, endPoint2.x, endPoint2.y);
 					drawCircle(g, endPoint2, target.getZoomedFoldingMarkHalfSize());
+					if (showsControlPoints) {
+						endHandle = endPoint2;
+						handleRadius = target.getZoomedFoldingMarkHalfSize();
+					}
 					if (arrowLinkCurve == null) {
 						arrowLinkCurve = createLine(endPoint, endPoint2);
 					}
@@ -440,14 +452,49 @@ public class ConnectorView extends AConnectorView{
 	}
 
     public void enableControlPoints() {
-        getMap().putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, new WeakReference<>(viewedConnector));
+        final MapView map = getMap();
+        map.putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, new WeakReference<>(viewedConnector));
+        map.updateSelectedNodesAppearance();
     }
 
 
-    public void disableControlPoints() {
-        MapView map = getMap();
-        if(showsControlPoints())
-            map.putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, null);
+    public static boolean showsControlPoints(MapView map) {
+        return selectedConnector(map) != null;
+    }
+
+    public static ConnectorModel selectedConnector(MapView map) {
+        @SuppressWarnings("unchecked")
+        final WeakReference<ConnectorModel> connectorReference = (WeakReference<ConnectorModel>) map.getClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS);
+        return connectorReference == null ? null : connectorReference.get();
+    }
+
+    public static boolean disableControlPoints(MapView map) {
+        final boolean showedControlPoints = map.getClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS) != null;
+        map.putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, null);
+        if (showedControlPoints)
+            map.updateSelectedNodesAppearance();
+        return showedControlPoints;
+    }
+
+    public ConnectorEnd endToRevealFrom(Point p) {
+        if (source == target)
+            return null;
+        if (!isSourceVisible())
+            return ConnectorEnd.SOURCE;
+        if (!isTargetVisible())
+            return ConnectorEnd.TARGET;
+        if (arrowLinkCurve == null)
+            return null;
+        return CurvePosition.endToReveal(CurvePosition.fractionAlong(arrowLinkCurve, p));
+    }
+
+    public ConnectorEnd controlPointAt(Point p) {
+        final double reach = Math.max(handleRadius + 3, 6);
+        final double sourceDistance = startHandle == null ? Double.POSITIVE_INFINITY : startHandle.distance(p);
+        final double targetDistance = endHandle == null ? Double.POSITIVE_INFINITY : endHandle.distance(p);
+        if (Math.min(sourceDistance, targetDistance) > reach)
+            return null;
+        return sourceDistance <= targetDistance ? ConnectorEnd.SOURCE : ConnectorEnd.TARGET;
     }
 
 	private boolean showsControlPoints() {
