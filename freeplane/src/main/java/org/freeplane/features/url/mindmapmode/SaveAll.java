@@ -19,6 +19,7 @@ package org.freeplane.features.url.mindmapmode;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -49,13 +50,16 @@ public class SaveAll extends AFreeplaneAction {
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		final Component initialMapView = mapViewManager.getMapViewComponent();
 		final Map<String, MapModel> maps = mapViewManager.getMaps();
+        final Map<String, Component> viewsByKey = new LinkedHashMap<>();
+        for (Component view : mapViewManager.getMapViews())
+            viewsByKey.put(view.getName(), view);
 		final MapModel currentMap = mapViewManager.getMap();
 		MFileManager fileManager = (MFileManager) UrlManager.getController();
 		for(Entry<String, MapModel> mapEntry: maps.entrySet()) {
 			MapModel map = mapEntry.getValue();
 			if(map != currentMap && ! map.isSaved()) {
 				if(map.isReadOnly() || map.getURL() == null)
-					mapViewManager.changeToMapView(mapEntry.getKey());
+					mapViewManager.changeToMapView(viewsByKey.get(mapEntry.getKey()));
 				fileManager.save(map);
 			}
 		}

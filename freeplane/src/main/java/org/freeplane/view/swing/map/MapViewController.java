@@ -33,6 +33,7 @@ import java.awt.Window;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -42,6 +43,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
@@ -85,7 +87,7 @@ import org.freeplane.features.ui.IMapViewManager;
  * exchange between controller and this class is managed by observer pattern
  * (the controller observes changes to the map mapViews here).
  */
-public class MapViewController implements IMapViewManager , IMapViewChangeListener, IFreeplanePropertyListener, IMapLifeCycleListener {
+public class MapViewController implements IMapViewManager, IMapViewChangeListener, IFreeplanePropertyListener, IMapLifeCycleListener, PropertyChangeListener {
 
 	private static final Color TRANSPARENT = new Color(0, true);
     private String lastModeName;
@@ -212,7 +214,6 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			extension = "<" + (++count) + ">";
 		}
 		newOrChangedMapView.setName((key + extension));
-		newOrChangedMapView.setName((key + extension));
 		if (!mapViewVector.contains(newOrChangedMapView)) {
 			int index = selectedMapView != null ? mapViewVector.indexOf(selectedMapView) + 1 : mapViewVector.size();
 			mapViewVector.add(index, newOrChangedMapView);
@@ -302,11 +303,16 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 
 	@Override
 	public String checkIfFileIsAlreadyOpened(final URL urlToCheck) throws MalformedURLException {
+        MapView view = findViewForUrl(urlToCheck);
+        return view != null ? view.getName() : null;
+    }
+
+    private MapView findViewForUrl(final URL urlToCheck) throws MalformedURLException {
 		for (final MapView mapView : mapViewVector) {
 			if (getMap(mapView) != null) {
 				final URL mapViewUrl = getMap(mapView).getURL();
 				if (sameFile(urlToCheck, mapViewUrl)) {
-					return mapView.getName();
+					return mapView;
 				}
 			}
 		}
@@ -353,7 +359,6 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 				return false;
 
 		}
-		map.removeMapChangeListener(mapView);
 		remove(mapView);
 		mapView.restoreRootNodeTemporarily();
 		mapView.getRoot().remove();
@@ -361,6 +366,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
     }
 
     private void remove(MapView mapView) {
+        mapView.getMap().removeMapChangeListener(mapView);
 		int index = mapViewVector.indexOf(mapView);
 		ResourceController.getResourceController().removePropertyChangeListener(mapView);
 		mapViewVector.remove(mapView);
@@ -628,6 +634,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		ResourceController.getResourceController().addPropertyChangeListener(mapView);
 		mapViewChangeListeners.mapViewCreated(selectedMapView, mapView);
 		changeToMapView(mapView);
+        updateMapList();
 	}
 
 
@@ -740,9 +747,9 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		final MapModel currentMap = getMap();
 		if(currentMap != null && url.equals(currentMap.getURL()))
 			return true;
-		final String mapExtensionKey = checkIfFileIsAlreadyOpened(url);
-		if (mapExtensionKey != null) {
-			tryToChangeToMapView(mapExtensionKey);
+		final MapView matchingView = findViewForUrl(url);
+		if (matchingView != null) {
+			changeToMapView(matchingView);
 			return true;
 		}
 		return false;
@@ -753,9 +760,12 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	public void updateMapViewName() {
 		final MapView r = getMapView();
 		final String name = r.getMap().getTitle();
-		addToOrChangeInMapViews(name, getMapView());
-		changeToMapView(getMapView());
-		setMapTitles();
+        final String oldName = r.getName();
+		addToOrChangeInMapViews(name, r);
+		changeToMapView(r);
+        r.refreshTitle();
+        if (!Objects.equals(oldName, r.getName()))
+            updateMapList();
 	}
 
 	@Override
@@ -810,7 +820,19 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 				controller.selectMode(newModeController);
 			}
 		}
-		setMapTitles();
+        if (oldMap != pNewMap) {
+            if (oldMap != null) {
+                MapView oldView = (MapView) oldMap;
+                oldView.removePropertyChangeListener(MapView.TITLE_REFRESH_PROPERTY, this);
+                oldView.notifySelectionChanged();
+            }
+            if (pNewMap != null) {
+                MapView newView = (MapView) pNewMap;
+                newView.addPropertyChangeListener(MapView.TITLE_REFRESH_PROPERTY, this);
+                newView.notifySelectionChanged();
+            }
+        }
+        setFrameTitle();
 		controller.getViewController().viewNumberChanged(getViewNumber());
 		if (pNewMap != null) {
 			newModeController.setVisible(true);
@@ -819,15 +841,13 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 
 
 
-	@Override
-    public void afterViewDisplayed(Component oldView, Component newView) {
-	    updateMapList();
-    }
-
     @Override
 	public void afterViewClose(final Component oldView) {
 		ModeController newModeController = getModeController(oldView);
 		newModeController.getUserInputListenerFactory().updateMapList();
+        ModeController currentMode = Controller.getCurrentModeController();
+        if (currentMode != null && currentMode != newModeController)
+            currentMode.getUserInputListenerFactory().updateMapList();
 	}
 
 	@Override
@@ -949,11 +969,11 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			return;
 		}
 	}
-	@Override
-	public void setMapTitles() {
-		setFrameTitle();
-		updateMapList();
-	}
+    @Override
+    public void propertyChange(PropertyChangeEvent event) {
+        if (event.getSource() == selectedMapView && MapView.TITLE_REFRESH_PROPERTY.equals(event.getPropertyName()))
+            setFrameTitle();
+    }
 
     private void updateMapList() {
         ModeController modeController = Controller.getCurrentModeController();
@@ -1136,9 +1156,13 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
        MapModel oldMap = mapView.getMap();
        if(newMap == oldMap)
            return;
+       String oldName = mapView.getName();
        mapViewChangeListeners.beforeMapChange(oldMap, newMap);
        mapView.setMap(newMap);
        mapViewChangeListeners.afterMapChange(oldMap, newMap);
+       mapView.refreshTitle();
+       if (!Objects.equals(oldName, mapView.getName()))
+           updateMapList();
     }
 
 	@Override

@@ -72,6 +72,7 @@ import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeBuilder;
@@ -99,6 +100,7 @@ import org.freeplane.features.styles.mindmapmode.NewNodeStyle;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.features.ui.IMapViewManager.MapChangeEventProperty;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.NodeAndMapReference;
 import org.freeplane.features.url.mindmapmode.MFileManager;
@@ -987,7 +989,8 @@ public class MMapController extends MapController {
         mapModel.setSaved(saved);
         if (setTitle) {
             final Controller controller = Controller.getCurrentController();
-            controller.getMapViewManager().setMapTitles();
+            mapModel.fireMapChangeEvent(new MapChangeEvent(
+                    this, mapModel, MapChangeEventProperty.MAP_VIEW_TITLE, null, null, false));
             final AFreeplaneAction saveAction = controller.getModeController().getAction("SaveAction");
             if(saveAction != null)
                 saveAction.setEnabled(UserRole.EDITOR);

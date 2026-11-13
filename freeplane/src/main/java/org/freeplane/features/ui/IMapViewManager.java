@@ -46,7 +46,7 @@ import org.freeplane.features.styles.MapViewLayout;
  * 12.01.2009
  */
 public interface IMapViewManager {
-	enum MapChangeEventProperty { MAP_VIEW_ROOT }
+	enum MapChangeEventProperty { MAP_VIEW_ROOT, MAP_VIEW_TITLE }
 
     public void addMapSelectionListener(final IMapSelectionListener pListener);
 
@@ -150,7 +150,6 @@ public interface IMapViewManager {
 	public boolean containsView(MapModel map);
 	public List<Component> getViews(MapModel map);
 	public void obtainFocusForSelected();
-	public void setMapTitles();
 
 	public JComboBox createZoomBox();
 

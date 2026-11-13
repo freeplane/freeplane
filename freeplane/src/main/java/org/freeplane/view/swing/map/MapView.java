@@ -80,6 +80,7 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AntiAliasingConfigurator;
 import org.freeplane.core.ui.IUserInputListenerFactory;
+import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.LogUtils;
@@ -87,6 +88,7 @@ import org.freeplane.core.util.SupplierRule;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.bookmarks.mindmapmode.BookmarksController;
+import org.freeplane.features.bookmarks.mindmapmode.MapBookmarks;
 import org.freeplane.features.edge.EdgeColorsConfigurationFactory;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.filter.Filter;
@@ -112,7 +114,9 @@ import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
+import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.map.NodeSubtrees;
 import org.freeplane.features.map.SummaryNode;
@@ -137,6 +141,8 @@ import org.freeplane.view.swing.map.NodeView.PreferredChild;
 import org.freeplane.view.swing.map.link.ConnectorView;
 import org.freeplane.view.swing.map.link.EdgeLinkView;
 import org.freeplane.view.swing.map.link.ILinkView;
+import org.freeplane.view.swing.ui.MapDisplayNameResolver;
+import org.freeplane.view.swing.ui.MapDisplayNameSource;
 
 /**
  * This class represents the view of a whole MindMap (in analogy to class
@@ -980,6 +986,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         createPropertyChangeListener();
     }
 
+    public static final String TITLE_REFRESH_PROPERTY = "mapViewTitleRefresh";
+
+    public void refreshTitle() {
+        firePropertyChange(TITLE_REFRESH_PROPERTY, null, null);
+    }
+
+    public void notifySelectionChanged() {
+        firePropertyChange(SelectableAction.SELECTION_PROPERTY, null, Boolean.valueOf(isSelected()));
+    }
+
     public MapView(final MapModel viewedMap, final ModeController modeController) {
         super();
         setOpaque(false);
@@ -1022,6 +1038,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					repaint();
 			}
 		};
+        addPropertyChangeListener(MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY, event -> refreshTitle());
 		addPropertyChangeListener(SPOTLIGHT_ENABLED, repaintOnClientPropertyChangeListener);
 		addPropertyChangeListener(TextController.NODE_CONTENT_FOR_VIEW, updateAllOnClientPropertyChangeListener);
 		if(ResourceController.getResourceController().getBooleanProperty("activateSpotlightByDefault"))
@@ -1189,6 +1206,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		MapView.propertyChangeListener = new IFreeplanePropertyListener() {
 			@Override
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
+                if (isTitlePreference(propertyName))
+                    return;
 				if (propertyName.equals("printonwhitebackground")) {
 					MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(newValue);
 					return;
@@ -1726,6 +1745,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	@Override
 	public void mapChanged(final MapChangeEvent event) {
 		final Object property = event.getProperty();
+        if (property.equals(IMapViewManager.MapChangeEventProperty.MAP_VIEW_TITLE)
+                || property.equals(MapBookmarks.class)
+                || property.equals(UrlManager.MAP_URL)
+                || property.equals(IMapViewManager.MapChangeEventProperty.MAP_VIEW_ROOT) && event.getSource() == this) {
+            refreshTitle();
+        }
         if (property.equals(ToggleUnfoldMatchingBranchesAction.class)) {
             updateFilterNodeFolding();
             return;
@@ -3170,8 +3195,37 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			parent.repaint();
 	}
 
+    @Override
+    public void onNodeDeleted(NodeDeletionEvent event) {
+        refreshAncestorTitle();
+    }
+
+    @Override
+    public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
+        refreshAncestorTitle();
+    }
+
+    @Override
+    public void onNodeMoved(NodeMoveEvent event) {
+        refreshAncestorTitle();
+    }
+
+    private void refreshAncestorTitle() {
+        if (ResourceController.getResourceController().getEnumProperty(
+                MapDisplayNameResolver.MAP_DISPLAY_NAME_SOURCE_PROPERTY,
+                MapDisplayNameSource.FILE_NAME) != MapDisplayNameSource.FILE_NAME)
+            refreshTitle();
+    }
+
+    private static boolean isTitlePreference(String propertyName) {
+        return MapDisplayNameResolver.MAP_DISPLAY_NAME_SOURCE_PROPERTY.equals(propertyName)
+                || MapDisplayNameResolver.MAP_DISPLAY_NAME_MAX_LENGTH_PROPERTY.equals(propertyName);
+    }
+
 	@Override
 	public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
+        if (isTitlePreference(propertyName))
+            refreshTitle();
 		if(propertyName.equals(TextController.MARK_TRANSFORMED_TEXT))
 			UITools.repaintAll(getRoot());
 	}

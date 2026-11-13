@@ -311,10 +311,6 @@ public class HeadlessMapViewController implements IMapViewManager {
 		throw new RuntimeException("Method not implemented");
 	}
 
-	@Override
-	public void setMapTitles() {
-	}
-
 	public boolean closeAllMaps() {
 		maps.clear();
 		currentKey = null;
