@@ -1,8 +1,5 @@
 # Task: Fix autosave backups across filesystems
 - **Ticket:** [#3009](https://github.com/freeplane/freeplane/issues/3009)
-- **Status:** Design approved in chat; implemented and locally
-  verified. Ubuntu 26.04 CI and real cross-filesystem validation remain
-  pending. The user will push the commit; this session does not push.
 - **Scope:** Make overwrite-mode autosave work when the map and its
   backup directory are on different filesystems, recover autosave
   after backup preparation fails, and isolate the autosave regression
