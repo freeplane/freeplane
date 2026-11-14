@@ -4,20 +4,16 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import java.io.File;
-import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 import static org.mockito.ArgumentMatchers.*;
 import org.mockito.MockedStatic;
-import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.ui.IMapViewManager.MapChangeEventProperty;
-import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapStyleModel;
-import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.view.swing.ui.MapDisplayNameResolver;
 import java.util.Arrays;
 import org.freeplane.api.TextWritingDirection;
@@ -26,7 +22,7 @@ import org.junit.Test;
 
 public class MapViewControllerTitleTest extends MapViewTitleTestSupport {
     @Test
-    public void frameTitleKeepsExistingFormatting() throws Exception {
+    public void frameTitleUsesResolvedLabelWithExistingContext() throws Exception {
         MapViewController manager = newViewController();
         MapModel map = newMap();
         MapView view = newView(map, "map");
@@ -34,21 +30,22 @@ public class MapViewControllerTitleTest extends MapViewTitleTestSupport {
         field(manager, "selectedMapView", view);
         manager.propertyChanged("workspaceTitle", "", "");
         verify(display).setTitle("map - Mind map");
+        setCustomName(view, "custom & *");
         map.setSaved(false);
         manager.propertyChanged("workspaceTitle", "", "");
-        verify(display).setTitle("map* - Mind map");
+        verify(display).setTitle("custom & * * - Mind map");
         map.setReadOnly(true);
         manager.propertyChanged("workspaceTitle", "", "");
-        verify(display).setTitle("map - Mind map (read_only)");
+        verify(display).setTitle("custom & * - Mind map (read_only)");
         when(mode.isEditingLocked()).thenReturn(true);
         manager.propertyChanged("workspaceTitle", "", "");
-        verify(display).setTitle("map - Mind map (OptionPanel.view_mode.true)");
+        verify(display).setTitle("custom & * - Mind map (OptionPanel.view_mode.true)");
         File file = new File("/tmp/日本語/map.mm");
         map.setURL(file.toURI().toURL());
         when(resources.getProperty("workspaceTitle")).thenReturn("Workspace");
         manager.propertyChanged("workspaceTitle", "", "");
         verify(display).setTitle(TextWritingDirection.LEFT_TO_RIGHT.isolatePathSeparators(
-                "Workspace - map - Mind map (OptionPanel.view_mode.true) " + file.getAbsolutePath()));
+                "Workspace - custom & * - Mind map (OptionPanel.view_mode.true) " + file.getAbsolutePath()));
         field(manager, "selectedMapView", null);
         manager.propertyChanged("workspaceTitle", "", "");
         verify(display).setTitle("Workspace - Mind map");
@@ -81,7 +78,7 @@ public class MapViewControllerTitleTest extends MapViewTitleTestSupport {
         assertSame(second.getMap(), manager.getMaps().get("script name"));
         assertEquals(Arrays.asList("same", "same<2>", "same<3>"), keys);
         assertSame(second.getMap(), maps.get("same<2>"));
-        second.putClientProperty(MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY, "display label");
+        setCustomName(second, "display label");
         assertFalse(manager.tryToChangeToMapView("display label"));
         assertThrows(IllegalArgumentException.class, () -> manager.changeToMapView("display label"));
     }
@@ -98,11 +95,11 @@ public class MapViewControllerTitleTest extends MapViewTitleTestSupport {
         manager.changeToMapView(selected);
         clearInvocations(display, manager);
         map.setSaved(false);
-        sameMap.refreshTitle();
+        setCustomName(sameMap, "background");
         unrelated.refreshTitle();
         verifyNoInteractions(display);
-        selected.refreshTitle();
-        verify(display).setTitle("one* - Mind map");
+        setCustomName(selected, "selected &");
+        verify(display).setTitle("selected & * - Mind map");
         verify(manager, never()).getMapViews();
         verify(manager, never()).getViews(any(MapModel.class));
     }
@@ -166,6 +163,7 @@ public class MapViewControllerTitleTest extends MapViewTitleTestSupport {
         replacement.setURL(new File("/tmp/replacement.mm").toURI().toURL());
         MapView view = newView(oldMap, "old");
         MapView unrelated = newView(newMap(), "other");
+        view.setCustomizedTabNameSupplier(() -> "owner name");
         addView(manager, view);
         addView(manager, unrelated);
         manager.changeToMapView(view);
@@ -185,6 +183,7 @@ public class MapViewControllerTitleTest extends MapViewTitleTestSupport {
         }
         assertSame(view, manager.getMapViewComponent());
         assertSame(replacement, view.getMap());
+        assertEquals("owner name", view.getCustomizedTabName());
         assertEquals(Arrays.asList("replacement", "title"), order);
         oldMap.fireMapChangeEvent(new MapChangeEvent(this, oldMap, MapChangeEventProperty.MAP_VIEW_TITLE, null, null, false));
         assertEquals(2, order.size());
@@ -200,8 +199,11 @@ public class MapViewControllerTitleTest extends MapViewTitleTestSupport {
         MapViewController manager = newViewController();
         MapModel original = newMap();
         original.setURL(new File("/tmp/map.mm").toURI().toURL());
-        MapView view = newView(original, original.getTitle());
+        MapView view = newView(original, "script key");
+        MapView other = newView(original, "script key");
         addView(manager, view);
+        addView(manager, other);
+        assertEquals("script key<2>", other.getName());
         for (String path : Arrays.asList("/tmp/map.mm", "/tmp/renamed.mm")) {
             MapModel replacement = newMap();
             replacement.setURL(new File(path).toURI().toURL());
@@ -212,6 +214,8 @@ public class MapViewControllerTitleTest extends MapViewTitleTestSupport {
                 manager.setMap(view, replacement);
             }
             verify(input, times(path.equals("/tmp/map.mm") ? 0 : 1)).updateMapList();
+            assertEquals(path.equals("/tmp/map.mm") ? "script key" : replacement.getTitle(), view.getName());
+            assertEquals("script key<2>", other.getName());
         }
     }
 
@@ -244,7 +248,7 @@ public class MapViewControllerTitleTest extends MapViewTitleTestSupport {
         doAnswer(call -> { manager.onRemove(map); return null; }).when(mapController).closeWithoutSaving(map);
         assertTrue(manager.closeWithoutSaving(view));
         clearInvocations(display);
-        view.putClientProperty(MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY, "after close");
+        setCustomName(view, "after close");
         view.refreshTitle();
         verifyNoInteractions(display);
         assertFalse(Arrays.asList(view.getPropertyChangeListeners(MapView.TITLE_REFRESH_PROPERTY)).contains(manager));
@@ -272,23 +276,66 @@ public class MapViewControllerTitleTest extends MapViewTitleTestSupport {
         verify(manager, never()).tryToChangeToMapView(anyString());
     }
 
-    private void prepareReplacementRendering(MapView view, MapModel map,
-            MockedStatic<MapStyleModel> styles, MockedStatic<NodeViewFactory> nodes) {
-        MapStyleModel styleModel = mock(MapStyleModel.class);
-        styles.when(() -> MapStyleModel.getExtension(map)).thenReturn(styleModel);
-        when(styleModel.getStyleNodeSafe(any())).thenReturn(map.getRootNode());
-        when(styleModel.getZoom()).thenReturn(1f);
-        when(styleModel.getMapViewLayout()).thenReturn(MapViewLayout.MAP);
-        NodeStyleController nodeStyle = mock(NodeStyleController.class);
-        when(mode.getExtension(NodeStyleController.class)).thenReturn(nodeStyle);
-        when(nodeStyle.getFont(any(), any())).thenReturn(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
-        when(nodeStyle.getHorizontalTextAlignment(any(), any())).thenReturn(HorizontalTextAlignment.DEFAULT);
-        when(resources.getProperty(MapView.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)).thenReturn("#000000");
-        NodeViewFactory factory = mock(NodeViewFactory.class);
-        nodes.when(NodeViewFactory::getInstance).thenReturn(factory);
-        NodeView root = mock(NodeView.class);
-        when(root.getNode()).thenReturn(map.getRootNode());
-        when(factory.newNodeView(eq(map.getRootNode()), eq(view), eq(view), anyInt())).thenReturn(root);
+
+    @Test
+    public void mapReplacementDoesNotFocusUnselectedViews() throws Exception {
+        selectsReplacementRoot = true;
+        MapView view = spy(newView(newMap(), "view"));
+        MainView oldMain = mock(MainView.class);
+        when(view.getRoot().getMainView()).thenReturn(oldMain);
+        when(oldMain.getLocationOnScreen()).thenReturn(new java.awt.Point());
+        doReturn(true).when(view).isShowing();
+        field(view, "mapScroller", mock(MapScroller.class));
+        doCallRealMethod().when(view).selectAsTheOnlyOneSelected(any(NodeView.class), anyBoolean());
+        try (MockedStatic<MapStyleModel> styles = mockStatic(MapStyleModel.class);
+                MockedStatic<NodeViewFactory> nodes = mockStatic(NodeViewFactory.class);
+                MockedStatic<javax.swing.SwingUtilities> swing =
+                        mockStatic(javax.swing.SwingUtilities.class, CALLS_REAL_METHODS)) {
+            swing.when(() -> javax.swing.SwingUtilities.invokeLater(any(Runnable.class))).thenAnswer(call -> null);
+            for (boolean selected : new boolean[]{false, true}) {
+                when(viewManager.getMapViewComponent()).thenReturn(selected ? view : null);
+                MapModel replacement = newMap();
+                prepareReplacementRendering(view, replacement, styles, nodes);
+                view.setMap(replacement);
+                NodeView root = view.getRoot();
+                verify(view).selectAsTheOnlyOneSelected(root, selected);
+                verify(root, times(selected ? 1 : 0)).requestFocusInWindow();
+                assertSame(root, view.getSelected());
+                when(root.getMainView()).thenReturn(oldMain);
+            }
+        }
     }
 
+    @Test
+    @SuppressWarnings("unchecked")
+    public void mapReplacementKeepsExistingViewStateResets() throws Exception {
+        selectsReplacementRoot = true;
+        MapModel original = newMap();
+        org.freeplane.features.map.NodeModel child = new org.freeplane.features.map.NodeModel("child", original);
+        original.getRootNode().insert(child);
+        MapView view = spy(newView(original, "view"));
+        installNodeViews(view);
+        changeViewRoot(view, child);
+        java.util.List<org.freeplane.features.map.NodeModel> history =
+                (java.util.List<org.freeplane.features.map.NodeModel>) field(view, "rootsHistory");
+        history.add(child);
+        field(view, "zoom", 3f);
+        org.freeplane.features.filter.Filter filter = mock(org.freeplane.features.filter.Filter.class);
+        field(view, "filter", filter);
+        field(view, "mapScroller", mock(MapScroller.class));
+        doCallRealMethod().when(view).selectAsTheOnlyOneSelected(any(NodeView.class), anyBoolean());
+        MapModel replacement = newMap();
+        try (MockedStatic<MapStyleModel> styles = mockStatic(MapStyleModel.class);
+                MockedStatic<NodeViewFactory> nodes = mockStatic(NodeViewFactory.class)) {
+            prepareReplacementRendering(view, replacement, styles, nodes);
+            view.setMap(replacement);
+        }
+        assertSame(replacement.getRootNode(), view.getRoot().getNode());
+        assertSame(view.getRoot(), view.getSelected());
+        assertNotSame(filter, view.getFilter());
+        assertNull(view.getFilter().getCondition());
+        assertTrue(history.isEmpty());
+        assertEquals(1f, view.getZoom(), 0f);
+        assertNotSame(original.getRootNode(), view.getSelected().getNode());
+    }
 }

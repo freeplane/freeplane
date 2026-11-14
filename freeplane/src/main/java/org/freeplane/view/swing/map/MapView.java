@@ -62,6 +62,7 @@ import java.util.TreeSet;
 import java.util.Vector;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -1038,7 +1039,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					repaint();
 			}
 		};
-        addPropertyChangeListener(MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY, event -> refreshTitle());
 		addPropertyChangeListener(SPOTLIGHT_ENABLED, repaintOnClientPropertyChangeListener);
 		addPropertyChangeListener(TextController.NODE_CONTENT_FOR_VIEW, updateAllOnClientPropertyChangeListener);
 		if(ResourceController.getResourceController().getBooleanProperty("activateSpotlightByDefault"))
@@ -1053,6 +1053,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
     private NodeModel getSearchRoot() {
         return currentSearchRoot;
+    }
+
+    private Supplier<String> customizedTabNameSupplier;
+
+    public String getCustomizedTabName() {
+        return customizedTabNameSupplier != null ? customizedTabNameSupplier.get() : null;
+    }
+
+    public void setCustomizedTabNameSupplier(Supplier<String> nameSupplier) {
+        customizedTabNameSupplier = nameSupplier;
     }
 
     public void setMap(final MapModel viewedMap) {
@@ -1083,7 +1093,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         filter = Filter.createTransparentFilter();
         clearSelectionDrivenFolding();
         if(lastViewedMap != viewedMap) {
-            selectAsTheOnlyOneSelected(getRoot());
+            selectAsTheOnlyOneSelected(getRoot(), isSelected());
 			modeController.getMapController().fireMapChanged(new MapChangeEvent(this, viewedMap, MapView.class, null, this, false));
 		}
 

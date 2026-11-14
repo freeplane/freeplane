@@ -107,19 +107,6 @@ public class MapViewTitleTest extends MapViewTitleTestSupport {
     }
 
     @Test
-    public void customNameChangeNotifiesOnlyItsView() {
-        MapModel map = newMap();
-        MapView first = newView(map, "one");
-        MapView second = newView(map, "two");
-        List<PropertyChangeEvent> firstEvents = recordTitleRequests(first);
-        List<PropertyChangeEvent> secondEvents = recordTitleRequests(second);
-        first.putClientProperty(MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY, "custom");
-        first.putClientProperty(MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY, new String("custom"));
-        assertEquals(1, firstEvents.size());
-        assertTrue(secondEvents.isEmpty());
-    }
-
-    @Test
     public void structuralChangesNotifyOnlyViewsUsingAncestorSources() {
         for (MapDisplayNameSource source : MapDisplayNameSource.values()) {
             when(resources.getEnumProperty(MapDisplayNameResolver.MAP_DISPLAY_NAME_SOURCE_PROPERTY,

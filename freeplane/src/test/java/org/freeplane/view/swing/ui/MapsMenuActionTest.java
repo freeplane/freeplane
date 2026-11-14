@@ -25,8 +25,8 @@ public class MapsMenuActionTest extends MapViewTitleTestSupport {
     public void menuClickSelectsItsViewWithEqualLabels() {
         MapView first = newView(newMap(), "one");
         MapView second = newView(newMap(), "two");
-        first.putClientProperty(MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY, "shared");
-        second.putClientProperty(MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY, "shared");
+        setCustomName(first, "shared");
+        setCustomName(second, "shared");
         doReturn(Arrays.asList(first, second)).when(viewManager).getMapViews();
         when(viewManager.getMapViewComponent()).thenReturn(first);
         JAutoCheckBoxMenuItem item = item(new MapsMenuAction(second));
@@ -38,7 +38,7 @@ public class MapsMenuActionTest extends MapViewTitleTestSupport {
             });
             item.doClick();
             assertEquals(1, focus.size());
-            second.putClientProperty(MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY, "changed before focus");
+            setCustomName(second, "changed before focus");
             focus.get(0).run();
         }
         verify(viewManager).changeToMapView(second);
@@ -72,8 +72,8 @@ public class MapsMenuActionTest extends MapViewTitleTestSupport {
         JAutoCheckBoxMenuItem item = item(action);
         assertEquals("key", item.getText());
         map.setSaved(false);
-        view.putClientProperty(MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY, "changed");
-        assertEquals("key : changed *", item.getText());
+        setCustomName(view, "changed");
+        assertEquals("changed *", item.getText());
         assertEquals("MapsMenuAction.key", action.getKey());
         verify(viewManager, never()).getMapViews();
     }
@@ -83,29 +83,29 @@ public class MapsMenuActionTest extends MapViewTitleTestSupport {
         MapView view = newView(newMap(), "key");
         MapsMenuAction action = new MapsMenuAction(view);
         JAutoCheckBoxMenuItem item = item(action);
-        view.putClientProperty(MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY, "&Current");
-        assertEquals("key : &Current", action.getRawText());
-        assertEquals("key : Current", item.getText());
+        setCustomName(view, "&Current");
+        assertEquals("&Current", action.getRawText());
+        assertEquals("&Current", item.getText());
     }
 
     @Test
-    public void titleChangesReplaceMnemonicProperties() {
-        MapView view = newView(newMap(), "key");
-        MapsMenuAction action = new MapsMenuAction(view);
-        JAutoCheckBoxMenuItem item = item(action);
+    public void ampersandsRemainLiteralAcrossTitleChanges() {
         for (boolean mac : new boolean[]{false, true}) {
             try (MockedStatic<Compat> platform = mockStatic(Compat.class)) {
                 platform.when(Compat::isMacOsX).thenReturn(mac);
-                view.putClientProperty(MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY, "&Alpha");
-                assertEquals(mac ? 0 : 'A', item.getMnemonic());
-                view.putClientProperty(MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY, "Be&Ta");
-                assertEquals(mac ? 0 : 'T', item.getMnemonic());
-                assertEquals(mac ? -1 : 8, item.getDisplayedMnemonicIndex());
-                view.putClientProperty(MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY, "plain");
-                assertNull(action.getValue(Action.MNEMONIC_KEY));
-                assertNull(action.getValue(Action.DISPLAYED_MNEMONIC_INDEX_KEY));
-                assertEquals(0, item.getMnemonic());
-                assertEquals(-1, item.getDisplayedMnemonicIndex());
+                MapView view = newView(newMap(), "&initial&");
+                MapsMenuAction action = new MapsMenuAction(view);
+                JAutoCheckBoxMenuItem item = item(action);
+                assertEquals("&initial&", item.getText());
+                for (String name : new String[]{"&Alpha", "Be&Ta", "&&double", "trailing&", "plain"}) {
+                    setCustomName(view, name);
+                    assertEquals(name, item.getText());
+                    assertEquals(name, action.getRawText());
+                    assertNull(action.getValue(Action.MNEMONIC_KEY));
+                    assertNull(action.getValue(Action.DISPLAYED_MNEMONIC_INDEX_KEY));
+                    assertEquals(0, item.getMnemonic());
+                    assertEquals(-1, item.getDisplayedMnemonicIndex());
+                }
             }
         }
     }
@@ -147,7 +147,7 @@ public class MapsMenuActionTest extends MapViewTitleTestSupport {
         action.dispose();
         action.dispose();
         when(viewManager.getMapViewComponent()).thenReturn(view);
-        view.putClientProperty(MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY, "changed");
+        setCustomName(view, "changed");
         view.notifySelectionChanged();
         assertEquals("key", item.getText());
         assertFalse(item.isSelected());

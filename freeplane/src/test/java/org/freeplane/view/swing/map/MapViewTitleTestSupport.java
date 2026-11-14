@@ -4,6 +4,12 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import java.awt.Color;
+import java.awt.Font;
+import org.freeplane.api.HorizontalTextAlignment;
+import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.MapViewLayout;
+import org.freeplane.features.nodestyle.NodeStyleController;
+import org.mockito.MockedStatic;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.MouseAdapter;
 import java.beans.PropertyChangeEvent;
@@ -46,6 +52,7 @@ public class MapViewTitleTestSupport {
     protected ViewController display;
     protected IUserInputListenerFactory input;
     protected TextController text;
+    protected boolean selectsReplacementRoot;
     protected final List<IFreeplanePropertyListener> propertyListeners = new ArrayList<>();
     private Controller previousController;
     private List<PropertyChangeListener> previousFocusListeners;
@@ -159,6 +166,12 @@ public class MapViewTitleTestSupport {
             public void selectAsTheOnlyOneSelected(NodeView node) {
                 // Node focus/scrolling is not part of title notifications.
             }
+
+            @Override
+            public void selectAsTheOnlyOneSelected(NodeView node, boolean requestFocus) {
+                if (selectsReplacementRoot)
+                    super.selectAsTheOnlyOneSelected(node, requestFocus);
+            }
         };
         NodeView root = mock(NodeView.class);
         when(root.getNode()).thenReturn(map.getRootNode());
@@ -172,6 +185,44 @@ public class MapViewTitleTestSupport {
         map.addMapChangeListener(view);
         resources.addPropertyChangeListener(view);
         return view;
+    }
+
+    protected AutoCloseable prepareReplacementRendering(MapViewController manager) {
+        MockedStatic<MapStyleModel> styles = mockStatic(MapStyleModel.class);
+        MockedStatic<NodeViewFactory> nodes = mockStatic(NodeViewFactory.class);
+        doAnswer(call -> {
+            prepareReplacementRendering(call.getArgument(0), call.getArgument(1), styles, nodes);
+            return call.callRealMethod();
+        }).when(manager).setMap(any(java.awt.Component.class), any(MapModel.class));
+        return () -> {
+            nodes.close();
+            styles.close();
+        };
+    }
+
+    protected void prepareReplacementRendering(MapView view, MapModel map,
+            MockedStatic<MapStyleModel> styles, MockedStatic<NodeViewFactory> nodes) {
+        MapStyleModel styleModel = mock(MapStyleModel.class);
+        styles.when(() -> MapStyleModel.getExtension(map)).thenReturn(styleModel);
+        when(styleModel.getStyleNodeSafe(any())).thenReturn(map.getRootNode());
+        when(styleModel.getZoom()).thenReturn(1f);
+        when(styleModel.getMapViewLayout()).thenReturn(MapViewLayout.MAP);
+        NodeStyleController nodeStyle = mock(NodeStyleController.class);
+        when(mode.getExtension(NodeStyleController.class)).thenReturn(nodeStyle);
+        when(nodeStyle.getFont(any(), any())).thenReturn(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+        when(nodeStyle.getHorizontalTextAlignment(any(), any())).thenReturn(HorizontalTextAlignment.DEFAULT);
+        when(resources.getProperty(MapView.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)).thenReturn("#000000");
+        NodeViewFactory factory = mock(NodeViewFactory.class);
+        nodes.when(NodeViewFactory::getInstance).thenReturn(factory);
+        NodeView root = mock(NodeView.class);
+        when(root.getNode()).thenReturn(map.getRootNode());
+        when(factory.newNodeView(eq(map.getRootNode()), eq(view), eq(view), anyInt())).thenReturn(root);
+    }
+
+
+    protected void setCustomName(MapView view, String name) {
+        view.setCustomizedTabNameSupplier(() -> name);
+        view.refreshTitle();
     }
 
     protected void installNodeViews(MapView view) throws Exception {

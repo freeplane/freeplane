@@ -3,7 +3,6 @@ package org.freeplane.view.swing.ui;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -34,25 +33,30 @@ import org.junit.Test;
 
 public class UserInputListenerFactoryMapActionsTest extends MapViewTitleTestSupport {
     @Test
-    public void mapsMenuKeepsExistingLabelsOrderAndSelection() throws Exception {
+    public void mapsMenuUsesResolvedLabelsWithExistingOrderAndSelection() throws Exception {
         MapModel dirty = newMap();
         dirty.setSaved(false);
         MapView z = newView(newMap(), "z");
         MapView b = newView(dirty, "Beta");
         MapView a = newView(newMap(), "alpha");
-        a.putClientProperty(MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY, "shared label");
-        z.putClientProperty(MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY, "shared label");
+        setCustomName(a, "shared label");
+        setCustomName(z, "shared label");
         doReturn(Arrays.asList(z, b, a)).when(display).getMapViewVector();
         when(viewManager.getMapViewComponent()).thenReturn(b);
-        Entry menu = new Entry();
-        createActions(new UserInputListenerFactory(mode), menu);
+        MenuFixture fixture = new MenuFixture(z, b, a);
+        Entry menu = fixture.maps;
+        assertEquals("shared label", fixture.menu.getItem(0).getText());
+        JMenuItem betaItem = (JMenuItem) new EntryAccessor().getComponent(menu.getChild(1));
+        assertEquals("Beta *", betaItem.getText());
+        assertTrue(betaItem.isSelected());
+        assertEquals("shared label",
+                ((JMenuItem) new EntryAccessor().getComponent(menu.getChild(2))).getText());
         assertEquals(3, menu.getChildCount());
-        assertAction(menu, 0, "MapsMenuAction.alpha", "alpha : shared label", false);
-        assertAction(menu, 1, "MapsMenuAction.Beta", "Beta : Beta *", true);
-        assertAction(menu, 2, "MapsMenuAction.z", "z : shared label", false);
+        assertAction(menu, 0, "MapsMenuAction.alpha", "shared label", false);
+        assertAction(menu, 1, "MapsMenuAction.Beta", "Beta *", true);
+        assertAction(menu, 2, "MapsMenuAction.z", "shared label", false);
         dirty.setReadOnly(true);
-        Entry readOnlyMenu = new Entry();
-        createActions(new UserInputListenerFactory(mode), readOnlyMenu);
+        Entry readOnlyMenu = new MenuFixture(z, b, a).maps;
         assertAction(readOnlyMenu, 1, "MapsMenuAction.Beta", "Beta", true);
     }
 
@@ -76,19 +80,19 @@ public class UserInputListenerFactoryMapActionsTest extends MapViewTitleTestSupp
         when(text.getShortPlainText(any(NodeModel.class), anyInt(), anyString()))
                 .thenAnswer(call -> ((NodeModel) call.getArgument(0)).getText());
         changeViewRoot(view, child);
-        assertEquals("key : child", item.getText());
-        view.putClientProperty(MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY, "custom");
-        assertEquals("key : custom", item.getText());
+        assertEquals("child", item.getText());
+        setCustomName(view, "custom");
+        assertEquals("custom", item.getText());
         map.setSaved(false);
         map.fireMapChangeEvent(new MapChangeEvent(this, map, MapChangeEventProperty.MAP_VIEW_TITLE, null, null, false));
-        assertEquals("key : custom *", item.getText());
+        assertEquals("custom *", item.getText());
         assertEquals("other", otherItem.getText());
-        view.putClientProperty(MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY, null);
-        assertEquals("key : child *", item.getText());
+        setCustomName(view, null);
+        assertEquals("child *", item.getText());
         when(resources.getEnumProperty(MapDisplayNameResolver.MAP_DISPLAY_NAME_SOURCE_PROPERTY,
                 MapDisplayNameSource.FILE_NAME)).thenReturn(MapDisplayNameSource.FILE_NAME);
         preferenceChanged(MapDisplayNameResolver.MAP_DISPLAY_NAME_SOURCE_PROPERTY);
-        assertEquals("key : key *", item.getText());
+        assertEquals("key *", item.getText());
         assertSame(entry, fixture.maps.getChild(0));
         assertSame(action, new EntryAccessor().getAction(entry));
         assertSame(item, fixture.menu.getItem(0));
@@ -116,12 +120,12 @@ public class UserInputListenerFactoryMapActionsTest extends MapViewTitleTestSupp
         assertEquals(0, fixture.maps.getChildCount());
         assertEquals(0, fixture.menu.getItemCount());
         assertNull(previousItem.getAction());
-        view.putClientProperty(MapDisplayNameResolver.CUSTOMIZED_TAB_NAME_PROPERTY, "changed while hidden");
+        setCustomName(view, "changed while hidden");
         assertEquals("key", previous.getValue(Action.NAME));
         fixture.processor.childEntriesWillBecomeVisible(fixture.root);
         AFreeplaneAction reopened = new EntryAccessor().getAction(fixture.maps.getChild(0));
         assertNotSame(previous, reopened);
-        assertEquals("key : changed while hidden", fixture.menu.getItem(0).getText());
+        assertEquals("changed while hidden", fixture.menu.getItem(0).getText());
         assertEquals(1, menuListenerCount(view));
         fixture.processor.rebuildChildren(fixture.root);
         assertNotSame(reopened, new EntryAccessor().getAction(fixture.maps.getChild(0)));
@@ -170,9 +174,4 @@ public class UserInputListenerFactoryMapActionsTest extends MapViewTitleTestSupp
         assertEquals(selected, action.isSelected());
     }
 
-    private static void createActions(UserInputListenerFactory factory, Entry target) throws Exception {
-        Method method = UserInputListenerFactory.class.getDeclaredMethod("createMapActions", Entry.class);
-        method.setAccessible(true);
-        method.invoke(factory, target);
-    }
 }

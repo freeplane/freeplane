@@ -80,6 +80,7 @@ import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.view.swing.ui.MapDisplayNameResolver;
 
 /**
  * Manages the list of MapViews. As this task is very complex, I exported it
@@ -993,10 +994,9 @@ public class MapViewController implements IMapViewManager, IMapViewChangeListene
 			String frameTitle;
 			String workspaceTitle = ResourceController.getResourceController().getProperty("workspaceTitle");
 			if (model != null) {
-				viewName = getMapViewComponent().getName();
+				viewName = MapDisplayNameResolver.resolveLabel(selectedMapView);
 				frameTitle = (workspaceTitle.isEmpty() ? "" : workspaceTitle + " - ")
 						+ viewName
-						+ ((model.isSaved() || model.isReadOnly()) ? "" : "*")
 						+ " - " + modeName
 						+ (modeController.isEditingLocked() ? format("OptionPanel.view_mode.true") :
 							model.isReadOnly() ? format("read_only") : "");
@@ -1159,6 +1159,8 @@ public class MapViewController implements IMapViewManager, IMapViewChangeListene
        String oldName = mapView.getName();
        mapViewChangeListeners.beforeMapChange(oldMap, newMap);
        mapView.setMap(newMap);
+       if (oldMap.getURL() != null && oldMap.getURL().equals(newMap.getURL()))
+           mapView.setName(oldName);
        mapViewChangeListeners.afterMapChange(oldMap, newMap);
        mapView.refreshTitle();
        if (!Objects.equals(oldName, mapView.getName()))

@@ -27,12 +27,8 @@ import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 
 /**
- * Reverts the map to the saved version. In Xml, the old map is stored as xml
- * and as an undo action, the new map is stored, too. Moreover, the filename of
- * the doAction is set to the appropriate map file's name. The undo action has
- * no file name associated. The action goes like this: close the actual map and
- * open the given Xml/File. If only a Xml string is given, a temporary file name
- * is created, the xml stored into and this map is opened instead of the actual.
+ * Reverts map contents to the saved version while preserving existing views
+ * and their docking-window owners.
  *
  * @author foltin
  */

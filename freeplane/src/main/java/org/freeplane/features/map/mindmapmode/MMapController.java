@@ -1142,9 +1142,24 @@ public class MMapController extends MapController {
             return;
         }
 
+        final IMapViewManager viewManager = controller.getMapViewManager();
+        final List<Component> views = new ArrayList<>(viewManager.getViews(map));
         if(map.containsExtension(DocuMapAttribute.class)){
+            final MapModel replacement;
+            synchronized (this) {
+                loadedMaps.remove(map);
+                try {
+                    replacement = new MapLoader(getMModeController()).load(url).asDocumentation().getMap();
+                }
+                catch (RuntimeException e) {
+                    addLoadedMap((MMapModel) map);
+                    throw e;
+                }
+            }
+            replaceMapInViews(views, replacement);
             closeWithoutSaving(map);
-            openDocumentationMap(url);
+            if (views.isEmpty())
+                createMapView(replacement);
             return;
         }
 
@@ -1160,14 +1175,25 @@ public class MMapController extends MapController {
             newModel.setSaved(alternativeURL.equals(url));
             fireMapCreated(newModel);
             addLoadedMap(newModel);
+            replaceMapInViews(views, newModel);
             closeWithoutSaving(map);
             newModel.enableAutosave();
-            createMapView(newModel);
+            if (views.isEmpty())
+                createMapView(newModel);
             return;
         }
         finally {
             controller.getViewController().setWaitingCursor(false);
         }
+    }
+
+    private void replaceMapInViews(List<Component> views, MapModel replacement) {
+        if (views.isEmpty())
+            return;
+        replacement.beforeViewCreated();
+        final IMapViewManager viewManager = Controller.getCurrentController().getMapViewManager();
+        for (Component view : views)
+            viewManager.setMap(view, replacement);
     }
 
     @Override

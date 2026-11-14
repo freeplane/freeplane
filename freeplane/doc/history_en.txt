@@ -1,6 +1,10 @@
 ==============================
 1.13.5
 ==============================
+Preserve custom tab names with their individual or group docking-window owners across restart, external-file reload, and Revert
+Use the same individual-view labels in tabs, the maps menu, and the window title, including literal ampersands
+Cancel leaves a tab name unchanged; empty input restores the automatic title
+Custom names from layouts without explicit name metadata must be entered again
 Bug fixes
 
 ==============================
