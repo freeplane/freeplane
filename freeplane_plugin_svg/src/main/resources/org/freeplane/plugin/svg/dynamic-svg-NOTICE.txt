@@ -1,0 +1,24 @@
+Dynamic SVG (HTML) export for Freeplane
+
+The exporter and viewer are adapted from Freeplane Interactive HTML Companion
+by shlomiv: https://github.com/shlomiv/freeplane-interactive-html
+Source baseline: 918c34f2c1d593b4505fbc016c554b5210e94d24
+Previously inspected exporter/viewer: b8b0dc1cd6aaa714cdec3e5c23eb992efceca420
+GPL-2.0-or-later grant: fa1b005006394447de4863d169ed9367f8d9ed45
+
+The adapted exporter and viewer, including the Java ports of the exporter,
+are licensed under the GNU General Public License, version 2 or (at your
+option) any later version (SPDX-License-Identifier: GPL-2.0-or-later).
+The GNU GPL version 2 license text is in Freeplane's bundled license.txt
+and is embedded in the generated HTML.
+
+Modifications for Freeplane: Java export integration; typed native capture
+and state preservation; current view root/filter scope; initial folding;
+font embedding and warnings; relative, custom-scheme, and internal links;
+self-contained HTML writing; artwork isolation and script restrictions.
+The companion launcher, packaging code, and diagnostic API are not included.
+
+This notice licenses the adapted exporter/viewer, not the exported map
+content or embedded fonts. Map content and fonts retain their own licenses.
+Freeplane, Batik, FOP, FontBox, Gson, Java, and their dependencies retain
+their respective copyright and license notices.

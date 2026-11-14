@@ -2870,10 +2870,90 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
     }
 
-	/**
-	 * Call preparePrinting() before printing and endPrinting() after printing
-	 * to minimize calculation efforts
-	 */
+    <T> T withPreservedExportState(Supplier<T> operation) {
+        return mapScroller.withPreservedState(() -> nodeViewFolder.withPreservedState(
+                () -> filterNodeViewFolder.withPreservedState(() -> preserveExportState(operation))));
+    }
+
+    private <T> T preserveExportState(Supplier<T> operation) {
+        float savedZoom = zoom;
+        PaintingPurpose savedPurpose = paintingPurpose;
+        PaintingMode savedMode = paintingMode;
+        boolean savedPrepared = isPreparedForPrinting;
+        boolean savedScrollsAfterLayout = scrollsViewAfterLayout;
+        boolean savedSelectedsValid = selectedsValid;
+        FitMap savedFitMap = fitMap;
+        Rectangle savedPrintingBounds = boundingRectangle == null ? null : new Rectangle(boundingRectangle);
+        Rectangle savedBounds = getBounds();
+        JViewport viewport = getParent() instanceof JViewport ? (JViewport) getParent() : null;
+        Point savedPosition = viewport == null ? null : viewport.getViewPosition();
+        SelectionDrivenFoldingState savedFoldingState = selectionDrivenFoldingState;
+        Set<NodeModel> savedSelectionUnfold = new LinkedHashSet<>(selectionUnfoldNodeModels);
+        Set<NodeModel> savedPendingUnfold = new LinkedHashSet<>(pendingSelectionUnfoldNodeModels);
+        try {
+            selectedsValid = true;
+            scrollsViewAfterLayout = false;
+            return operation.get();
+        } finally {
+            try {
+                setZoom(savedZoom);
+                paintingPurpose = savedPurpose;
+                isPreparedForPrinting = savedPrepared;
+                updateAllNodeViews();
+                layoutForExport();
+            } finally {
+                zoom = savedZoom;
+                paintingPurpose = savedPurpose;
+                paintingMode = savedMode;
+                isPreparedForPrinting = savedPrepared;
+                fitMap = savedFitMap;
+                boundingRectangle = savedPrintingBounds;
+                setBounds(savedBounds);
+                if (viewport != null)
+                    viewport.setViewPosition(savedPosition);
+                selectionDrivenFoldingState = savedFoldingState;
+                selectionUnfoldNodeModels.clear();
+                selectionUnfoldNodeModels.addAll(savedSelectionUnfold);
+                pendingSelectionUnfoldNodeModels.clear();
+                pendingSelectionUnfoldNodeModels.addAll(savedPendingUnfold);
+                selectedsValid = savedSelectedsValid;
+                scrollsViewAfterLayout = savedScrollsAfterLayout;
+            }
+        }
+    }
+
+    void prepareForExport() {
+        setZoom(1f);
+        paintingPurpose = PaintingPurpose.PRINTING;
+        isPreparedForPrinting = true;
+        updateAllNodeViews();
+        layoutForExport();
+    }
+
+    private void layoutForExport() {
+        scrollsViewAfterLayout = false;
+        synchronized (getTreeLock()) {
+            validateTree();
+        }
+        scrollsViewAfterLayout = false;
+    }
+
+    void paintNodeForExport(NodeView node, Graphics2D graphics) {
+        if (!node.isContentVisible())
+            return;
+        PaintingMode savedMode = paintingMode;
+        try {
+            paintingMode = node.isSelected() ? PaintingMode.SELECTED_NODES : PaintingMode.NODES;
+            node.getContent().paint(graphics);
+        } finally {
+            paintingMode = savedMode;
+        }
+    }
+
+    /**
+     * Call preparePrinting() before printing and endPrinting() after printing
+     * to minimize calculation efforts.
+     */
 	public void preparePrinting() {
 		paintingPurpose = PaintingPurpose.PRINTING;
 		if (!isPreparedForPrinting) {
