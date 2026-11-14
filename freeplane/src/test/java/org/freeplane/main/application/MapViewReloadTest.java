@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import java.awt.Component;
+import java.awt.GraphicsEnvironment;
 import java.awt.KeyboardFocusManager;
 import java.awt.Window;
 import java.io.File;
@@ -66,6 +67,7 @@ public class MapViewReloadTest extends MapViewDockingWindowsTestSupport {
 
     @Before
     public void prepareReload() throws Exception {
+        when(resources.getProperty("number_of_different_files_for_automatic_save")).thenReturn("0");
         ModeController previousMode = mode;
         mode = mock(MModeController.class, AdditionalAnswers.delegatesTo(previousMode));
         when(controller.getModeController()).thenReturn(mode);
@@ -294,6 +296,13 @@ public class MapViewReloadTest extends MapViewDockingWindowsTestSupport {
         viewManager = headless;
         when(controller.getMap()).thenAnswer(call -> headless.getMap());
         headless.newMapView(original, mode);
+        doAnswer(call -> {
+            try (MockedStatic<GraphicsEnvironment> graphics = mockStatic(GraphicsEnvironment.class, CALLS_REAL_METHODS)) {
+                graphics.when(GraphicsEnvironment::isHeadless).thenReturn(false);
+                ((Runnable) call.getArgument(0)).run();
+            }
+            return null;
+        }).when(display).invokeLater(any(Runnable.class));
         maps.restoreCurrentMapIgnoreAlternatives();
         MapModel replacement = headless.getMap();
         assertNotSame(original, replacement);

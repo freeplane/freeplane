@@ -46,10 +46,11 @@ public class MapViewDockingWindowsTest extends MapViewDockingWindowsTestSupport 
         Vector<Component> tracked = spy((Vector<Component>) field(windows, "mapViews"));
         field(windows, "mapViews", tracked);
         clearInvocations(viewManager, tracked);
-        map.setURL(new File("/tmp/title-path.mm").toURI().toURL());
+        File file = new File("/tmp/title-path.mm");
+        map.setURL(file.toURI().toURL());
         rename(docked, "custom");
         assertEquals("custom", docked.getTitle());
-        assertEquals(TextWritingDirection.LEFT_TO_RIGHT.isolatePathSeparators("/tmp/title-path.mm"),
+        assertEquals(TextWritingDirection.LEFT_TO_RIGHT.isolatePathSeparators(file.getAbsolutePath()),
                 tooltip(docked).getToolTipText());
         assertEquals("other", other.getTitle());
         verifyNoInteractions(tracked);
@@ -237,7 +238,8 @@ public class MapViewDockingWindowsTest extends MapViewDockingWindowsTestSupport 
     public void literalLabelsAgreeAcrossTabsMenuAndFrame() throws Exception {
         org.freeplane.view.swing.map.MapViewController manager = useRealViewManager();
         MapModel map = newMap();
-        map.setURL(new File("/tmp/literal.mm").toURI().toURL());
+        File file = new File("/tmp/literal.mm");
+        map.setURL(file.toURI().toURL());
         MapView view = openView(manager, map, "key");
         org.freeplane.core.ui.AFreeplaneAction action = menuAction(view);
         JMenuItem item = menuItem(action);
@@ -248,7 +250,7 @@ public class MapViewDockingWindowsTest extends MapViewDockingWindowsTestSupport 
         assertEquals(label, item.getText());
         assertEquals(label, action.getRawText());
         verify(display).setTitle(TextWritingDirection.LEFT_TO_RIGHT.isolatePathSeparators(
-                label + " - Mind map /tmp/literal.mm"));
+                label + " - Mind map " + file.getAbsolutePath()));
         assertEquals(" &日本語 (2) * ", view.getCustomizedTabName());
     }
 
@@ -540,12 +542,14 @@ public class MapViewDockingWindowsTest extends MapViewDockingWindowsTestSupport 
         manager.changeToMapView(view);
         rename(group, "group name");
         rename(owner(view), "custom");
-        view.getMap().setURL(new File("/tmp/new.mm").toURI().toURL());
+        File file = new File("/tmp/new.mm");
+        view.getMap().setURL(file.toURI().toURL());
         manager.updateMapViewName();
         assertEquals(view.getMap().getTitle(), view.getName());
         assertEquals("custom", view.getCustomizedTabName());
         assertEquals("custom", owner(view).getTitle());
-        assertTrue(tooltip(owner(view)).getToolTipText().contains("/tmp/new.mm"));
+        assertEquals(TextWritingDirection.LEFT_TO_RIGHT.isolatePathSeparators(file.getAbsolutePath()),
+                tooltip(owner(view)).getToolTipText());
         assertEquals("group name", CustomTabTitleProvider.getCustomizedTabName(group));
         assertEquals("group name (2)", group.getTitle());
         assertNull(other.getCustomizedTabName());
