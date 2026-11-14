@@ -1,4 +1,10 @@
 ==============================
+1.13.6
+==============================
+Preserve custom tab names
+Add Dynamic SVG (HTML) export
+
+==============================
 1.13.5
 ==============================
 Preserve custom tab names with their individual or group docking-window owners across restart, external-file reload, and Revert
