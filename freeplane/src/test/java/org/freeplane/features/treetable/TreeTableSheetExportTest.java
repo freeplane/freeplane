@@ -92,8 +92,8 @@ public class TreeTableSheetExportTest {
 		childOf(price, "Max");
 		childOf(header, "Brand");
 		final NodeModel car = childOf(table, "Car");
-		setValue(car, "Min", "1");
-		setValue(car, "Max", "2");
+		setValue(car, "Price \u203A Min", "1");
+		setValue(car, "Price \u203A Max", "2");
 		setValue(car, "Brand", "X");
 
 		final TreeTableSheet sheet = TreeTableSheetExport.sheetOf(table);
@@ -133,5 +133,20 @@ public class TreeTableSheetExportTest {
 		assertThat(text.toExcelHtml()).contains("<font color=\"#0000ff\"><b>big </b></font>")
 			.contains("&nbsp;&nbsp;&nbsp;&nbsp;wood");
 		assertThat(CellTextTree.parse(text).get(0).getContent()).contains("color: #0000ff");
+	}
+
+	@Test
+	public void exportsSameNamedColumnsOfDistinctBranchesWithTheirOwnValues() {
+		final NodeModel tesla = childOf(header, "Tesla");
+		childOf(tesla, "S");
+		final NodeModel ford = childOf(header, "Ford");
+		childOf(ford, "S");
+		final NodeModel car = childOf(table, "Car");
+		setValue(car, "Tesla \u203A S", "1");
+		setValue(car, "Ford \u203A S", "2");
+
+		final TreeTableSheet sheet = TreeTableSheetExport.sheetOf(table);
+
+		assertThat(sheet.toTabSeparatedText()).isEqualTo("Projects\tTesla\tFord\r\n\tS\tS\r\nCar\t1\t2\r\n");
 	}
 }

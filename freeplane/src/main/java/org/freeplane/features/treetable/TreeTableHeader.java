@@ -14,6 +14,8 @@ import org.freeplane.features.styles.StyleFactory;
 public class TreeTableHeader {
 	public static final String STYLE_NAME = "TreeHeader";
 	private static final String UNNAMED_COLUMN_KEY_PREFIX = "#";
+	private static final String PATH_SEPARATOR_CHARACTER = "\u203A";
+	private static final String PATH_SEPARATOR = " " + PATH_SEPARATOR_CHARACTER + " ";
 
 	public static IStyle style() {
 		return StyleFactory.create(STYLE_NAME);
@@ -70,16 +72,39 @@ public class TreeTableHeader {
 	}
 
 	public static String keyOf(final NodeModel node) {
-		return keyOf(node, node.getText());
+		return keyOf(node, node, node.getText());
 	}
 
 	public static String keyOf(final NodeModel node, final Object text) {
-		return isBelowHeaderRoot(node) ? columnKeyOf(node, text) : keyOfText(text);
+		return keyOf(node, node, text);
 	}
 
-	private static String columnKeyOf(final NodeModel columnNode, final Object text) {
-		final String key = keyOfText(text);
-		return key.isEmpty() ? UNNAMED_COLUMN_KEY_PREFIX + columnNode.createID() : key;
+	public static String keyOf(final NodeModel node, final NodeModel renamedNode, final Object renamedText) {
+		if (!isBelowHeaderRoot(node))
+			return keyOfText(node == renamedNode ? renamedText : node.getText());
+		String key = null;
+		for (NodeModel pathNode = node; pathNode != null && !isHeaderRoot(pathNode); pathNode = pathNode.getParentNode())
+			key = key == null ? segmentOf(pathNode, pathNode == renamedNode ? renamedText : pathNode.getText())
+				: pathKey(segmentOf(pathNode, pathNode == renamedNode ? renamedText : pathNode.getText()), key);
+		return key;
+	}
+
+	public static String pathKey(final String parentKey, final String segment) {
+		return parentKey.isEmpty() ? segment : parentKey + PATH_SEPARATOR + segment;
+	}
+
+	public static String segmentOf(final NodeModel columnNode, final Object text) {
+		final String name = keyOfText(text);
+		return name.isEmpty() ? UNNAMED_COLUMN_KEY_PREFIX + columnNode.createID() : escapedName(name);
+	}
+
+	public static String leafNameOf(final NodeModel columnNode) {
+		final String name = keyOfText(columnNode.getText());
+		return name.isEmpty() ? UNNAMED_COLUMN_KEY_PREFIX + columnNode.createID() : name;
+	}
+
+	public static String escapedName(final String name) {
+		return name.replace("\\", "\\\\").replace(PATH_SEPARATOR_CHARACTER, "\\" + PATH_SEPARATOR_CHARACTER);
 	}
 
 	public static String keyOfText(final Object text) {
@@ -134,10 +159,11 @@ public class TreeTableHeader {
 		return parent.getIndex(columnNode) < parent.getChildCount() - 1;
 	}
 
-	public static boolean acceptsRenaming(final NodeModel columnNode, final String newKey) {
+	public static boolean acceptsRenaming(final NodeModel columnNode, final String newName) {
 		final NodeModel treeTableRoot = TreeTableNodes.treeTableRootOf(columnNode);
-		return isColumnNode(columnNode) && treeTableRoot != null
-				&& columnsOf(treeTableRoot).acceptsRenaming(keyOf(columnNode), newKey == null ? null : newKey.trim());
+		if (!isColumnNode(columnNode) || treeTableRoot == null || newName == null || keyOfText(newName).isEmpty())
+			return false;
+		return columnsOf(treeTableRoot).acceptsRenaming(keyOf(columnNode), keyOf(columnNode, newName.trim()));
 	}
 
 	public static String keyInheritedFrom(final NodeModel formerColumnNode) {
@@ -160,16 +186,23 @@ public class TreeTableHeader {
 		if (!isBelowHeaderRoot(formerParent) || formerParent.hasChildren())
 			return null;
 		final String parentKey = keyOf(formerParent);
-		final NodeModel removedColumn = removedNode.hasChildren() ? heirOf(removedNode) : removedNode;
-		final String removedKey = columnKeyOf(removedColumn, removedColumn.getText());
-		if (parentKey.isEmpty() || removedKey.isEmpty() || parentKey.equals(removedKey))
+		final String removedKey = firstColumnKeyBelow(parentKey, removedNode);
+		if (removedKey.equals(parentKey))
 			return null;
 		for (final NodeModel columnNode : columnNodesOf(headerRootAbove(formerParent))) {
-			final String key = keyOf(columnNode);
-			if (key.equals(removedKey) || columnNode != formerParent && key.equals(parentKey))
+			if (keyOf(columnNode).equals(removedKey))
 				return null;
 		}
 		return removedKey;
+	}
+
+	private static String firstColumnKeyBelow(final String parentKey, final NodeModel node) {
+		String key = pathKey(parentKey, segmentOf(node, node.getText()));
+		for (NodeModel descendant = node; descendant.hasChildren();) {
+			descendant = descendant.getChildAt(0);
+			key = pathKey(key, segmentOf(descendant, descendant.getText()));
+		}
+		return key;
 	}
 
 	public static NodeModel heirOf(final NodeModel formerColumnNode) {

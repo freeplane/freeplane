@@ -79,7 +79,7 @@ public class TreeTableSheetImport {
 		this.unnamedColumnPrefix = unnamedColumnPrefix;
 		treeColumnCount = treeColumnCount();
 		headerRowCount = headerRowCount();
-		columns.addAll(headerItems(0, treeColumnCount, sheet.getColumnCount()));
+		columns.addAll(headerItems(0, treeColumnCount, sheet.getColumnCount(), ""));
 		readRows();
 	}
 
@@ -130,12 +130,12 @@ public class TreeTableSheetImport {
 		return -1;
 	}
 
-	private List<Item> headerItems(final int row, final int fromColumn, final int toColumn) {
+	private List<Item> headerItems(final int row, final int fromColumn, final int toColumn, final String parentKey) {
 		final List<Item> items = new ArrayList<Item>();
 		int start = fromColumn;
 		while (start < toColumn) {
 			final int end = row == headerRowCount - 1 ? start + 1 : nextFilledColumn(row, start + 1, toColumn);
-			addHeaderItems(items, row, start, end);
+			addHeaderItems(items, row, start, end, parentKey);
 			start = end;
 		}
 		return items;
@@ -146,18 +146,20 @@ public class TreeTableSheetImport {
 		return filledColumn < 0 ? toColumn : filledColumn;
 	}
 
-	private void addHeaderItems(final List<Item> items, final int row, final int start, final int end) {
+	private void addHeaderItems(final List<Item> items, final int row, final int start, final int end,
+			final String parentKey) {
 		final String text = sheet.get(row, start).trim();
 		if (row == headerRowCount - 1 || isEmptyBelow(row, start, end)) {
-			items.add(columnItem(text));
+			items.add(columnItem(text, parentKey));
 			for (int column = start + 1; column < end; column++)
-				items.add(columnItem(""));
+				items.add(columnItem("", parentKey));
 		}
 		else if (text.isEmpty())
-			items.addAll(headerItems(row + 1, start, end));
+			items.addAll(headerItems(row + 1, start, end, parentKey));
 		else {
 			final Item group = new Item(text);
-			group.children.addAll(headerItems(row + 1, start, end));
+			group.children.addAll(headerItems(row + 1, start, end,
+				TreeTableHeader.pathKey(parentKey, TreeTableHeader.escapedName(text))));
 			items.add(group);
 		}
 	}
@@ -170,21 +172,23 @@ public class TreeTableSheetImport {
 		return true;
 	}
 
-	private Item columnItem(final String text) {
-		final String key = uniqueColumnKey(text);
+	private Item columnItem(final String text, final String parentKey) {
+		final String name = uniqueColumnName(text, parentKey);
+		final String key = TreeTableHeader.pathKey(parentKey, TreeTableHeader.escapedName(name));
 		usedColumnKeys.add(key);
 		columnKeys.add(key);
-		return new Item(key);
+		return new Item(name);
 	}
 
-	private String uniqueColumnKey(final String text) {
+	private String uniqueColumnName(final String text, final String parentKey) {
 		final String base = text.isEmpty() ? unnamedColumnPrefix : text;
-		if (!text.isEmpty() && !usedColumnKeys.contains(text))
+		if (!text.isEmpty() && !usedColumnKeys.contains(TreeTableHeader.pathKey(parentKey, TreeTableHeader.escapedName(text))))
 			return text;
 		for (int index = text.isEmpty() ? 1 : 2;; index++) {
-			final String key = base + " " + index;
-			if (!usedColumnKeys.contains(key) && !isColumnTitle(key))
-				return key;
+			final String name = base + " " + index;
+			if (!usedColumnKeys.contains(TreeTableHeader.pathKey(parentKey, TreeTableHeader.escapedName(name)))
+					&& !isColumnTitle(name))
+				return name;
 		}
 	}
 

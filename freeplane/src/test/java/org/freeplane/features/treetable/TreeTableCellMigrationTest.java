@@ -103,4 +103,57 @@ public class TreeTableCellMigrationTest {
 		assertThat(TreeTableCells.cellsOf(row)).containsExactly(price);
 		assertThat(contentOf(price)).isEqualTo("10");
 	}
+
+	private NodeModel markedCell(final NodeModel parent, final String key, final String content) {
+		final NodeModel cell = childOf(parent, key);
+		TreeTableCellModel.markAsCell(cell);
+		childOf(cell, content);
+		return cell;
+	}
+
+	@Test
+	public void rewritesCellKeyNamedAfterLeafColumnToItsPath() {
+		final NodeModel models = childOf(header, "Models");
+		childOf(models, "Tesla");
+		markedCell(row, "Tesla", "x");
+
+		assertThat(TreeTableCellMigration.migrate(table)).isTrue();
+
+		assertThat(TreeTableCells.cellsOf(row)).extracting(TreeTableCells::keyOf).containsExactly("Models \u203A Tesla");
+	}
+
+	@Test
+	public void leavesCellOfTopLevelColumnUnchanged() {
+		markedCell(row, "Prix", "12");
+
+		assertThat(TreeTableCellMigration.migrate(table)).isFalse();
+
+		assertThat(TreeTableCells.cellsOf(row)).extracting(TreeTableCells::keyOf).containsExactly("Prix");
+	}
+
+	@Test
+	public void givesCellOfFormerlySharedLeafNameToFirstSameNamedColumn() {
+		final NodeModel tesla = childOf(header, "Tesla");
+		childOf(tesla, "S");
+		final NodeModel ford = childOf(header, "Ford");
+		childOf(ford, "S");
+		markedCell(row, "S", "x");
+
+		TreeTableCellMigration.migrate(table);
+
+		assertThat(TreeTableCells.cellsOf(row)).extracting(TreeTableCells::keyOf).containsExactly("Tesla \u203A S");
+	}
+
+	@Test
+	public void migratesLegacyAttributesOfSameNamedColumnsToTheFirstOne() {
+		final NodeModel tesla = childOf(header, "Tesla");
+		childOf(tesla, "S");
+		final NodeModel ford = childOf(header, "Ford");
+		childOf(ford, "S");
+		setAttribute(row, "S", "12");
+
+		TreeTableCellMigration.migrate(table);
+
+		assertThat(TreeTableCells.cellsOf(row)).extracting(TreeTableCells::keyOf).containsExactly("Tesla \u203A S");
+	}
 }

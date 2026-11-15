@@ -155,12 +155,12 @@ public class TreeTableHeaderTest {
 	}
 
 	@Test
-	public void passesNoKeyToSubColumnNamedLikeAnotherColumn() {
+	public void passesKeyToSubColumnNamedLikeAnotherColumn() {
 		final NodeModel price = childOf(header, "Price");
 		childOf(price, "Net");
 		childOf(header, "Net");
 
-		assertThat(TreeTableHeader.keyInheritedFrom(price)).isNull();
+		assertThat(TreeTableHeader.keyInheritedFrom(price)).isEqualTo("Price");
 	}
 
 	@Test
@@ -177,7 +177,7 @@ public class TreeTableHeaderTest {
 		final NodeModel financial = childOf(cons, "Financial");
 		cons.remove(cons.getIndex(financial));
 
-		assertThat(TreeTableHeader.keyReturnedTo(cons, financial)).isEqualTo("Financial");
+		assertThat(TreeTableHeader.keyReturnedTo(cons, financial)).isEqualTo("Cons \u203A Financial");
 	}
 
 	@Test
@@ -188,7 +188,7 @@ public class TreeTableHeaderTest {
 		childOf(group, "Planning");
 		cons.remove(cons.getIndex(group));
 
-		assertThat(TreeTableHeader.keyReturnedTo(cons, group)).isEqualTo("Financial");
+		assertThat(TreeTableHeader.keyReturnedTo(cons, group)).isEqualTo("Cons \u203A Group \u203A Financial");
 	}
 
 	@Test
@@ -211,13 +211,13 @@ public class TreeTableHeaderTest {
 	}
 
 	@Test
-	public void returnsNoKeyStillShownByAnotherColumn() {
+	public void returnsKeyEvenIfAnotherColumnHasTheSameName() {
 		final NodeModel cons = childOf(header, "Cons");
 		final NodeModel financial = childOf(cons, "Financial");
 		childOf(header, "Financial");
 		cons.remove(cons.getIndex(financial));
 
-		assertThat(TreeTableHeader.keyReturnedTo(cons, financial)).isNull();
+		assertThat(TreeTableHeader.keyReturnedTo(cons, financial)).isEqualTo("Cons \u203A Financial");
 	}
 
 	@Test
@@ -272,18 +272,49 @@ public class TreeTableHeaderTest {
 	}
 
 	@Test
-	public void tellsWhetherAnotherColumnShareTheKey() {
+	public void givesSameNamedColumnsInDistinctBranchesDistinctPathKeys() {
 		final NodeModel tesla = childOf(header, "Tesla");
 		final NodeModel teslaS = childOf(tesla, "S");
 		final NodeModel ford = childOf(header, "Ford");
 		final NodeModel fordS = childOf(ford, "S");
 		final NodeModel price = childOf(header, "Price");
 
-		assertThat(TreeTableHeader.isKeyUsedByAnotherColumn(fordS, "S")).isTrue();
-		assertThat(TreeTableHeader.isKeyUsedByAnotherColumn(teslaS, "S")).isTrue();
-		assertThat(TreeTableHeader.isKeyUsedByAnotherColumn(price, "S")).isTrue();
-		assertThat(TreeTableHeader.isKeyUsedByAnotherColumn(fordS, "Price")).isTrue();
+		assertThat(TreeTableHeader.keyOf(teslaS)).isEqualTo("Tesla \u203A S");
+		assertThat(TreeTableHeader.keyOf(fordS)).isEqualTo("Ford \u203A S");
+		assertThat(TreeTableHeader.keyOf(price)).isEqualTo("Price");
+		assertThat(TreeTableHeader.distinctColumnNodesOf(table)).containsExactly(teslaS, fordS, price);
+		assertThat(TreeTableHeader.isKeyUsedByAnotherColumn(fordS, "Tesla \u203A S")).isTrue();
 		assertThat(TreeTableHeader.isKeyUsedByAnotherColumn(price, "Price")).isFalse();
-		assertThat(TreeTableHeader.isKeyUsedByAnotherColumn(fordS, "Other")).isFalse();
+		assertThat(TreeTableHeader.isKeyUsedByAnotherColumn(fordS, "S")).isFalse();
+	}
+
+	@Test
+	public void computesKeysOfDescendantsWithRenamedAncestor() {
+		final NodeModel models = childOf(header, "Models");
+		final NodeModel ford = childOf(models, "Ford");
+		final NodeModel s = childOf(ford, "S");
+
+		assertThat(TreeTableHeader.keyOf(s, models, "Mod")).isEqualTo("Mod \u203A Ford \u203A S");
+		assertThat(TreeTableHeader.keyOf(s, s, "T")).isEqualTo("Models \u203A Ford \u203A T");
+	}
+
+	@Test
+	public void escapesSeparatorInColumnNames() {
+		final NodeModel group = childOf(header, "a \u203A b");
+		final NodeModel column = childOf(group, "c");
+
+		assertThat(TreeTableHeader.keyOf(column)).isEqualTo("a \\\u203A b \u203A c");
+	}
+
+	@Test
+	public void refusesRenamingToNameOfSiblingColumn() {
+		final NodeModel group = childOf(header, "Models");
+		final NodeModel first = childOf(group, "Tesla");
+		childOf(group, "Ford");
+		final NodeModel other = childOf(header, "Ford");
+
+		assertThat(TreeTableHeader.acceptsRenaming(first, "Ford")).isFalse();
+		assertThat(TreeTableHeader.acceptsRenaming(first, "Other")).isTrue();
+		assertThat(TreeTableHeader.acceptsRenaming(other, "Tesla")).isTrue();
 	}
 }

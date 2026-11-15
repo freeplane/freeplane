@@ -119,7 +119,8 @@ public class TreeTableEditing {
 
 	private static void insertColumn(final NodeModel parent, final int index) {
 		final NodeModel treeTableRoot = TreeTableNodes.treeTableRootOf(parent);
-		final String name = TreeTableColumnNames.unusedName(TextUtils.getText("treetable.new_column"),
+		final String parentKey = TreeTableHeader.isHeaderRoot(parent) ? "" : TreeTableHeader.keyOf(parent);
+		final String name = TreeTableColumnNames.unusedName(TextUtils.getText("treetable.new_column"), parentKey,
 			TreeTableModel.columnsOf(treeTableRoot));
 		mapController().addNewNode(parent, index, node -> node.setUserObject(name));
 	}
