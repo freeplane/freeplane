@@ -164,6 +164,31 @@ public class TreeTableSheetImportTest {
 		assertThat(table.getRows().get(0).getValues()).containsExactly(entry("S", "1"), entry("S 2", "2"));
 	}
 
+	@Test
+	public void roundTripsRowsHavingTheSameName() {
+		final MapFake mapFake = new MapFake();
+		final NodeModel tableNode = childOf(mapFake, mapFake.getRoot(), "Projects");
+		TreeTableModel.createFor(tableNode);
+		final NodeModel header = childOf(mapFake, tableNode, "Columns");
+		LogicalStyleModel.createExtension(header).setStyle(TreeTableHeader.style());
+		childOf(mapFake, header, "Cost");
+		final NodeModel firstTask = childOf(mapFake, tableNode, "Task");
+		TreeTableSheetExportTest.setValue(firstTask, "Cost", "1");
+		final NodeModel secondTask = childOf(mapFake, tableNode, "Task");
+		TreeTableSheetExportTest.setValue(secondTask, "Cost", "2");
+		final NodeModel phase = childOf(mapFake, tableNode, "Task");
+		final NodeModel nestedTask = childOf(mapFake, phase, "Task");
+		TreeTableSheetExportTest.setValue(nestedTask, "Cost", "3");
+
+		final TreeTableSheetImport table = importOf(TreeTableSheetExport.sheetOf(tableNode).toTabSeparatedText());
+
+		assertThat(table.getRows()).extracting(Item::getText).containsExactly("Task", "Task", "Task");
+		assertThat(table.getRows().get(0).getValues()).containsExactly(entry("Cost", "1"));
+		assertThat(table.getRows().get(1).getValues()).containsExactly(entry("Cost", "2"));
+		assertThat(table.getRows().get(2).getChildren()).extracting(Item::getText).containsExactly("Task");
+		assertThat(table.getRows().get(2).getChildren().get(0).getValues()).containsExactly(entry("Cost", "3"));
+	}
+
 	private static NodeModel childOf(final MapFake mapFake, final NodeModel parent, final String text) {
 		final NodeModel child = mapFake.createNode(text);
 		parent.insert(child);

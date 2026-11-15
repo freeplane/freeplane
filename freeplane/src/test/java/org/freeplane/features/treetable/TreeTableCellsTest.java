@@ -215,4 +215,18 @@ public class TreeTableCellsTest {
 
 		assertThat(TreeTableCells.blankContentAt(cell)).isSameAs(blank);
 	}
+
+	@Test
+	public void doesNotConfuseRowsNamedLikeColumnsWithCells() {
+		final NodeModel price = cellOf(row, "Prix");
+		childOf(price, "12");
+		final NodeModel namedLikeColumn = childOf(row, "Prix");
+		final NodeModel twin = childOf(table, "Projet A");
+
+		assertThat(TreeTableCells.isCell(namedLikeColumn)).isFalse();
+		assertThat(TreeTableNodes.isRow(namedLikeColumn)).isTrue();
+		assertThat(TreeTableCells.cellOf(row, "Prix")).isSameAs(price);
+		assertThat(TreeTableNodes.rowsOf(table)).containsExactly(row, namedLikeColumn, twin);
+		assertThat(TreeTableCells.cellOf(twin, "Prix")).isNull();
+	}
 }
