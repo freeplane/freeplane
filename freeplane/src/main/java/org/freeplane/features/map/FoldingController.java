@@ -37,6 +37,7 @@ import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.treetable.TreeTableCells;
 import org.freeplane.features.mode.ModeController;
 
 /**
@@ -239,7 +240,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
         }
 
         private void foldAll(final NodeModel node, int depth) {
-            if(filter.isFoldable(node)) {
+            if(isFoldable(node)) {
                 if(depth > 0)
                     setFolded(node, true);
                 for (NodeModel child : node.getChildren()) {
@@ -249,7 +250,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
         }
 
         private void foldOneStage(final NodeModel node) {
-            if(filter.isFoldable(node)) {
+            if(isFoldable(node)) {
                 int maxDepth = getMaxDepth(node);
                 if(maxDepth > 1)
                     foldStageN(node, maxDepth - 1);
@@ -257,7 +258,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
         }
 
         private void foldStageN(final NodeModel node, final int stage) {
-            if(filter.isFoldable(node)) {
+            if(isFoldable(node)) {
                 final int k = depth(node);
                 if (k < stage) {
                     setFolded(node, false);
@@ -274,7 +275,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
         private int getMaxDepth(final NodeModel node) {
             if (selection.isFolded(node)
                     || !node.hasChildren()
-                    || ! filter.isFoldable(node)) {
+                    || ! isFoldable(node)) {
                 return depth(node);
             }
             int maxDepth = 0;
@@ -287,7 +288,14 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
             return maxDepth;
         }
 
+        private boolean isFoldable(final NodeModel node) {
+            return filter.isFoldable(node) && ! TreeTableCells.isCell(node);
+        }
+
         private int getMinDepth(final NodeModel node) {
+            if (TreeTableCells.isCell(node)) {
+                return Integer.MAX_VALUE;
+            }
             final EncryptionModel encryptionModel = EncryptionModel.getModel(node);
             if (encryptionModel != null && !encryptionModel.isAccessible() ) {
                 return Integer.MAX_VALUE;
@@ -319,7 +327,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
         }
 
         private void unfoldAll(final NodeModel node) {
-            if(filter.isFoldable(node)) {
+            if(isFoldable(node)) {
                 setFolded(node, false);
                 for (final NodeModel child : node.getChildren()) {
                     unfoldAll(child);
@@ -328,7 +336,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
         }
 
         private void unfoldOneStage(final NodeModel node) {
-            if(filter.isFoldable(node)) {
+            if(isFoldable(node)) {
                 int minDepth = getMinDepth(node);
                 if (minDepth < Integer.MAX_VALUE) {
                     minDepth++;
@@ -338,7 +346,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
         }
 
         private void unfoldStageN(final NodeModel node, final int stage) {
-            if(filter.isFoldable(node)) {
+            if(isFoldable(node)) {
                 final int k = depth(node);
                 if (k < stage) {
                     setFolded(node, false);

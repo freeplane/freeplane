@@ -156,4 +156,28 @@ public class TreeTableCellMigrationTest {
 
 		assertThat(TreeTableCells.cellsOf(row)).extracting(TreeTableCells::keyOf).containsExactly("Tesla \u203A S");
 	}
+
+	@Test
+	public void unfoldsCellsStoredAsFolded() {
+		final NodeModel cell = markedCell(row, "Prix", "12");
+		cell.setFolded(true);
+		final NodeModel folded = childOf(row, "Sous-ligne");
+		childOf(folded, "x");
+		folded.setFolded(true);
+
+		TreeTableCellMigration.migrate(table);
+
+		assertThat(cell.isFolded()).isFalse();
+		assertThat(folded.isFolded()).isTrue();
+	}
+
+	@Test
+	public void neverFoldsACell() {
+		final NodeModel cell = markedCell(row, "Prix", "12");
+
+		cell.setFolded(true);
+
+		assertThat(cell.isFolded()).isFalse();
+		assertThat(cell.isFoldable()).isFalse();
+	}
 }

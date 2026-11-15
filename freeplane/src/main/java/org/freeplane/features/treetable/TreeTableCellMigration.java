@@ -14,10 +14,18 @@ public class TreeTableCellMigration {
 		final List<NodeModel> columnNodes = TreeTableHeader.distinctColumnNodesOf(treeTableRoot);
 		boolean migrated = false;
 		for (final NodeModel row : TreeTableNodes.rowsOf(treeTableRoot)) {
+			unfoldCells(row);
 			migrated |= migrateLegacyCellKeys(row, columnNodes);
 			migrated |= migrateAttributes(row, columnNodes);
 		}
 		return migrated;
+	}
+
+	private static void unfoldCells(final NodeModel row) {
+		for (final NodeModel cell : TreeTableCells.cellsOf(row)) {
+			if (cell.isFolded())
+				cell.setFolded(false);
+		}
 	}
 
 	private static boolean migrateLegacyCellKeys(final NodeModel row, final List<NodeModel> columnNodes) {
