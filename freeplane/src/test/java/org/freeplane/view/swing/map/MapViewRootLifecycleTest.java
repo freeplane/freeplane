@@ -28,6 +28,7 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.junit.After;
 import org.junit.Before;
+import org.freeplane.view.swing.map.MapViewTitleTestSupport.TestNodeView;
 import org.junit.Test;
 
 public class MapViewRootLifecycleTest {
@@ -135,29 +136,5 @@ public class MapViewRootLifecycleTest {
         Field field = MapView.class.getDeclaredField(fieldName);
         field.setAccessible(true);
         field.set(target, value);
-    }
-
-    private static class TestNodeView extends NodeView {
-        private TestNodeView(NodeModel viewedNode, MapView map) {
-            super(viewedNode, map);
-            setMainView(new MainView());
-        }
-
-        @Override
-        public boolean isContentVisible() {
-            return true;
-        }
-
-        @Override
-        void updateIcons() {
-        }
-
-        @Override
-        void fireFoldingChanged() {
-        }
-
-        @Override
-        void resetLayoutPropertiesRecursively() {
-        }
     }
 }

@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.stream.Stream;
+import java.util.function.Supplier;
 
 import javax.swing.SwingUtilities;
 
@@ -35,6 +36,16 @@ public class NodeViewFolder {
     	unfoldedNodeViews.clear();
     }
 
+
+    <T> T withPreservedState(Supplier<T> operation) {
+        Set<NodeView> savedUnfoldedNodeViews = new HashSet<>(unfoldedNodeViews);
+        try {
+            return operation.get();
+        } finally {
+            unfoldedNodeViews.clear();
+            unfoldedNodeViews.addAll(savedUnfoldedNodeViews);
+        }
+    }
 
     public void adjustFolding(Set<NodeView> unfoldNodeViews) {
         Set<NodeView> unfoldNodeViewsWithAncestors = withAncestors(unfoldNodeViews);

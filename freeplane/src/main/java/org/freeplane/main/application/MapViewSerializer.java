@@ -109,6 +109,7 @@ class MapViewSerializer implements ViewSerializer {
 		final MapViewPane mapViewPane = new MapViewPane(mapViewScrollPane);
 		mapViewScrollPane.addViewportReservedAreaSupplier(mapViewPane::getMapOverviewReservedArea);
         final View viewFrame = new ConnectedToMenuView(title, null, mapViewPane);
+        ((MapView) pNewMap).setCustomizedTabNameSupplier(() -> CustomTabTitleProvider.getCustomizedTabName(viewFrame));
 	    return viewFrame;
 	}
 

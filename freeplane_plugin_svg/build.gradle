@@ -1,6 +1,9 @@
 dependencies {
     implementation project(':freeplane')
 
+    lib 'com.google.code.gson:gson:2.13.2'
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.38.0'
+
 	lib 'org.apache.xmlgraphics:batik-transcoder:1.19'
 	lib 'org.apache.xmlgraphics:batik-swing:1.19'
 	lib 'org.apache.xmlgraphics:batik-codec:1.19'
@@ -8,6 +11,15 @@ dependencies {
 	lib ('org.apache.xmlgraphics:fop-util:2.11') {transitive = false}
 	lib ('org.apache.xmlgraphics:fop-events:2.11') {transitive = false}
 	lib ('org.apache.pdfbox:fontbox:3.0.3') {transitive = false}
+	lib ('org.apache.pdfbox:pdfbox-io:3.0.3') {transitive = false}
+}
+
+test {
+    def coreSourceSets = project(':freeplane').sourceSets
+    classpath = sourceSets.test.runtimeClasspath +
+        coreSourceSets.viewer.resources.sourceDirectories +
+        coreSourceSets.editor.resources.sourceDirectories +
+        coreSourceSets.external.resources.sourceDirectories
 }
 
 configurations.all {

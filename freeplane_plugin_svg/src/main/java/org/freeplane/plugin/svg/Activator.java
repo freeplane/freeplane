@@ -31,6 +31,7 @@ public class Activator implements BundleActivator {
 			    	final ExportController exportController = ExportController.getController(modeController);
 			    	exportController.addMapExportEngine(new CaseSensitiveFileNameExtensionFilter("pdf", TextUtils.getText("export_pdf_text")), new ExportPdf());
 			    	exportController.addMapExportEngine(new CaseSensitiveFileNameExtensionFilter("svg", TextUtils.getText("export_svg_text")), new ExportSvg());
+                    exportController.addMapExportEngine(new CaseSensitiveFileNameExtensionFilter("html", TextUtils.getText("export_dynamic_svg_text")), new ExportDynamicSvg());
 				    final ViewerController extension = modeController
 				        .getExtension(ViewerController.class);
 				    if(extension != null)

@@ -38,7 +38,6 @@ import java.io.OutputStreamWriter;
 import java.util.List;
 
 class ExportSvg extends ExportVectorGraphic {
-	private static final String SVG_EMBED_FONTS = "org.freeplane.plugin.svg.export.svg.embed_fonts";
 
 	public void export(List<NodeModel> branches, File chosenFile) {
 		MapModel map = branches.get(0).getMap();

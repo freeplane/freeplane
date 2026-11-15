@@ -20,36 +20,69 @@
 package org.freeplane.view.swing.ui;
 
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Objects;
+
+import javax.swing.Action;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.view.swing.map.MapView;
 
 @SuppressWarnings("serial")
 @SelectableAction
-class MapsMenuAction extends AFreeplaneAction {
-	private static final String MAPS_MENU_ACTION_DOT = "MapsMenuAction.";
+class MapsMenuAction extends AFreeplaneAction implements PropertyChangeListener {
+    private static final String MAPS_MENU_ACTION_DOT = "MapsMenuAction.";
+    private final MapView mapView;
 
-	public MapsMenuAction(String command, String title) {
-		super(MAPS_MENU_ACTION_DOT + command, title, null);
-	}
+    public MapsMenuAction(MapView mapView) {
+        super(MAPS_MENU_ACTION_DOT + mapView.getName(), null, null);
+        this.mapView = mapView;
+        putValue(Action.NAME, getRawText());
+        setSelected(mapView.isSelected());
+        mapView.addPropertyChangeListener(MapView.TITLE_REFRESH_PROPERTY, this);
+        mapView.addPropertyChangeListener(SelectableAction.SELECTION_PROPERTY, this);
+    }
 
-	@Override
-    public void actionPerformed(final ActionEvent menuEvent) {
-		final String mapId = getKey().substring(MAPS_MENU_ACTION_DOT.length());
-		UITools.executeWhenNodeHasFocus(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					Controller.getCurrentController().getMapViewManager().changeToMapView(mapId);
-				}
-				catch (IllegalArgumentException ex){
-					LogUtils.warn(ex);
-				}
-			}
-		});
-	}
+    @Override
+    public String getRawText() {
+        return MapDisplayNameResolver.resolveLabel(mapView);
+    }
 
+    @Override
+    public void propertyChange(PropertyChangeEvent event) {
+        if (MapView.TITLE_REFRESH_PROPERTY.equals(event.getPropertyName())) {
+            String label = getRawText();
+            if (!Objects.equals(getValue(Action.NAME), label))
+                putValue(Action.NAME, label);
+        }
+        else if (SelectableAction.SELECTION_PROPERTY.equals(event.getPropertyName())) {
+            setSelected(mapView.isSelected());
+        }
+    }
+
+    void dispose() {
+        mapView.removePropertyChangeListener(MapView.TITLE_REFRESH_PROPERTY, this);
+        mapView.removePropertyChangeListener(SelectableAction.SELECTION_PROPERTY, this);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent menuEvent) {
+        UITools.executeWhenNodeHasFocus(() -> {
+            try {
+                IMapViewManager manager = Controller.getCurrentController().getMapViewManager();
+                if (!manager.getMapViews().contains(mapView))
+                    throw new IllegalArgumentException("Map mapView " + mapView.getName() + " not found.");
+                manager.changeToMapView(mapView);
+            }
+            catch (IllegalArgumentException ex) {
+                LogUtils.warn(ex);
+            }
+        });
+    }
 }

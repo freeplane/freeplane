@@ -1,7 +1,5 @@
 package org.freeplane.view.swing.ui;
 
-import java.util.Objects;
-
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.bookmarks.mindmapmode.MapBookmarks;
@@ -11,7 +9,6 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.map.MapView;
 
 public final class MapDisplayNameResolver {
-    public static final String CUSTOMIZED_TAB_NAME_PROPERTY = "customizedTabName";
     public static final String MAP_DISPLAY_NAME_SOURCE_PROPERTY = "mapDisplayNameSource";
     public static final String MAP_DISPLAY_NAME_MAX_LENGTH_PROPERTY = "mapDisplayNameMaxLength";
 
@@ -59,7 +56,7 @@ public final class MapDisplayNameResolver {
     private static final class DefaultOpenedMapNameAccess implements OpenedMapNameAccess {
         @Override
         public String getCustomizedTabName(MapView mapView) {
-            return (String) mapView.getClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY);
+            return mapView.getCustomizedTabName();
         }
 
         @Override
@@ -154,24 +151,9 @@ public final class MapDisplayNameResolver {
         return DEFAULT_RESOLVER.resolveBaseLabelWithDependencies(mapView);
     }
 
-    public static String resolveAutomaticBaseLabel(MapView mapView) {
-        return DEFAULT_RESOLVER.resolveAutomaticBaseLabelWithDependencies(mapView,
-                DEFAULT_RESOLVER.preferences.getDisplayNameSource());
-    }
-
-    static String resolveAutomaticBaseLabel(MapView mapView, MapDisplayNameSource source) {
-        return DEFAULT_RESOLVER.resolveAutomaticBaseLabelWithDependencies(mapView, source);
-    }
-
-    public static boolean matchesAnyAutomaticLabel(MapView mapView, String titleWithoutDirtyMarker) {
-        return DEFAULT_RESOLVER.matchesAnyAutomaticLabelWithDependencies(mapView, titleWithoutDirtyMarker);
-    }
-
-    public static String removeDirtyMarker(String title) {
-        if (title != null && title.endsWith(" *")) {
-            return title.substring(0, title.length() - 2);
-        }
-        return title;
+    public static String resolveLabel(MapView mapView) {
+        String label = resolveBaseLabel(mapView);
+        return !mapView.getMap().isSaved() && !mapView.getMap().isReadOnly() ? label + " *" : label;
     }
 
     String resolveBaseLabelWithDependencies(MapView mapView) {
@@ -195,16 +177,6 @@ public final class MapDisplayNameResolver {
             default:
                 return resolveFileNameLabel(mapView);
         }
-    }
-
-    boolean matchesAnyAutomaticLabelWithDependencies(MapView mapView, String titleWithoutDirtyMarker) {
-        for (MapDisplayNameSource source : MapDisplayNameSource.values()) {
-            String automaticTitle = resolveAutomaticBaseLabelWithDependencies(mapView, source);
-            if (Objects.equals(titleWithoutDirtyMarker, automaticTitle)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private String resolveFileNameLabel(MapView mapView) {
