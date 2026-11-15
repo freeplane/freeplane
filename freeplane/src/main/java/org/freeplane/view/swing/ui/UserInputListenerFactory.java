@@ -87,7 +87,6 @@ import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.view.swing.map.MapView;
 
@@ -202,7 +201,13 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			public boolean shouldSkipChildren(Entry entry) {
 				return true;
 			}
-		}, new ChildActionEntryRemover(modeController)));
+        }, new ChildActionEntryRemover(modeController) {
+            @Override
+            public void visit(Entry target) {
+                disposeMapActions(target);
+                super.visit(target);
+            }
+        }));
 
 		addUiBuilder(Phase.ACTIONS, "navigate_modes", new BuilderDestroyerPair(new EntryVisitor() {
 			@Override
@@ -446,8 +451,15 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		}
 	}
 
+    private void disposeMapActions(Entry target) {
+        AFreeplaneAction action = new EntryAccessor().getAction(target);
+        if (action instanceof MapsMenuAction)
+            ((MapsMenuAction) action).dispose();
+        for (Entry child : target.children())
+            disposeMapActions(child);
+    }
+
 	private void createMapActions(final Entry mapsMenuEntry) {
-		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		final ViewController viewController = Controller.getCurrentController().getViewController();
 		final List<? extends Component> mapViewVector = viewController.getMapViewVector();
 		if (mapViewVector == null) {
@@ -457,25 +469,11 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		Collections.sort(sortedMapViewVector, Comparator.comparing(c -> c.getName().toLowerCase()));
 		EntryAccessor entryAccessor = new EntryAccessor();
 		for (final Component mapView : sortedMapViewVector) {
-			final String displayName = mapView.getName();
-			Entry actionEntry = new Entry();
-			MapView concreteMapView = (MapView) mapView;
-			String resolvedTitle = MapDisplayNameResolver.resolveBaseLabel(concreteMapView);
-			if (!concreteMapView.getMap().isSaved() && !concreteMapView.getMap().isReadOnly()) {
-				resolvedTitle += " *";
-			}
-			boolean hasCustomTitle = !displayName.equals(resolvedTitle);
-			String label = displayName + (hasCustomTitle ? " : " + resolvedTitle : "");
-			final MapsMenuAction action = new MapsMenuAction(displayName, label);
-			actionEntry.setName(action.getKey());
-			modeController.addActionIfNotAlreadySet(action);
-			entryAccessor.setAction(actionEntry, action);
-			final MapView currentMapView = (MapView) mapViewManager.getMapViewComponent();
-			if (currentMapView != null) {
-				if (mapView == currentMapView) {
-					action.setSelected(true);
-				}
-			}
+            Entry actionEntry = new Entry();
+            MapsMenuAction action = new MapsMenuAction((MapView) mapView);
+            actionEntry.setName(action.getKey());
+            modeController.addActionIfNotAlreadySet(action);
+            entryAccessor.setAction(actionEntry, action);
 			mapsMenuEntry.addChild(actionEntry);
 		}
 	}

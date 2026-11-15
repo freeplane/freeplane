@@ -72,6 +72,7 @@ import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeBuilder;
@@ -99,6 +100,7 @@ import org.freeplane.features.styles.mindmapmode.NewNodeStyle;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.features.ui.IMapViewManager.MapChangeEventProperty;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.NodeAndMapReference;
 import org.freeplane.features.url.mindmapmode.MFileManager;
@@ -987,7 +989,8 @@ public class MMapController extends MapController {
         mapModel.setSaved(saved);
         if (setTitle) {
             final Controller controller = Controller.getCurrentController();
-            controller.getMapViewManager().setMapTitles();
+            mapModel.fireMapChangeEvent(new MapChangeEvent(
+                    this, mapModel, MapChangeEventProperty.MAP_VIEW_TITLE, null, null, false));
             final AFreeplaneAction saveAction = controller.getModeController().getAction("SaveAction");
             if(saveAction != null)
                 saveAction.setEnabled(UserRole.EDITOR);
@@ -1139,9 +1142,24 @@ public class MMapController extends MapController {
             return;
         }
 
+        final IMapViewManager viewManager = controller.getMapViewManager();
+        final List<Component> views = new ArrayList<>(viewManager.getViews(map));
         if(map.containsExtension(DocuMapAttribute.class)){
+            final MapModel replacement;
+            synchronized (this) {
+                loadedMaps.remove(map);
+                try {
+                    replacement = new MapLoader(getMModeController()).load(url).asDocumentation().getMap();
+                }
+                catch (RuntimeException e) {
+                    addLoadedMap((MMapModel) map);
+                    throw e;
+                }
+            }
+            replaceMapInViews(views, replacement);
             closeWithoutSaving(map);
-            openDocumentationMap(url);
+            if (views.isEmpty())
+                createMapView(replacement);
             return;
         }
 
@@ -1157,14 +1175,25 @@ public class MMapController extends MapController {
             newModel.setSaved(alternativeURL.equals(url));
             fireMapCreated(newModel);
             addLoadedMap(newModel);
+            replaceMapInViews(views, newModel);
             closeWithoutSaving(map);
             newModel.enableAutosave();
-            createMapView(newModel);
+            if (views.isEmpty())
+                createMapView(newModel);
             return;
         }
         finally {
             controller.getViewController().setWaitingCursor(false);
         }
+    }
+
+    private void replaceMapInViews(List<Component> views, MapModel replacement) {
+        if (views.isEmpty())
+            return;
+        replacement.beforeViewCreated();
+        final IMapViewManager viewManager = Controller.getCurrentController().getMapViewManager();
+        for (Component view : views)
+            viewManager.setMap(view, replacement);
     }
 
     @Override

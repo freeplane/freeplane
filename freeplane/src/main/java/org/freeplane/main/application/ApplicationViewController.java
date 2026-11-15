@@ -285,8 +285,8 @@ class ApplicationViewController extends FrameController {
 	 */
 	@Override
 	public void setTitle(final String frameTitle) {
-		mainFrame.setTitle(frameTitle);
-		mapViewWindows.setTitle();
+        if (!frameTitle.equals(mainFrame.getTitle()))
+		    mainFrame.setTitle(frameTitle);
 	}
 
 	@Override

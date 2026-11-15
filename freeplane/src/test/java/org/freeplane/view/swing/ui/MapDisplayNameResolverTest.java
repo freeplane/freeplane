@@ -2,10 +2,19 @@ package org.freeplane.view.swing.ui;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
+import org.freeplane.features.bookmarks.mindmapmode.BookmarksController;
+import org.freeplane.features.bookmarks.mindmapmode.NodeBookmarkDescriptor;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.MapViewTitleTestSupport;
 import org.junit.Test;
 
-public class MapDisplayNameResolverTest {
+public class MapDisplayNameResolverTest extends MapViewTitleTestSupport {
 
     @Test
     public void shouldUseCustomizedTabNameWithoutTruncation() {
@@ -28,7 +37,7 @@ public class MapDisplayNameResolverTest {
                 mapView -> "ignored",
                 (value, maximumLength, continuationMark) -> value + "|" + maximumLength + "|" + continuationMark);
 
-        String label = resolver.resolveAutomaticBaseLabelWithDependencies(null, MapDisplayNameSource.FILE_NAME);
+        String label = resolver.resolveBaseLabelWithDependencies(null);
 
         assertThat(label).isEqualTo("MapName|12| ...");
     }
@@ -73,17 +82,68 @@ public class MapDisplayNameResolverTest {
     }
 
     @Test
-    public void shouldMatchAnyAutomaticLabelAcrossSources() {
-        MapDisplayNameResolver resolver = resolverWith(MapDisplayNameSource.FILE_NAME, 100,
-                new TestOpenedMapNameAccess(null, "File Name"),
-                (mapView, maximumLength, continuationMark) -> "Root Name",
-                mapView -> "Bookmark Name",
-                (value, maximumLength, continuationMark) -> value);
+    public void usesNearestNonFormulaAncestorForViewRootText() {
+        MapModel map = newMap();
+        NodeModel parent = new NodeModel("parent", map);
+        NodeModel root = new NodeModel("leaf", map);
+        map.getRootNode().insert(parent);
+        parent.insert(root);
+        MapView view = newView(map, "filename");
+        when(view.getRoot().getNode()).thenReturn(root);
+        when(resources.getEnumProperty(MapDisplayNameResolver.MAP_DISPLAY_NAME_SOURCE_PROPERTY,
+                MapDisplayNameSource.FILE_NAME)).thenReturn(MapDisplayNameSource.VIEW_ROOT_TEXT);
+        when(text.isFormula(any())).thenAnswer(call -> call.getArgument(0).toString().startsWith("="));
+        when(text.getShortPlainText(any(NodeModel.class), anyInt(), anyString()))
+                .thenAnswer(call -> ((NodeModel) call.getArgument(0)).getText());
+        assertThat(MapDisplayNameResolver.resolveBaseLabel(view)).isEqualTo("leaf");
+        root.setUserObject("=leaf");
+        assertThat(MapDisplayNameResolver.resolveBaseLabel(view)).isEqualTo("parent");
+        parent.setUserObject("=parent");
+        assertThat(MapDisplayNameResolver.resolveBaseLabel(view)).isEqualTo("root");
+        map.getRootNode().setUserObject("=root");
+        assertThat(MapDisplayNameResolver.resolveBaseLabel(view)).isEqualTo("filename");
+        when(mode.getExtension(TextController.class)).thenReturn(null);
+        assertThat(MapDisplayNameResolver.resolveBaseLabel(view)).isEqualTo("filename");
+    }
 
-        assertThat(resolver.matchesAnyAutomaticLabelWithDependencies(null, "File Name")).isTrue();
-        assertThat(resolver.matchesAnyAutomaticLabelWithDependencies(null, "Root Name")).isTrue();
-        assertThat(resolver.matchesAnyAutomaticLabelWithDependencies(null, "Bookmark Name")).isTrue();
-        assertThat(resolver.matchesAnyAutomaticLabelWithDependencies(null, "Other")).isFalse();
+    @Test
+    public void usesNearestAncestorBookmarkForViewRootBookmark() throws Exception {
+        MapModel map = newMap();
+        NodeModel parent = new NodeModel("parent", map);
+        NodeModel root = new NodeModel("leaf", map);
+        map.getRootNode().insert(parent);
+        parent.insert(root);
+        MapView view = newView(map, "filename");
+        when(view.getRoot().getNode()).thenReturn(root);
+        when(resources.getEnumProperty(MapDisplayNameResolver.MAP_DISPLAY_NAME_SOURCE_PROPERTY,
+                MapDisplayNameSource.FILE_NAME)).thenReturn(MapDisplayNameSource.VIEW_ROOT_BOOKMARK);
+        assertThat(MapDisplayNameResolver.resolveBaseLabel(view)).isEqualTo("filename");
+        BookmarksController bookmarks = mock(BookmarksController.class, CALLS_REAL_METHODS);
+        field(bookmarks, "modeController", mode);
+        bookmarks.addBookmark(map.getRootNode(), new NodeBookmarkDescriptor("map bookmark", false));
+        bookmarks.addBookmark(parent, new NodeBookmarkDescriptor("parent bookmark", false));
+        assertThat(MapDisplayNameResolver.resolveBaseLabel(view)).isEqualTo("parent bookmark");
+        bookmarks.removeBookmark(parent);
+        assertThat(MapDisplayNameResolver.resolveBaseLabel(view)).isEqualTo("map bookmark");
+        bookmarks.removeBookmark(map.getRootNode());
+        assertThat(MapDisplayNameResolver.resolveBaseLabel(view)).isEqualTo("filename");
+    }
+
+    @Test
+    public void resolvedLabelAddsOnlyCurrentDirtyMarker() {
+        MapModel map = newMap();
+        MapView view = newView(map, "automatic");
+        for (String name : new String[]{null, "literal *", "日本語 & (2)"}) {
+            setCustomName(view, name);
+            String base = name != null ? name : "automatic";
+            map.setSaved(true);
+            map.setReadOnly(false);
+            assertThat(MapDisplayNameResolver.resolveLabel(view)).isEqualTo(base);
+            map.setSaved(false);
+            assertThat(MapDisplayNameResolver.resolveLabel(view)).isEqualTo(base + " *");
+            map.setReadOnly(true);
+            assertThat(MapDisplayNameResolver.resolveLabel(view)).isEqualTo(base);
+        }
     }
 
     private MapDisplayNameResolver resolverWith(MapDisplayNameSource source,

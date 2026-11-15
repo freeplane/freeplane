@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
+import java.util.function.Supplier;
 
 import javax.swing.JComponent;
 import javax.swing.JViewport;
@@ -63,6 +64,33 @@ class MapScroller {
 		this.anchorContentLocation = null;
 		this.anchor = null;
 	}
+
+    <T> T withPreservedState(Supplier<T> operation) {
+        NodeView savedAnchor = anchor;
+        Point savedAnchorContentLocation = anchorContentLocation == null ? null : new Point(anchorContentLocation);
+        float savedHorizontalPoint = anchorHorizontalPoint;
+        float savedVerticalPoint = anchorVerticalPoint;
+        NodeView savedScrolledNode = scrolledNode;
+        ScrollingDirective savedDirective = scrollingDirective;
+        boolean savedShowsSelected = showsSelectedAfterScroll;
+        boolean savedSlowScroll = slowScroll;
+        int savedExtraWidth = extraWidth;
+        boolean savedScrollsTree = scrollsNodeTreeToVisible;
+        try {
+            return operation.get();
+        } finally {
+            anchor = savedAnchor;
+            anchorContentLocation = savedAnchorContentLocation;
+            anchorHorizontalPoint = savedHorizontalPoint;
+            anchorVerticalPoint = savedVerticalPoint;
+            scrolledNode = savedScrolledNode;
+            scrollingDirective = savedDirective;
+            showsSelectedAfterScroll = savedShowsSelected;
+            slowScroll = savedSlowScroll;
+            extraWidth = savedExtraWidth;
+            scrollsNodeTreeToVisible = savedScrollsTree;
+        }
+    }
 
 	void anchorToNode(final NodeView view, final float horizontalPoint, final float verticalPoint) {
 		if (view != null && view.getMainView() != null) {

@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="__CSP__">
+<!-- SPDX-License-Identifier: GPL-2.0-or-later; see the embedded exporter/viewer notice. -->
+<title>__MAP_TITLE__</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; height: 100dvh; display: flex; flex-direction: column; font: 14px system-ui, sans-serif; color: #213047; background: #f6f8fb; }
+  header { flex: none; display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; padding: 6px 12px; background: white; border-bottom: 1px solid #d8dfe8; }
+  h1 { flex: 1 1 180px; min-width: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; font-weight: 600; }
+  nav { display: flex; flex: 0 1 auto; flex-wrap: wrap; max-width: 100%; gap: 5px; align-items: center; }
+  button, input { height: 32px; font: inherit; border: 1px solid #aab7c8; border-radius: 5px; background: white; padding: 4px 8px; }
+  button { flex: none; cursor: pointer; } button:hover { background: #edf3fc; }
+  button:focus-visible, input:focus-visible { outline: 2px solid #175cce; outline-offset: 2px; }
+  .icon-button { width: 32px; padding: 0; font-size: 18px; }
+  #toggle-all svg { width: 20px; height: 20px; vertical-align: middle; pointer-events: none; }
+  input { flex: 1 1 150px; min-width: 100px; width: 190px; max-width: 100%; }
+  @media (max-width: 850px) { h1 { flex-basis: 140px; } input { width: 170px; } }
+  #status { color: #586779; font-size: 12px; }
+  #canvas { display: block; flex: 1; min-height: 0; width: 100%; touch-action: none; cursor: grab; background: #d6e8e8ff; }
+  #canvas.dragging { cursor: grabbing; }
+  .edge { fill: none; stroke: #a2afc0; stroke-width: 1.5; }
+  .summary-edge { fill: none; stroke: #62788b; stroke-width: 1.8; }
+  .crosslink { fill: none; }
+  .artwork { pointer-events: none; }
+  .node-link { cursor: pointer; }
+  .node-link:focus-visible .link-hitarea { stroke: #175cce; stroke-width: 3; }
+  .node-highlight { fill: #ffcc0030; stroke: #d69000; stroke-width: 3; rx: 7; pointer-events: none; }
+  .toggle { cursor: pointer; outline: none; } .toggle circle { fill: white; stroke: #667c96; stroke-width: 1.5; }
+  .toggle:focus circle { stroke: #175cce; stroke-width: 3; }
+  .toggle text { font: 16px system-ui; text-anchor: middle; dominant-baseline: central; fill: #213047; pointer-events: none; }
+</style>
+<header>
+  <h1 title="__MAP_TITLE__">__MAP_TITLE__</h1>
+  <nav aria-label="Map controls">
+    <button id="fit" title="Fit map" aria-label="Fit map">Fit</button><button id="toggle-all" class="icon-button" title="Collapse all" aria-label="Collapse all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 11 L12 6 L17 11 M7 18 L12 13 L17 18"/></svg></button><button id="zoom-out" class="icon-button" title="Zoom out" aria-label="Zoom out">−</button><button id="zoom-in" class="icon-button" title="Zoom in" aria-label="Zoom in">+</button>
+    <input id="search" type="search" aria-label="Search all nodes" placeholder="Search nodes…">
+    <button id="next" class="icon-button" title="Next match" aria-label="Next match">→</button><span id="status" role="status" aria-live="polite"></span>
+  </nav>
+</header>
+<svg id="canvas" xmlns="http://www.w3.org/2000/svg" aria-label="Interactive mind map"><g id="viewport"><g id="edges"></g><g id="crosslinks"></g><g id="nodes"></g></g></svg>
+<template id="dynamic-svg-notice">__NOTICE__</template>
+<template id="dynamic-svg-license">__LICENSE__</template>
+<script id="manifest" type="application/json">/*__MANIFEST__*/</script>
+<script>
+(() => {
+  'use strict';
+  const data = JSON.parse(document.getElementById('manifest').textContent);
+  validateManifest(data);
+  function validateManifest(data) {
+    const object = (value, fields) => value && !Array.isArray(value) && typeof value === 'object'
+      && Object.keys(value).length === fields.length && fields.every(key => Object.hasOwn(value, key));
+    const fields = (value, names) => { if (!object(value, names.split(' '))) throw new Error('Invalid dynamic SVG schema'); };
+    const string = value => typeof value === 'string';
+    const point = value => { fields(value, 'x y'); if (!Number.isFinite(value.x) || !Number.isFinite(value.y)) throw new Error('Invalid point'); };
+    fields(data, 'rootId nodes links summaries fontFaces');
+    if (!string(data.rootId) || ![data.nodes, data.links, data.summaries, data.fontFaces].every(Array.isArray)) throw new Error('Invalid manifest');
+    const ids = new Map();
+    data.nodes.forEach(n => {
+      fields(n, 'id parentId label searchText width height artwork topOrLeft firstGroup summary alwaysUnfolded collapsed contentVisible linkHref');
+      if (![n.id, n.label, n.searchText, n.artwork].every(string) || !n.id || ids.has(n.id)
+          || !(n.parentId === null || string(n.parentId)) || !(n.linkHref === null || string(n.linkHref))
+          || ![n.topOrLeft, n.firstGroup, n.summary, n.alwaysUnfolded, n.collapsed, n.contentVisible].every(v => typeof v === 'boolean')
+          || ![n.width, n.height].every(v => Number.isFinite(v) && v >= 0)) throw new Error('Invalid node');
+      if (!n.contentVisible && (n.label || n.searchText || n.artwork || n.linkHref !== null || n.width || n.height)) throw new Error('Hidden node contains content');
+      ids.set(n.id, n);
+    });
+    if (!ids.has(data.rootId)) throw new Error('Missing root');
+    data.nodes.forEach(n => { if ((n.parentId === null) !== (n.id === data.rootId) || (n.parentId !== null && !ids.has(n.parentId))) throw new Error('Invalid node parent'); });
+    data.links.forEach(link => {
+      fields(link, 'sourceId targetId resolved geometry');
+      if (!ids.get(link.sourceId)?.contentVisible || !ids.get(link.targetId)?.contentVisible) throw new Error('Invalid connector endpoint');
+      const style = link.resolved, g = link.geometry;
+      fields(style, 'color alpha shape');
+      fields(g, 'zoom sourceAnchor targetAnchor sourceControl targetControl arrowPolygons strokeWidth strokeDash strokeCap strokeJoin');
+      if (!/^#[0-9a-f]{6}$/i.test(style.color) || !Number.isInteger(style.alpha) || style.alpha < 0 || style.alpha > 255
+          || style.shape !== 'CUBIC_CURVE' || g.zoom !== 1 || !Number.isFinite(g.strokeWidth) || g.strokeWidth <= 0
+          || ![0,1,2].includes(g.strokeCap) || ![0,1,2].includes(g.strokeJoin)
+          || !Array.isArray(g.strokeDash) || !g.strokeDash.every(v => Number.isFinite(v) && v >= 0) || !Array.isArray(g.arrowPolygons)) throw new Error('Invalid connector');
+      [g.sourceAnchor, g.targetAnchor, g.sourceControl, g.targetControl].forEach(point);
+      g.arrowPolygons.forEach(a => { fields(a, 'end points'); if (!['source','target'].includes(a.end) || !Array.isArray(a.points) || a.points.length < 3) throw new Error('Invalid arrow'); a.points.forEach(point); });
+    });
+    data.summaries.forEach(s => {
+      fields(s, 'markerId startMarkerId parentId memberIds summaryChildIds');
+      if (![s.markerId, s.startMarkerId, s.parentId].every(id => ids.has(id)) || !ids.get(s.markerId).summary
+          || !ids.get(s.startMarkerId).firstGroup || ![s.memberIds, s.summaryChildIds].every(Array.isArray)
+          || !s.memberIds.length || !s.summaryChildIds.length || ![...s.memberIds,...s.summaryChildIds].every(id => ids.has(id))) throw new Error('Invalid summary');
+    });
+    data.fontFaces.forEach(f => {
+      fields(f, 'family style weight format data');
+      if (!string(f.family) || !['normal','italic'].includes(f.style) || !Number.isInteger(f.weight) || f.weight < 1 || f.weight > 1000
+          || !['truetype','opentype'].includes(f.format) || !string(f.data) || !/^[A-Za-z0-9+/]*={0,2}$/.test(f.data)) throw new Error('Invalid font face');
+    });
+  }
+  const NS = 'http://www.w3.org/2000/svg';
+  const canvas = document.getElementById('canvas'), viewport = document.getElementById('viewport');
+  const nodeLayer = document.getElementById('nodes'), edgeLayer = document.getElementById('edges');
+  const linkLayer = document.getElementById('crosslinks');
+  const status = document.getElementById('status'), searchInput = document.getElementById('search');
+  const nodes = data.nodes.map(n => ({ ...n, children: [], collapsed: n.collapsed && !n.alwaysUnfolded, visible: false, x: 0, y: 0 }));
+  const byId = new Map(nodes.map(n => [n.id, n]));
+  nodes.forEach(n => { if (n.parentId != null) byId.get(n.parentId).children.push(n); });
+  const root = byId.get(data.rootId);
+  if (!root) throw new Error('No root node');
+  const visited = new Set();
+  function validate(n, ancestors = new Set()) {
+    if (ancestors.has(n.id)) throw new Error('Cycle in manifest');
+    visited.add(n.id); const next = new Set(ancestors).add(n.id); n.children.forEach(c => validate(c, next));
+  }
+  validate(root);
+  if (visited.size !== nodes.length) throw new Error('Manifest must be a single rooted tree');
+  function assignSide(n, left = false) { n.left = left; n.children.forEach(c => assignSide(c, n === root ? c.topOrLeft === true : left)); }
+  assignSide(root);
+  const contentNodes = nodes.filter(n => n.contentVisible);
+  const summaries = data.summaries.map(s => ({ ...s, members: s.memberIds.map(id => byId.get(id)), labels: [byId.get(s.markerId)] }));
+  const groupedMarkers = new Set(summaries.map(s => s.markerId));
+  const links = data.links;
+  const isContent = n => n.contentVisible;
+  nodes.forEach(n => {
+    const groups = summaries.filter(s => s.parentId === n.id);
+    const groupedIds = new Set(groups.flatMap(s => [...s.memberIds, s.markerId, s.startMarkerId]));
+    n.items = [];
+    n.children.forEach(c => {
+      const group = groups.find(s => s.memberIds[0] === c.id);
+      if (group) n.items.push(group);
+      else if (!groupedIds.has(c.id) && (isContent(c) || c.children.length)) n.items.push(c);
+    });
+  });
+  const collapsibleNodes = nodes.filter(n => n.items.length && !n.alwaysUnfolded);
+  const toggleAll = document.getElementById('toggle-all'), toggleAllIcon = toggleAll.querySelector('path');
+  let visibleLinks = 0, fontWarning = '';
+  let scale = 1, panX = 30, panY = 30, matches = [], matchIndex = -1, query = '', activeId = null;
+  const el = (name, attrs = {}) => { const e = document.createElementNS(NS, name); Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k,v)); return e; };
+  function artwork(markup, index, width, height) {
+    const doc = new DOMParser().parseFromString(markup, 'image/svg+xml');
+    if (doc.querySelector('parsererror') || doc.documentElement.localName !== 'svg') throw new Error('Invalid SVG artwork');
+    const svg = doc.documentElement;
+    // Artwork is map data, not trusted executable content.
+    const allowed = new Set('svg g defs path rect circle ellipse line polyline polygon text tspan textpath image lineargradient radialgradient stop clippath mask pattern use title desc'.split(' '));
+    svg.querySelectorAll('*').forEach(e => { if (!allowed.has(e.localName.toLowerCase()) || e.namespaceURI !== NS) e.remove(); });
+    const idMap = new Map();
+    [svg, ...svg.querySelectorAll('*')].forEach(e => { if (e.id) idMap.set(e.id, `art-${index}-${e.id}`); });
+    const replaceReferences = value => value.replace(/url\(\s*(['"]?)([^)'"\s]+)\1\s*\)/gi, (match, quote, target) => target.startsWith('#') && idMap.has(target.slice(1)) ? `url(#${idMap.get(target.slice(1))})` : 'none');
+    [svg, ...svg.querySelectorAll('*')].forEach(e => {
+      for (const attr of [...e.attributes]) {
+        if (/^on/i.test(attr.localName) || ['base', 'src', 'srcset'].includes(attr.localName)) { e.removeAttributeNode(attr); continue; }
+        let value = replaceReferences(attr.value);
+        if (attr.localName === 'id') value = idMap.get(value);
+        if (attr.localName === 'href') {
+          if (value.startsWith('#') && idMap.has(value.slice(1))) value = '#' + idMap.get(value.slice(1));
+          else if (e.localName !== 'image' || !value.startsWith('data:image/')) { e.removeAttributeNode(attr); continue; }
+        }
+        if (attr.localName === 'aria-labelledby' || attr.localName === 'aria-describedby') value = value.split(/\s+/).map(id => idMap.get(id) || id).join(' ');
+        e.setAttributeNS(attr.namespaceURI, attr.name, value);
+      }
+    });
+    if (!svg.hasAttribute('viewBox')) svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    svg.setAttribute('width', width); svg.setAttribute('height', height); svg.setAttribute('x', 0); svg.setAttribute('y', 0);
+    svg.setAttribute('class', 'artwork'); svg.setAttribute('aria-hidden', 'true');
+    return document.importNode(svg, true);
+  }
+  nodes.forEach((n,index) => {
+    if (!isContent(n) && !n.items.length) return;
+    n.group = el('g', { 'data-node-id': n.id, role: 'group', 'aria-label': n.label });
+    n.highlight = el('rect', { class: 'node-highlight', x: -5, y: -5, width: n.width + 10, height: n.height + 10, visibility: 'hidden' });
+    n.group.append(n.highlight);
+    const nodeArtwork = isContent(n) ? artwork(n.artwork, index, n.width, n.height) : el('g');
+    const validHref = n.linkHref;
+    if (validHref) {
+      const anchor = el('a', { class: 'node-link', href: validHref, target: '_blank', rel: 'noopener noreferrer', 'aria-label': `Open link: ${n.label}`, tabindex: 0 });
+      anchor.addEventListener('click', event => {
+        if (!validHref.startsWith('#')) return;
+        let id = validHref.slice(1);
+        try { id = decodeURIComponent(id); } catch {}
+        const target = byId.get(id);
+        if (target?.contentVisible) { event.preventDefault(); reveal(target); }
+      });
+      const title = el('title'); title.textContent = validHref;
+      anchor.append(title, nodeArtwork, el('rect', { class: 'link-hitarea', x: 0, y: 0, width: n.width, height: n.height, fill: 'transparent', 'pointer-events': 'all' }));
+      n.group.append(anchor);
+    } else n.group.append(nodeArtwork);
+    if (n.items.length && !n.alwaysUnfolded) {
+      n.button = el('g', { class: 'toggle', role: 'button', tabindex: 0, transform: `translate(${n.left ? -15 : n.width + 15},${n.height / 2})` });
+      n.button.append(el('circle', { r: 10 })); n.sign = el('text'); n.button.append(n.sign);
+      n.button.addEventListener('click', () => toggle(n.id));
+      n.button.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(n.id); } });
+      n.group.append(n.button);
+    }
+    nodeLayer.append(n.group);
+  });
+  function transform() { viewport.setAttribute('transform', `translate(${panX},${panY}) scale(${scale})`); }
+  function updateStatus() {
+    const expand = collapsibleNodes.some(n => n.collapsed), label = expand ? 'Expand all' : 'Collapse all';
+    toggleAll.setAttribute('title', label); toggleAll.setAttribute('aria-label', label);
+    toggleAllIcon.setAttribute('d', expand ? 'M7 6 L12 11 L17 6 M7 13 L12 18 L17 13' : 'M7 11 L12 6 L17 11 M7 18 L12 13 L17 18');
+    const visibleNodes = contentNodes.filter(n => n.visible).length;
+    const count = (visible, total) => visible === total ? total : `${visible}/${total}`;
+    status.textContent = `${count(visibleNodes, contentNodes.length)} nodes · ${count(visibleLinks, links.length)} links` + (query ? ` · ${matches.length ? `${matchIndex + 1}/${matches.length} matches` : 'No matches'}` : '') + fontWarning;
+  }
+  function layout() {
+    nodes.forEach(n => { n.visible = false; });
+    const span = items => items.reduce((sum,c) => sum + c.span, 0) + 24 * Math.max(0, items.length - 1);
+    const leftOf = item => item.members ? item.members[0].left : item.left;
+    function measure(n) {
+      n.visible = true;
+      if (n.collapsed || !n.items.length) n.span = n.height;
+      else {
+        n.items.forEach(item => {
+          if (item.members) {
+            [...item.members, ...item.labels].forEach(measure);
+            item.span = Math.max(span(item.members), span(item.labels));
+          } else measure(item);
+        });
+        n.span = n === root ? Math.max(n.height, span(n.items.filter(leftOf)), span(n.items.filter(c => !leftOf(c)))) : Math.max(n.height, span(n.items));
+      }
+      return n.span;
+    }
+    function subtree(n) { return n.visible ? [n, ...n.children.flatMap(subtree)] : n.children.flatMap(subtree); }
+    function positionStack(children, xFor, centerY) {
+      let top = centerY - span(children) / 2;
+      children.forEach(c => { position(c, xFor(c), top + c.span / 2); top += c.span + 24; });
+    }
+    function position(n, x, centerY) {
+      n.x = x; n.y = centerY - n.height / 2;
+      if (n.collapsed) return;
+      const sides = n === root ? [n.items.filter(leftOf), n.items.filter(c => !leftOf(c))] : [n.items];
+      sides.forEach(items => {
+        let top = centerY - span(items) / 2;
+        items.forEach(item => {
+          const center = top + item.span / 2;
+          const childX = c => c.left ? x - 85 - c.width : x + n.width + 85;
+          if (item.members) {
+            positionStack(item.members, childX, center);
+            const members = item.members.flatMap(subtree), left = item.members[0].left;
+            const outer = left ? Math.min(...members.map(c => c.x)) : Math.max(...members.map(c => c.x + c.width));
+            item.bracketX = outer + (left ? -30 : 30);
+            item.minY = Math.min(...members.map(c => c.y));
+            item.maxY = Math.max(...members.map(c => c.y + c.height));
+            item.centerY = center;
+            positionStack(item.labels, c => left ? outer - 85 - c.width : outer + 85, center);
+          } else position(item, childX(item), center);
+          top += item.span + 24;
+        });
+      });
+    }
+    measure(root); position(root, 0, 0); edgeLayer.replaceChildren(); linkLayer.replaceChildren();
+    nodes.filter(n => n.group).forEach(n => {
+      n.group.style.display = n.visible ? '' : 'none';
+      if (!n.visible) return;
+      n.group.setAttribute('transform', `translate(${n.x},${n.y})`);
+      n.highlight.setAttribute('visibility', n.id === activeId ? 'visible' : 'hidden');
+      if (n.button) { n.sign.textContent = n.collapsed ? '+' : '−'; n.button.setAttribute('aria-expanded', !n.collapsed); n.button.setAttribute('aria-label', `${n.collapsed ? 'Expand' : 'Collapse'} ${n.label}`); }
+      const p = byId.get(n.parentId);
+      if (isContent(n) && p && p.visible && (isContent(p) || p.summary) && !groupedMarkers.has(n.id)) {
+        const x1 = n.left ? p.x - (p.left ? 26 : 0) : p.x + p.width + 26, y1 = p.y + p.height / 2, x2 = n.left ? n.x + n.width : n.x, y2 = n.y + n.height / 2, mid = (x1 + x2) / 2;
+        edgeLayer.append(el('path', { class: 'edge', 'data-target-id': n.id, d: `M${x1},${y1} C${mid},${y1} ${mid},${y2} ${x2},${y2}` }));
+      }
+    });
+    summaries.forEach(s => {
+      if (!s.members.some(n => n.visible)) return;
+      const tick = s.members[0].left ? 12 : -12, x = s.bracketX, mid = (s.minY + s.maxY) / 2;
+      edgeLayer.append(el('path', { class: 'summary-edge', 'data-summary-id': s.markerId, d: `M${x + tick},${s.minY} H${x} V${s.maxY} H${x + tick}` }));
+      s.labels.filter(n => n.visible).forEach(n => {
+        const endX = n.left ? n.x + n.width : n.x, endY = n.y + n.height / 2;
+        edgeLayer.append(el('path', { class: 'summary-edge', d: `M${x},${mid} L${endX},${endY}` }));
+      });
+    });
+    visibleLinks = 0;
+    links.forEach(link => {
+      const from = byId.get(link.sourceId), to = byId.get(link.targetId);
+      if (!from?.visible || !to?.visible) return;
+      const style = link.resolved, geometry = link.geometry;
+      if (!style || !geometry || style.shape !== 'CUBIC_CURVE' || geometry.zoom !== 1) throw new Error('Unsupported native connector capture');
+      const x1 = from.x + geometry.sourceAnchor.x, y1 = from.y + geometry.sourceAnchor.y;
+      const x2 = to.x + geometry.targetAnchor.x, y2 = to.y + geometry.targetAnchor.y;
+      const attrs = { class: 'crosslink', 'data-source-id': from.id, 'data-target-id': to.id,
+        stroke: style.color, 'stroke-width': geometry.strokeWidth, 'stroke-opacity': style.alpha / 255,
+        'stroke-dasharray': geometry.strokeDash.length ? geometry.strokeDash.join(' ') : 'none',
+        'stroke-linecap': ['butt', 'round', 'square'][geometry.strokeCap], 'stroke-linejoin': ['miter', 'round', 'bevel'][geometry.strokeJoin],
+        d: `M${x1},${y1} C${x1 + geometry.sourceControl.x},${y1 + geometry.sourceControl.y} ${x2 + geometry.targetControl.x},${y2 + geometry.targetControl.y} ${x2},${y2}` };
+      const path = el('path', attrs);
+      const title = el('title'); title.textContent = `${from.label} → ${to.label}`; path.append(title); linkLayer.append(path);
+      // Native arrow polygons share the captured endpoint tangent. Translating the
+      // anchor and its control vector together keeps that tangent unchanged.
+      geometry.arrowPolygons.forEach(arrow => {
+        const x = arrow.end === 'source' ? x1 : x2, y = arrow.end === 'source' ? y1 : y2;
+        linkLayer.append(el('polygon', { 'data-arrow-end': arrow.end,
+          points: arrow.points.map(p => `${x + p.x},${y + p.y}`).join(' '),
+          fill: style.color, 'fill-opacity': style.alpha / 255, stroke: style.color, 'stroke-opacity': style.alpha / 255,
+          'stroke-width': geometry.strokeWidth, 'stroke-linecap': attrs['stroke-linecap'], 'stroke-linejoin': attrs['stroke-linejoin'],
+          'stroke-dasharray': attrs['stroke-dasharray'] }));
+      });
+      visibleLinks++;
+    });
+    updateStatus();
+  }
+  function toggle(id) { const n = byId.get(id); if (n && n.items.length && !n.alwaysUnfolded) { n.collapsed = !n.collapsed; layout(); } }
+  function size() { return canvas.getBoundingClientRect(); }
+  function fit() {
+    const box = size(), bounds = viewport.getBBox(), minX = bounds.x - 12, minY = bounds.y - 12, width = bounds.width + 24, height = bounds.height + 24;
+    scale = Math.min(2, (box.width - 50) / width, (box.height - 50) / height); scale = Math.max(.02, scale);
+    panX = (box.width - width * scale) / 2 - minX * scale; panY = (box.height - height * scale) / 2 - minY * scale; transform();
+  }
+  function zoom(factor, x = size().width / 2, y = size().height / 2) { const next = Math.max(.02, Math.min(8, scale * factor)); panX = x - (x - panX) * next / scale; panY = y - (y - panY) * next / scale; scale = next; transform(); }
+  function showMatch() { if (!matches.length) { activeId = null; layout(); return; } reveal(matches[matchIndex]); }
+  function reveal(n) { activeId = n.id;
+    let p = byId.get(n.parentId); while (p) { p.collapsed = false; p = byId.get(p.parentId); } layout();
+    const box = size(); panX = box.width / 2 - (n.x + n.width / 2) * scale; panY = box.height / 2 - (n.y + n.height / 2) * scale; transform(); }
+  function search(value) { query = String(value).trim().toLocaleLowerCase(); searchInput.value = value; matches = query ? contentNodes.filter(n => n.searchText.toLocaleLowerCase().includes(query)) : []; matchIndex = matches.length ? 0 : -1; showMatch(); return matches.map(n => n.id); }
+  function nextMatch() { if (matches.length) { matchIndex = (matchIndex + 1) % matches.length; showMatch(); } }
+  toggleAll.addEventListener('click', () => {
+    const expand = collapsibleNodes.some(n => n.collapsed);
+    collapsibleNodes.forEach(n => { n.collapsed = !expand && n !== root; });
+    layout(); fit();
+  });
+  document.getElementById('fit').addEventListener('click', fit);
+  document.getElementById('zoom-in').addEventListener('click', () => zoom(1.25)); document.getElementById('zoom-out').addEventListener('click', () => zoom(.8));
+  searchInput.addEventListener('input', () => search(searchInput.value)); searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); nextMatch(); } }); document.getElementById('next').addEventListener('click', nextMatch);
+  canvas.addEventListener('wheel', e => { e.preventDefault(); const box = size(); zoom(Math.exp(-e.deltaY * .001), e.clientX - box.left, e.clientY - box.top); }, { passive: false });
+  let drag = null;
+  canvas.addEventListener('pointerdown', e => { if (e.button !== 0 || e.target.closest('.toggle, .node-link, a')) return; drag = { x: e.clientX, y: e.clientY, panX, panY }; canvas.setPointerCapture(e.pointerId); canvas.classList.add('dragging'); });
+  canvas.addEventListener('pointermove', e => { if (drag) { panX = drag.panX + e.clientX - drag.x; panY = drag.panY + e.clientY - drag.y; transform(); } });
+  const endDrag = () => { drag = null; canvas.classList.remove('dragging'); }; canvas.addEventListener('pointerup', endDrag); canvas.addEventListener('pointercancel', endDrag);
+
+  async function initialize() {
+    await Promise.all(data.fontFaces.map(async face => {
+      try {
+        const mime = face.format === 'opentype' ? 'font/otf' : 'font/ttf';
+        const font = new FontFace(JSON.stringify(face.family), `url("data:${mime};base64,${face.data}")`, {style: face.style, weight: String(face.weight)});
+        await font.load(); document.fonts.add(font);
+      } catch {
+        fontWarning = ' · Font embedding incomplete; recipient-machine fonts are in use';
+      }
+    }));
+    await document.fonts.ready;
+    layout(); fit();
+  }
+  initialize().catch(error => { status.textContent = 'Dynamic SVG viewer failed: ' + error.message; });
+})();
+</script>
+</html>

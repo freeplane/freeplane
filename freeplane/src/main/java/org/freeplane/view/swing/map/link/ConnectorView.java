@@ -37,6 +37,8 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.freeplane.core.ui.components.UITools;
@@ -78,6 +80,17 @@ public class ConnectorView extends AConnectorView{
 	private int handleRadius;
 	/* Note, that source and target are nodeviews and not nodemodels!. */
 	public ConnectorView(final ConnectorModel connectorModel, final NodeView source, final NodeView target, Color bgColor) {
+        this(connectorModel, source, target, bgColor, paintsConnectorLine(connectorModel, source, target));
+    }
+
+    private static boolean paintsConnectorLine(final ConnectorModel connectorModel, final NodeView source, final NodeView target) {
+        final MapView map = (source == null ? target : source).getMap();
+        return map.showsConnectorLines((source != null && source.isSelected()) || (target != null && target.isSelected())
+                || selectedConnector(map) == connectorModel);
+    }
+
+    public ConnectorView(final ConnectorModel connectorModel, final NodeView source, final NodeView target,
+            Color bgColor, boolean paintsConnectorLine) {
 		super(connectorModel, source, target);
 		linkController = getLinkController();
 		connectorColor = linkController.getColor(connectorModel);
@@ -85,9 +98,7 @@ public class ConnectorView extends AConnectorView{
 		final int alpha = linkController.getOpacity(connectorModel);
 		color =  ColorUtils.alphaToColor(alpha, connectorColor);
 
-		final MapView map = getMap();
-		paintsConnectorLine = map.showsConnectorLines((source != null && source.isSelected()) || (target != null && target.isSelected())
-				|| selectedConnector(map) == connectorModel);
+        this.paintsConnectorLine = paintsConnectorLine;
 		final int width = paintsConnectorLine ? linkController.getWidth(connectorModel) : 1;
 
 		if (! paintsConnectorLine || !isSourceVisible() || !isTargetVisible()) {
@@ -160,6 +171,28 @@ public class ConnectorView extends AConnectorView{
 	Shape getArrowLinkCurve() {
 		return arrowLinkCurve;
 	}
+
+    /** Returns a detached copy of geometry produced by native painting. */
+    public ExportGeometry getExportGeometry() {
+        if (!(arrowLinkCurve instanceof CubicCurve2D))
+            throw new IllegalStateException("Native connector painting did not produce a cubic curve");
+        return new ExportGeometry((CubicCurve2D) arrowLinkCurve, arrows, stroke);
+    }
+
+    public static final class ExportGeometry {
+        public final CubicCurve2D curve;
+        public final List<Polygon> arrows;
+        public final BasicStroke stroke;
+
+        private ExportGeometry(CubicCurve2D curve, List<Polygon> arrows, BasicStroke stroke) {
+            this.curve = (CubicCurve2D) curve.clone();
+            List<Polygon> copies = new ArrayList<>();
+            for (Polygon arrow : arrows)
+                copies.add(new Polygon(arrow.xpoints, arrow.ypoints, arrow.npoints));
+            this.arrows = Collections.unmodifiableList(copies);
+            this.stroke = stroke;
+        }
+    }
 
 	NodeLinkModel getArrowLinkModel() {
 		return viewedConnector;

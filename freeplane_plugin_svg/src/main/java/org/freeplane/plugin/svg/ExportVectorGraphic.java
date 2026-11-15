@@ -26,6 +26,8 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.text.AttributedCharacterIterator;
+import java.awt.font.TextAttribute;
+import java.util.function.BiConsumer;
 
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGeneratorContext;
@@ -43,48 +45,89 @@ import org.w3c.dom.Document;
  */
 abstract class ExportVectorGraphic implements IExportEngine {
 
-	private static class SVGExportGraphics2D extends SVGGraphics2D {
-		private SVGExportGraphics2D(SVGGraphics2D g) {
-			super(g);
-		}
+    protected static final String SVG_EMBED_FONTS = "org.freeplane.plugin.svg.export.svg.embed_fonts";
 
-		private SVGExportGraphics2D(SVGGeneratorContext generatorCtx, boolean textAsShapes) {
-			super(generatorCtx, textAsShapes);
-		}
-		
-		@Override
-		public Graphics create() {
-			return new SVGExportGraphics2D(this);
-		}
+    private static class SVGExportGraphics2D extends SVGGraphics2D {
+        private final BiConsumer<Font, String> textObserver;
+        private boolean suppressObserver;
 
-		@Override
-		public void drawString(String s, float x, float y) {
-		    if(getRenderingHint(GraphicsHints.FORCE_TEXT_TO_SHAPE) == Boolean.TRUE) {
-		        boolean oldTextAsShapes = textAsShapes;
-		        textAsShapes = true;
-		        super.drawString(s, x, y);
-		        textAsShapes = oldTextAsShapes;
-		    }
-		    else
-		        super.drawString(s, x, y);
-		}
+        private SVGExportGraphics2D(SVGExportGraphics2D graphics) {
+            super(graphics);
+            textObserver = graphics.textObserver;
+            suppressObserver = graphics.suppressObserver;
+        }
 
-		@Override
-		public void drawString(AttributedCharacterIterator ati, float x, float y) {
-		    if(getRenderingHint(GraphicsHints.FORCE_TEXT_TO_SHAPE) == Boolean.TRUE) {
-		        boolean oldTextAsShapes = textAsShapes;
-		        textAsShapes = true;
-		        super.drawString(ati, x, y);
-		        textAsShapes = oldTextAsShapes;
-		    }
-		    else
-		        super.drawString(ati, x, y);
-		}
-	}
+        private SVGExportGraphics2D(SVGGeneratorContext context, BiConsumer<Font, String> textObserver) {
+            super(context, false);
+            this.textObserver = textObserver;
+        }
+
+        @Override
+        public Graphics create() {
+            return new SVGExportGraphics2D(this);
+        }
+
+        private boolean observesText() {
+            return textObserver != null && !suppressObserver && !textAsShapes
+                    && getRenderingHint(GraphicsHints.FORCE_TEXT_TO_SHAPE) != Boolean.TRUE;
+        }
+
+        @Override
+        public void drawString(String text, float x, float y) {
+            if (observesText() && !text.isEmpty())
+                textObserver.accept(getFont(), text);
+            withTextMode(() -> super.drawString(text, x, y));
+        }
+
+        @Override
+        public void drawString(AttributedCharacterIterator text, float x, float y) {
+            if (observesText()) {
+                AttributedCharacterIterator runs = (AttributedCharacterIterator) text.clone();
+                for (int start = runs.getBeginIndex(); start < runs.getEndIndex();) {
+                    runs.setIndex(start);
+                    int end = runs.getRunLimit();
+                    Font font = (Font) runs.getAttribute(TextAttribute.FONT);
+                    if (font == null)
+                        font = getFont().deriveFont(runs.getAttributes());
+                    StringBuilder run = new StringBuilder();
+                    for (int index = start; index < end; index++)
+                        run.append(runs.setIndex(index));
+                    textObserver.accept(font, run.toString());
+                    start = end;
+                }
+            }
+            withTextMode(() -> super.drawString(text, x, y));
+        }
+
+        private void withTextMode(Runnable paint) {
+            boolean savedTextAsShapes = textAsShapes;
+            boolean savedSuppression = suppressObserver;
+            try {
+                suppressObserver = true;
+                if (getRenderingHint(GraphicsHints.FORCE_TEXT_TO_SHAPE) == Boolean.TRUE)
+                    textAsShapes = true;
+                paint.run();
+            } finally {
+                textAsShapes = savedTextAsShapes;
+                suppressObserver = savedSuppression;
+            }
+        }
+    }
 
 	/**
 	 */
 	protected SVGGraphics2D createSVGGraphics2D(final MapView view) {
+        final SVGGraphics2D graphics = createSVGGraphics2D(new Dimension(), null);
+        view.preparePrinting();
+        final Rectangle innerBounds = view.getInnerBounds();
+        graphics.setSVGCanvasSize(new Dimension(innerBounds.width, innerBounds.height));
+        graphics.translate(-innerBounds.x, -innerBounds.y);
+        view.print(graphics);
+        view.endPrinting();
+        return graphics;
+    }
+
+    protected SVGGraphics2D createSVGGraphics2D(Dimension size, BiConsumer<Font, String> textObserver) {
 	    final DOMImplementation impl = GenericDOMImplementation.getDOMImplementation();
 	    final String namespaceURI = SVGConstants.SVG_NAMESPACE_URI;
 	    final Document domFactory = impl.createDocument(namespaceURI, "svg", null);
@@ -94,16 +137,11 @@ abstract class ExportVectorGraphic implements IExportEngine {
 	    ctx.setGraphicContextDefaults(defaults);
 	    ctx.setExtensionHandler(new GradientExtensionHandler());
 	    ctx.setPrecision(12);
-	    final SVGGraphics2D g2d = new SVGExportGraphics2D(ctx, false);
+	    final SVGGraphics2D g2d = new SVGExportGraphics2D(ctx, textObserver);
 
 	    g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT);
 	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_DEFAULT);
-	    view.preparePrinting();
-	    final Rectangle innerBounds = view.getInnerBounds();
-	    g2d.setSVGCanvasSize(new Dimension(innerBounds.width, innerBounds.height));
-	    g2d.translate(-innerBounds.x, -innerBounds.y);
-	    view.print(g2d);
-	    view.endPrinting();
+        g2d.setSVGCanvasSize(size);
 	    return g2d;
 	}
 

@@ -125,7 +125,6 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	            + " locations ...");
 	    loadingHintMap.setRoot(emptyRoot);
 	    mapViewManager.setMap(mapView, loadingHintMap);
-	    Controller.getCurrentController().getMapViewManager().setMapTitles();
 	    Controller.getCurrentController().getViewController().setWaitingCursor(true);
 	    FilterController.getCurrentFilterController().mapRootNodeChanged(loadingHintMap);
         CodeMap projectMap = newCodeMap(codeExplorerConfiguration.canBeSaved());
@@ -188,7 +187,6 @@ public class CodeMapController extends MapController implements CodeExplorer{
                 if(codeExplorerConfiguration != null)
                     projectMap.updateAnnotations(codeExplorerConfiguration.getCodeAttributeMatcher());
                 FilterController.getCurrentFilterController().mapRootNodeChanged(viewedMap);
-                Controller.getCurrentController().getMapViewManager().setMapTitles();
                 EventQueue.invokeLater(() -> Controller.getCurrentController().getViewController().setWaitingCursor(false));
             });
 	    });
