@@ -7,6 +7,7 @@ import java.util.Map;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
@@ -36,9 +37,19 @@ public class TreeTableEditing {
 	private static boolean completesCells;
 
 	public static void installListeners(final MapController mapController) {
+		if (mapController instanceof MMapController)
+			((MMapController) mapController).addNodeOperationGuard(new TreeTableNodeGuard());
 		mapController.addNodeChangeListener(new TreeTableColumnRenaming());
 		mapController.addMapChangeListener(new TreeTableColumnSplitting());
 		mapController.addMapLifeCycleListener(new TreeTableCellMigrationOnLoad());
+	}
+
+	static void warnAboutDuplicateColumns(final NodeModel header) {
+		if (header.getMap().isUndoActionRunning() || !TreeTableHeader.isBelowHeaderRoot(header))
+			return;
+		final String key = TreeTableHeader.duplicateColumnKeyIn(header);
+		if (key != null)
+			UITools.informationMessage(TextUtils.format("treetable.duplicate_column_notice", TreeTableHeader.nameOfKey(key)));
 	}
 
 	public static void selectCellContent(final NodeModel row, final String columnKey) {

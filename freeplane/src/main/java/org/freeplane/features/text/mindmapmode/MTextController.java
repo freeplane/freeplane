@@ -952,6 +952,14 @@ public class MTextController extends TextController {
 
         private void ok(NodeModel nodeModel, final String text) {
         	String processedText = makePlainIfNoFormattingFound(text);
+        	final MapController mapController = controller.getModeController().getMapController();
+        	if (mapController instanceof MMapController) {
+        		final String refusal = ((MMapController) mapController).refusalOfTextChange(nodeModel, processedText);
+        		if (refusal != null) {
+        			UITools.errorMessage(refusal);
+        			return;
+        		}
+        	}
         	preserveRootNodeLocationOnScreen();
         	setGuessedNodeObject(nodeModel, processedText);
         }

@@ -39,8 +39,10 @@ class TreeTableColumnSplitting implements IMapChangeListener {
 			final NodeModel column = columns.get(index);
 			TreeTableEditing.renameColumnValues(column, oldKeys.get(index), TreeTableHeader.keyOf(column));
 		}
-		if (!columns.isEmpty())
+		if (!columns.isEmpty()) {
 			TreeTableEditing.completeCells(event.child);
+			TreeTableEditing.warnAboutDuplicateColumns(event.child);
+		}
 		TreeTableEditing.completeCells(event.oldParent);
 	}
 
@@ -51,6 +53,7 @@ class TreeTableColumnSplitting implements IMapChangeListener {
 		if (parent.getChildCount() == 1)
 			TreeTableEditing.inheritColumnValues(parent);
 		TreeTableEditing.completeCells(child);
+		TreeTableEditing.warnAboutDuplicateColumns(child);
 	}
 
 	@Override

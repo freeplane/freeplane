@@ -123,6 +123,8 @@ public class MMapController extends MapController {
     private static final OperationErrorHandler DEFAULT_OPERATION_ERROR_HANDLER =
             (description, nodes) -> UITools.errorMessage(description);
 
+    private final List<INodeOperationGuard> nodeOperationGuards = new ArrayList<INodeOperationGuard>();
+
     public MMapController(ModeController modeController) {
         super(modeController);
         createActions(modeController);
@@ -406,11 +408,38 @@ public class MMapController extends MapController {
         modeController.addAction(new OpenSelectionAsNewViewRootAction());
     }
 
+    public void addNodeOperationGuard(final INodeOperationGuard guard) {
+        nodeOperationGuards.add(guard);
+    }
+
+    public String refusalOfTextChange(final NodeModel node, final String newText) {
+        for (final INodeOperationGuard guard : nodeOperationGuards) {
+            final String refusal = guard.refusalOfTextChange(node, newText);
+            if (refusal != null)
+                return refusal;
+        }
+        return null;
+    }
+
+    private String refusalOfDeletion(final Collection<NodeModel> nodes) {
+        for (final INodeOperationGuard guard : nodeOperationGuards) {
+            final String refusal = guard.refusalOfDeletion(nodes);
+            if (refusal != null)
+                return refusal;
+        }
+        return null;
+    }
+
     public void deleteNode(NodeModel node) {
         deleteNodes(Arrays.asList(node));
     }
 
     public void deleteNodes(final List<NodeModel> nodes) {
+        final String refusal = refusalOfDeletion(nodes);
+        if (refusal != null) {
+            UITools.errorMessage(refusal);
+            return;
+        }
         final List<NodeModel> deletedNodesWithSummaryGroupIndicators = new SummaryGroupEdgeListAdder(nodes).addSummaryEdgeNodes();
         for(NodeModel node : deletedNodesWithSummaryGroupIndicators){
             deleteSingleNodeWithClones(node);

@@ -1,6 +1,8 @@
 package org.freeplane.features.treetable;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -93,6 +95,12 @@ public class TreeTableHeader {
 		return parentKey.isEmpty() ? segment : parentKey + PATH_SEPARATOR + segment;
 	}
 
+	public static String nameOfKey(final String key) {
+		final int separatorIndex = key.lastIndexOf(PATH_SEPARATOR);
+		final String segment = separatorIndex < 0 ? key : key.substring(separatorIndex + PATH_SEPARATOR.length());
+		return segment.replace("\\" + PATH_SEPARATOR_CHARACTER, PATH_SEPARATOR_CHARACTER).replace("\\\\", "\\");
+	}
+
 	public static String segmentOf(final NodeModel columnNode, final Object text) {
 		final String name = keyOfText(text);
 		return name.isEmpty() ? UNNAMED_COLUMN_KEY_PREFIX + columnNode.createID() : escapedName(name);
@@ -109,6 +117,74 @@ public class TreeTableHeader {
 
 	public static String keyOfText(final Object text) {
 		return text == null ? "" : HtmlUtils.htmlToPlain(text.toString()).trim();
+	}
+
+	public static String collisionAfterRenaming(final NodeModel node, final String newText) {
+		if (!isBelowHeaderRoot(node))
+			return null;
+		final List<NodeModel> concerned = node.hasChildren() ? columnNodesOf(node) : Collections.singletonList(node);
+		final Set<String> keys = new HashSet<String>();
+		for (final NodeModel column : columnNodesOf(headerRootAbove(node))) {
+			if (!concerned.contains(column))
+				keys.add(keyOf(column));
+		}
+		for (final NodeModel column : concerned) {
+			final String key = keyOf(column, node, newText);
+			if (!keys.add(key))
+				return key;
+		}
+		return null;
+	}
+
+	public static String collisionAfterDeleting(final Collection<NodeModel> deletedNodes) {
+		for (final NodeModel deleted : deletedNodes) {
+			final NodeModel parent = deleted.getParentNode();
+			if (parent == null || !isBelowHeaderRoot(parent) || !isEveryChildDeleted(parent, deletedNodes))
+				continue;
+			final String key = keyOf(parent);
+			for (final NodeModel column : columnNodesOf(headerRootAbove(parent))) {
+				if (!isDeleted(column, deletedNodes) && keyOf(column).equals(key))
+					return key;
+			}
+		}
+		return null;
+	}
+
+	private static boolean isEveryChildDeleted(final NodeModel parent, final Collection<NodeModel> deletedNodes) {
+		for (final NodeModel child : parent.getChildren()) {
+			if (!deletedNodes.contains(child))
+				return false;
+		}
+		return true;
+	}
+
+	private static boolean isDeleted(final NodeModel node, final Collection<NodeModel> deletedNodes) {
+		for (NodeModel ancestor = node; ancestor != null; ancestor = ancestor.getParentNode()) {
+			if (deletedNodes.contains(ancestor))
+				return true;
+		}
+		return false;
+	}
+
+	public static String duplicateColumnKeyIn(final NodeModel node) {
+		final NodeModel header = headerRootAbove(node);
+		if (header == null)
+			return null;
+		final Set<String> keys = new HashSet<String>();
+		for (final NodeModel column : columnNodesOf(header)) {
+			if (!isDescendantOrSelf(column, node))
+				keys.add(keyOf(column));
+		}
+		for (final NodeModel column : node.hasChildren() ? columnNodesOf(node) : Collections.singletonList(node)) {
+			final String key = keyOf(column);
+			if (!keys.add(key))
+				return key;
+		}
+		return null;
+	}
+
+	private static boolean isDescendantOrSelf(final NodeModel node, final NodeModel ancestor) {
+		return node == ancestor || node.isDescendantOf(ancestor);
 	}
 
 	public static boolean isKeyUsedByAnotherColumn(final NodeModel columnNode, final String key) {
