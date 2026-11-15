@@ -229,4 +229,23 @@ public class TreeTableCellsTest {
 		assertThat(TreeTableNodes.rowsOf(table)).containsExactly(row, namedLikeColumn, twin);
 		assertThat(TreeTableCells.cellOf(twin, "Prix")).isNull();
 	}
+
+	@Test
+	public void tellsWhetherCellHoldsContent() {
+		final NodeModel withText = cellOf(row, "Prix");
+		childOf(withText, "12");
+		final NodeModel blank = cellOf(row, "Delai");
+		childOf(blank, "");
+		final NodeModel withoutChildren = cellOf(row, "Vide");
+		final NodeModel htmlOnly = cellOf(row, "Html");
+		childOf(htmlOnly, "<html><body><p></p></body></html>");
+		final NodeModel nested = cellOf(row, "Arbre");
+		childOf(childOf(nested, ""), "a");
+
+		assertThat(TreeTableCells.hasContent(withText)).isTrue();
+		assertThat(TreeTableCells.hasContent(blank)).isFalse();
+		assertThat(TreeTableCells.hasContent(withoutChildren)).isFalse();
+		assertThat(TreeTableCells.hasContent(htmlOnly)).isFalse();
+		assertThat(TreeTableCells.hasContent(nested)).isTrue();
+	}
 }

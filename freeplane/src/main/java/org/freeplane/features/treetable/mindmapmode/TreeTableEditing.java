@@ -107,7 +107,22 @@ public class TreeTableEditing {
 			return;
 		final String parentKey = TreeTableHeader.keyOf(formerParent);
 		for (final NodeModel row : TreeTableNodes.rowsOf(TreeTableNodes.treeTableRootOf(formerParent)))
+			returnCell(row, returnedKey, parentKey);
+	}
+
+	private static void returnCell(final NodeModel row, final String returnedKey, final String parentKey) {
+		final NodeModel returned = TreeTableCells.cellOf(row, returnedKey);
+		final NodeModel former = TreeTableCells.cellOf(row, parentKey);
+		if (returned == null || former == null) {
 			renameCell(row, returnedKey, parentKey);
+			return;
+		}
+		if (TreeTableCells.hasContent(returned)) {
+			MTextController.getController().setNodeText(returned, parentKey);
+			mapController().deleteNode(former);
+		}
+		else
+			mapController().deleteNode(returned);
 	}
 
 	public static void addColumnRightOf(final NodeModel columnNode) {

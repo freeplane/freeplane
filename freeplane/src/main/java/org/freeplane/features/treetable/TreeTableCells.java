@@ -111,6 +111,10 @@ public class TreeTableCells {
 		return indent.toString();
 	}
 
+	public static boolean hasContent(final NodeModel cell) {
+		return !richTextOf(cell).isEmpty();
+	}
+
 	public static String keyOf(final NodeModel cell) {
 		return TreeTableHeader.keyOf(cell);
 	}
