@@ -20,7 +20,7 @@
   target's ancestors and center the target in the viewer. The option
   label is "Dynamic SVG (HTML)". Shared file-copy and ZIP options
   are outside this task and tracked in
-  [Add shared HTML export file-copy and ZIP options](../backlog/006-add-shared-export-file-copy-and-archive-options.md).
+  [Add shared HTML export file-copy and ZIP options](../in-progress/add-shared-export-file-copy-and-archive-options.md).
 - **Motivation:** Make the interactive export available from Freeplane
   without a separate Python launcher, temporary application profile, or
   scripting setup.
@@ -314,6 +314,10 @@
     `MapViewExportCapture`, while preserving private view state inside
     `MapView`, so that export workflow does not enlarge `MapView` or
     require exposing its private fields.
+  - Proceed to review with Chrome, Safari, and Edge verification
+    deferred and existing browser-startup exception skipping unchanged.
+    This exception applies to the review checkpoint; it does not count
+    skipped cases as passed or remove the browser-support requirement.
 - **Design:**
 
   ```plantuml
