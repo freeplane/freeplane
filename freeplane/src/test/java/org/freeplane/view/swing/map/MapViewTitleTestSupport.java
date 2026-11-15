@@ -104,6 +104,7 @@ public class MapViewTitleTestSupport {
         when(mode.getMapController()).thenReturn(mapController);
         when(mode.getUserInputListenerFactory()).thenReturn(input);
         when(mode.getExtension(TextController.class)).thenReturn(text);
+        Controller.setCurrentController(controller);
         MapStyle style = mock(MapStyle.class);
         when(mode.getExtension(MapStyle.class)).thenReturn(style);
         when(style.getZoom(any(MapModel.class))).thenReturn(1f);
@@ -115,7 +116,6 @@ public class MapViewTitleTestSupport {
             event.getMap().fireMapChangeEvent(event);
             return null;
         }).when(mapController).fireMapChanged(any(MapChangeEvent.class));
-        Controller.setCurrentController(controller);
     }
 
     @After
