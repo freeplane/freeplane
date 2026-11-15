@@ -29,7 +29,7 @@ public final class RichText {
 			return style;
 		}
 
-		boolean isLineBreak() {
+		public boolean isLineBreak() {
 			return LINE_BREAK.equals(text);
 		}
 
@@ -61,6 +61,10 @@ public final class RichText {
 
 	public static RichText fromContent(final String content) {
 		return content != null && HtmlUtils.isHtml(content) ? RichHtmlReader.readFragment(content) : plain(content);
+	}
+
+	static RichText ofRuns(final List<Run> runs) {
+		return normalized(runs);
 	}
 
 	static RichText normalized(final List<Run> rawRuns) {

@@ -44,6 +44,13 @@ public class TreeTableSheetImport {
 			return contents;
 		}
 
+		public Map<String, List<CellTextTree.Node>> getValueTrees() {
+			final Map<String, List<CellTextTree.Node>> trees = new LinkedHashMap<String, List<CellTextTree.Node>>();
+			for (final Map.Entry<String, RichText> value : values.entrySet())
+				trees.put(value.getKey(), CellTextTree.parse(value.getValue()));
+			return trees;
+		}
+
 		public List<Item> getChildren() {
 			return Collections.unmodifiableList(children);
 		}

@@ -118,6 +118,34 @@ public class TreeTableSheetImportTest {
 			"<html><body><p>Du <span style=\"color: #ff0000; font-weight: bold;\">HTML </span>ici</p></body></html>"));
 	}
 
+	@Test
+	public void rebuildsTreeInCellFromIndentedHtmlTableOfExcel() {
+		final MapFake mapFake = new MapFake();
+		final NodeModel tableNode = childOf(mapFake, mapFake.getRoot(), "Projects");
+		TreeTableModel.createFor(tableNode);
+		final NodeModel header = childOf(mapFake, tableNode, "Columns");
+		LogicalStyleModel.createExtension(header).setStyle(TreeTableHeader.style());
+		childOf(mapFake, header, "Delay");
+		final NodeModel task = childOf(mapFake, tableNode, "Task");
+		TreeTableSheetExportTest.setValue(task, "Delay", "3 days\n\u00A0\u00A0\u00A0\u00A0working\nor 4 days");
+
+		final TreeTableSheetImport table = TreeTableSheetImport
+			.of(TreeTableSheet.parseHtmlTable(TreeTableSheetExport.sheetOf(tableNode).toHtml()), "Column");
+
+		final List<CellTextTree.Node> tree = table.getRows().get(0).getValueTrees().get("Delay");
+		assertThat(tree).extracting(CellTextTree.Node::getContent).containsExactly("3 days", "or 4 days");
+		assertThat(tree.get(0).getChildren()).extracting(CellTextTree.Node::getContent).containsExactly("working");
+	}
+
+	@Test
+	public void rebuildsTreeInCellFromQuotedTabSeparatedCell() {
+		final TreeTableSheetImport table = importOf("Car\tDelay\r\nA\t\"3 days\r\n    working\r\nor 4 days\"\r\n");
+
+		final List<CellTextTree.Node> tree = table.getRows().get(0).getValueTrees().get("Delay");
+		assertThat(tree).extracting(CellTextTree.Node::getContent).containsExactly("3 days", "or 4 days");
+		assertThat(tree.get(0).getChildren()).extracting(CellTextTree.Node::getContent).containsExactly("working");
+	}
+
 	private static NodeModel childOf(final MapFake mapFake, final NodeModel parent, final String text) {
 		final NodeModel child = mapFake.createNode(text);
 		parent.insert(child);

@@ -43,6 +43,23 @@ public class TreeTableCells {
 		return cell;
 	}
 
+	public static NodeModel newCell(final MapModel map, final String columnKey, final List<CellTextTree.Node> content) {
+		if (content.isEmpty())
+			return newCell(map, columnKey, "");
+		final NodeModel cell = new NodeModel(columnKey, map);
+		markAsCell(cell);
+		insertContent(cell, content, map);
+		return cell;
+	}
+
+	private static void insertContent(final NodeModel parent, final List<CellTextTree.Node> content, final MapModel map) {
+		for (final CellTextTree.Node item : content) {
+			final NodeModel node = new NodeModel(item.getContent(), map);
+			parent.insert(node);
+			insertContent(node, item.getChildren(), map);
+		}
+	}
+
 	public static void markAsCell(final NodeModel node) {
 		TreeTableCellModel.markAsCell(node);
 	}

@@ -21,6 +21,7 @@ import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.features.treetable.CellTextTree;
 import org.freeplane.features.treetable.TreeTableCells;
 import org.freeplane.features.treetable.TreeTableColumnNames;
 import org.freeplane.features.treetable.TreeTableGridCompletion;
@@ -224,7 +225,7 @@ public class TreeTableEditing {
 	private static void insertItems(final NodeModel parent, final List<TreeTableSheetImport.Item> items) {
 		for (final TreeTableSheetImport.Item item : items) {
 			final NodeModel node = mapController().newNode(item.getContent(), parent.getMap());
-			for (final Map.Entry<String, String> value : item.getValueContents().entrySet())
+			for (final Map.Entry<String, List<CellTextTree.Node>> value : item.getValueTrees().entrySet())
 				node.insert(TreeTableCells.newCell(parent.getMap(), value.getKey(), value.getValue()));
 			parent.insert(node);
 			insertItems(node, item.getChildren());

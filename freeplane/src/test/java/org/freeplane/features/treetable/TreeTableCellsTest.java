@@ -142,4 +142,28 @@ public class TreeTableCellsTest {
 		assertThat(TreeTableCells.contentOf(cellOf(row, "Prix"))).isNull();
 		assertThat(TreeTableNodes.cellValueOf(row, "Delai")).isNull();
 	}
+
+	@Test
+	public void createsCellTreeFromParsedText() {
+		final java.util.List<CellTextTree.Node> content = CellTextTree
+			.parse(RichText.plain("3 jours\n\u00A0\u00A0\u00A0\u00A0ouvres\nou 4 jours"));
+
+		final NodeModel cell = TreeTableCells.newCell(row.getMap(), "Delai", content);
+
+		assertThat(TreeTableCellModel.isMarkedAsCell(cell)).isTrue();
+		assertThat(TreeTableCells.keyOf(cell)).isEqualTo("Delai");
+		assertThat(cell.getChildCount()).isEqualTo(2);
+		assertThat(cell.getChildAt(0).getText()).isEqualTo("3 jours");
+		assertThat(cell.getChildAt(0).getChildAt(0).getText()).isEqualTo("ouvres");
+		assertThat(cell.getChildAt(1).getText()).isEqualTo("ou 4 jours");
+		assertThat(TreeTableCells.contentOf(cell)).isEqualTo("3 jours\n\u00A0\u00A0\u00A0\u00A0ouvres\nou 4 jours");
+	}
+
+	@Test
+	public void createsCellWithEmptyContentForEmptyText() {
+		final NodeModel cell = TreeTableCells.newCell(row.getMap(), "Prix", CellTextTree.parse(RichText.plain("")));
+
+		assertThat(cell.getChildCount()).isEqualTo(1);
+		assertThat(cell.getChildAt(0).getText()).isEmpty();
+	}
 }
