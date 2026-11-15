@@ -916,17 +916,21 @@ public class MMapClipboardController extends MapClipboardController implements M
 			}
 			newNodes.clear();
 			final NodeModel blankCellContent = TreeTableCells.blankContentAt(target);
+			NodeModel unfoldedTarget = target;
 			if (blankCellContent == null)
 				handler.paste(t, target, side, dropAction);
 			else {
+				final NodeModel cell = blankCellContent.getParentNode();
 				handler.paste(t, blankCellContent, Side.AS_SIBLING_BEFORE, dropAction);
-				if (blankCellContent.getParentNode() != null && blankCellContent.getParentNode().getChildCount() > 1)
+				if (cell.getChildCount() > 1) {
 					mapController.deleteNode(blankCellContent);
+					unfoldedTarget = cell;
+				}
 			}
 			if ( ! side.isSibling()) {
-			    if (mapController.isFolded(target)) {
+			    if (mapController.isFolded(unfoldedTarget)) {
                     if (ResourceController.getResourceController().getBooleanProperty(RESOURCE_UNFOLD_ON_PASTE)) {
-                        mapController.unfoldAndScroll(target, controller.getSelection().getFilter());
+                        mapController.unfoldAndScroll(unfoldedTarget, controller.getSelection().getFilter());
                     }
                 }
 			}
