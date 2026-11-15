@@ -270,4 +270,20 @@ public class TreeTableHeaderTest {
 		assertThat(TreeTableHeader.lowestCommonAncestor(pros, cons)).isSameAs(analysis);
 		assertThat(TreeTableHeader.lowestCommonAncestor(cons, ford)).isSameAs(header);
 	}
+
+	@Test
+	public void tellsWhetherAnotherColumnShareTheKey() {
+		final NodeModel tesla = childOf(header, "Tesla");
+		final NodeModel teslaS = childOf(tesla, "S");
+		final NodeModel ford = childOf(header, "Ford");
+		final NodeModel fordS = childOf(ford, "S");
+		final NodeModel price = childOf(header, "Price");
+
+		assertThat(TreeTableHeader.isKeyUsedByAnotherColumn(fordS, "S")).isTrue();
+		assertThat(TreeTableHeader.isKeyUsedByAnotherColumn(teslaS, "S")).isTrue();
+		assertThat(TreeTableHeader.isKeyUsedByAnotherColumn(price, "S")).isTrue();
+		assertThat(TreeTableHeader.isKeyUsedByAnotherColumn(fordS, "Price")).isTrue();
+		assertThat(TreeTableHeader.isKeyUsedByAnotherColumn(price, "Price")).isFalse();
+		assertThat(TreeTableHeader.isKeyUsedByAnotherColumn(fordS, "Other")).isFalse();
+	}
 }

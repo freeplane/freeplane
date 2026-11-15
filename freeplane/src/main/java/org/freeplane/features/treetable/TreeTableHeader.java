@@ -86,6 +86,14 @@ public class TreeTableHeader {
 		return text == null ? "" : HtmlUtils.htmlToPlain(text.toString()).trim();
 	}
 
+	public static boolean isKeyUsedByAnotherColumn(final NodeModel columnNode, final String key) {
+		for (final NodeModel other : columnNodesOf(headerRootAbove(columnNode))) {
+			if (other != columnNode && keyOf(other).equals(key))
+				return true;
+		}
+		return false;
+	}
+
 	public static List<NodeModel> distinctColumnNodes(final List<NodeModel> columnNodes) {
 		final List<NodeModel> distinct = new ArrayList<NodeModel>();
 		final Set<String> keys = new HashSet<String>();

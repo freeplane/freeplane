@@ -56,7 +56,8 @@ public class TreeTableEditing {
 	static void renameColumnValues(final NodeModel columnNode, final String oldKey, final String newKey) {
 		final NodeModel treeTableRoot = TreeTableNodes.treeTableRootOf(columnNode);
 		if (treeTableRoot == null || oldKey.isEmpty() || newKey.isEmpty() || oldKey.equals(newKey)
-				|| isUsedByAnotherColumn(columnNode, newKey))
+				|| TreeTableHeader.isKeyUsedByAnotherColumn(columnNode, newKey)
+				|| TreeTableHeader.isKeyUsedByAnotherColumn(columnNode, oldKey))
 			return;
 		for (final NodeModel row : TreeTableNodes.rowsOf(treeTableRoot))
 			renameCell(row, oldKey, newKey);
@@ -107,14 +108,6 @@ public class TreeTableEditing {
 		final String parentKey = TreeTableHeader.keyOf(formerParent);
 		for (final NodeModel row : TreeTableNodes.rowsOf(TreeTableNodes.treeTableRootOf(formerParent)))
 			renameCell(row, returnedKey, parentKey);
-	}
-
-	private static boolean isUsedByAnotherColumn(final NodeModel columnNode, final String key) {
-		for (final NodeModel other : TreeTableHeader.columnNodesOf(TreeTableHeader.headerRootAbove(columnNode))) {
-			if (other != columnNode && TreeTableHeader.keyOf(other).equals(key))
-				return true;
-		}
-		return false;
 	}
 
 	public static void addColumnRightOf(final NodeModel columnNode) {
