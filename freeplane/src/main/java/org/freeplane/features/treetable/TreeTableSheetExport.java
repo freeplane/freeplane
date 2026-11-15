@@ -117,7 +117,7 @@ public class TreeTableSheetExport {
 			for (int column = 0; column < columnNodes.size(); column++) {
 				final String key = TreeTableHeader.keyOf(columnNodes.get(column));
 				sheet.set(sheetRow, treeColumnCount + column,
-					RichText.fromContent(TreeTableNodes.cellValueOf(row.node, key)));
+					TreeTableNodes.cellRichTextOf(row.node, key));
 			}
 		}
 	}

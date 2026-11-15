@@ -63,6 +63,10 @@ public final class RichText {
 		return content != null && HtmlUtils.isHtml(content) ? RichHtmlReader.readFragment(content) : plain(content);
 	}
 
+	static Run lineBreakRun() {
+		return new Run(LINE_BREAK, RichTextStyle.PLAIN);
+	}
+
 	static RichText ofRuns(final List<Run> runs) {
 		return normalized(runs);
 	}

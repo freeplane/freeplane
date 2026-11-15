@@ -115,4 +115,23 @@ public class TreeTableSheetExportTest {
 		assertThat(sheet.get(1, 0)).isEqualTo("Fast car");
 		assertThat(sheet.get(1, 1)).isEqualTo("good");
 	}
+
+	@Test
+	public void keepsFormattingOfNodesInsideCellTree() {
+		final NodeModel pros = mapFake.createNode("Pros");
+		TreeTableCellModel.markAsCell(pros);
+		final NodeModel door = mapFake.createNode(
+			"<html><body><p>a <span style=\"font-weight: bold; color: #0000ff;\">big </span>door</p></body></html>");
+		pros.insert(door);
+		door.insert(mapFake.createNode("wood"));
+		pros.insert(mapFake.createNode("a bicycle"));
+
+		final RichText text = TreeTableCells.richTextOf(pros);
+
+		assertThat(text.plainText()).isEqualTo("a big door\n    wood\na bicycle");
+		assertThat(text.isFormatted()).isTrue();
+		assertThat(text.toExcelHtml()).contains("<font color=\"#0000ff\"><b>big </b></font>")
+			.contains("&nbsp;&nbsp;&nbsp;&nbsp;wood");
+		assertThat(CellTextTree.parse(text).get(0).getContent()).contains("color: #0000ff");
+	}
 }

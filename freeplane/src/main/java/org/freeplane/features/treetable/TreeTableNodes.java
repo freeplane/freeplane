@@ -41,6 +41,10 @@ public class TreeTableNodes {
 		return TreeTableCells.contentOf(TreeTableCells.cellOf(row, columnKey));
 	}
 
+	public static RichText cellRichTextOf(final NodeModel row, final String columnKey) {
+		return TreeTableCells.richTextOf(TreeTableCells.cellOf(row, columnKey));
+	}
+
 	private static void collectRows(final NodeModel parent, final List<NodeModel> rows) {
 		for (final NodeModel child : parent.getChildren()) {
 			if (TreeTableHeader.isHeaderRoot(child) || TreeTableCells.isCell(child))

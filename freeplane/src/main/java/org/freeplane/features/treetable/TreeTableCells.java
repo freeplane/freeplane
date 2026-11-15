@@ -82,6 +82,35 @@ public class TreeTableCells {
 		}
 	}
 
+	public static RichText richTextOf(final NodeModel cell) {
+		if (cell == null || !cell.hasChildren())
+			return RichText.EMPTY;
+		final NodeModel firstContent = cell.getChildAt(0);
+		if (cell.getChildCount() == 1 && !firstContent.hasChildren())
+			return RichText.fromContent(firstContent.getText());
+		final List<RichText.Run> runs = new ArrayList<RichText.Run>();
+		collectContentRuns(cell, 0, runs);
+		return RichText.ofRuns(runs);
+	}
+
+	private static void collectContentRuns(final NodeModel parent, final int depth, final List<RichText.Run> runs) {
+		for (final NodeModel child : parent.getChildren()) {
+			if (!runs.isEmpty())
+				runs.add(RichText.lineBreakRun());
+			if (depth > 0)
+				runs.add(new RichText.Run(indentOf(depth), RichTextStyle.PLAIN));
+			runs.addAll(RichText.fromContent(child.getText()).getRuns());
+			collectContentRuns(child, depth + 1, runs);
+		}
+	}
+
+	private static String indentOf(final int depth) {
+		final StringBuilder indent = new StringBuilder();
+		for (int level = 0; level < depth; level++)
+			indent.append(CONTENT_INDENT);
+		return indent.toString();
+	}
+
 	public static String keyOf(final NodeModel cell) {
 		return TreeTableHeader.keyOf(cell);
 	}
