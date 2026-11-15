@@ -86,6 +86,7 @@ import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.map.mindmapmode.clipboard.MMapClipboardController;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.treetable.TreeTableCells;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
@@ -737,6 +738,17 @@ public class MMapController extends MapController {
     }
 
     public void moveNodes(final List<NodeModel> children, final NodeModel target, InsertionRelation insertionRelation) {
+    	final NodeModel blankCellContent = TreeTableCells.blankContentAt(target);
+    	if (blankCellContent != null && !children.contains(blankCellContent)) {
+    		moveNodesRelativeTo(children, blankCellContent, InsertionRelation.AS_SIBLING_BEFORE);
+    		if (blankCellContent.getParentNode() != null && blankCellContent.getParentNode().getChildCount() > 1)
+    			deleteNode(blankCellContent);
+    		return;
+    	}
+    	moveNodesRelativeTo(children, target, insertionRelation);
+    }
+
+    private void moveNodesRelativeTo(final List<NodeModel> children, final NodeModel target, InsertionRelation insertionRelation) {
     	if(insertionRelation == InsertionRelation.AS_CHILD) {
     		FreeNode r = Controller.getCurrentModeController().getExtension(FreeNode.class);
     		for(NodeModel node : children){

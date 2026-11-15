@@ -166,4 +166,53 @@ public class TreeTableCellsTest {
 		assertThat(cell.getChildCount()).isEqualTo(1);
 		assertThat(cell.getChildAt(0).getText()).isEmpty();
 	}
+
+	@Test
+	public void findsBlankContentOfEmptyCellWhenTargetingCellOrItsContent() {
+		final NodeModel cell = cellOf(row, "Prix");
+		final NodeModel blank = childOf(cell, "");
+
+		assertThat(TreeTableCells.blankContentAt(cell)).isSameAs(blank);
+		assertThat(TreeTableCells.blankContentAt(blank)).isSameAs(blank);
+	}
+
+	@Test
+	public void findsNoBlankContentWhenCellHoldsText() {
+		final NodeModel cell = cellOf(row, "Prix");
+		final NodeModel text = childOf(cell, "12");
+
+		assertThat(TreeTableCells.blankContentAt(cell)).isNull();
+		assertThat(TreeTableCells.blankContentAt(text)).isNull();
+	}
+
+	@Test
+	public void findsNoBlankContentWhenEmptyNodeHasChildrenOrSiblings() {
+		final NodeModel cell = cellOf(row, "Prix");
+		final NodeModel emptyWithChild = childOf(cell, "");
+		childOf(emptyWithChild, "a");
+		assertThat(TreeTableCells.blankContentAt(emptyWithChild)).isNull();
+		assertThat(TreeTableCells.blankContentAt(cell)).isNull();
+
+		final NodeModel otherCell = cellOf(row, "Delai");
+		childOf(otherCell, "");
+		childOf(otherCell, "x");
+		assertThat(TreeTableCells.blankContentAt(otherCell)).isNull();
+	}
+
+	@Test
+	public void findsNoBlankContentOutsideCells() {
+		final NodeModel emptyRow = childOf(table, "");
+
+		assertThat(TreeTableCells.blankContentAt(emptyRow)).isNull();
+		assertThat(TreeTableCells.blankContentAt(row)).isNull();
+		assertThat(TreeTableCells.blankContentAt(null)).isNull();
+	}
+
+	@Test
+	public void treatsEmptyHtmlContentAsBlank() {
+		final NodeModel cell = cellOf(row, "Prix");
+		final NodeModel blank = childOf(cell, "<html><body><p></p></body></html>");
+
+		assertThat(TreeTableCells.blankContentAt(cell)).isSameAs(blank);
+	}
 }

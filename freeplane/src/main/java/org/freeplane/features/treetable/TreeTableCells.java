@@ -124,6 +124,21 @@ public class TreeTableCells {
 		return cells;
 	}
 
+	public static NodeModel blankContentAt(final NodeModel target) {
+		if (target == null)
+			return null;
+		final NodeModel cell = isCell(target) ? target : target.getParentNode();
+		if (cell == null || !isCell(cell) || cell.getChildCount() != 1)
+			return null;
+		final NodeModel content = cell.getChildAt(0);
+		final boolean isTargeted = target == cell || target == content;
+		return isTargeted && isBlank(content) ? content : null;
+	}
+
+	private static boolean isBlank(final NodeModel content) {
+		return !content.hasChildren() && TreeTableHeader.keyOfText(content.getText()).isEmpty();
+	}
+
 	public static NodeModel cellOf(final NodeModel row, final String columnKey) {
 		for (final NodeModel cell : cellsOf(row)) {
 			if (keyOf(cell).equals(columnKey))
