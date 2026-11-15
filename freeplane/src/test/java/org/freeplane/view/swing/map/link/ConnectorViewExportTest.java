@@ -14,6 +14,7 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.link.ConnectorArrows;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorShape;
@@ -76,7 +77,8 @@ public class ConnectorViewExportTest extends MapViewTitleTestSupport {
             assertThat(geometry.curve.getY2()).isEqualTo(130);
             assertThat(geometry.arrows).hasSize(2);
             assertThat(geometry.stroke.getLineWidth()).isEqualTo(3);
-            assertThat(geometry.stroke.getDashArray()).containsExactly(4f, 7f);
+            assertThat(geometry.stroke.getDashArray()).containsExactly(
+                    4f * UITools.FONT_SCALE_FACTOR, 7f * UITools.FONT_SCALE_FACTOR);
             assertThat(mapView.showsConnectorLines(false)).isEqualTo(showsLines);
         }
         verify(mapView, never()).putClientProperty(any(), any());
