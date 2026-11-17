@@ -16,6 +16,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.ToIntFunction;
 
 import javax.swing.DropMode;
 import javax.swing.plaf.TreeUI;
@@ -45,6 +46,19 @@ class JTagTree extends FilterableJTree {
             setToggleClickCount(0);
             setFont();
         }
+	}
+
+	/**
+	 * Installs the lookup used by the tag renderer to append the current usage count.
+	 */
+	void setUsageProvider(ToIntFunction<DefaultMutableTreeNode> usageOf) {
+		if (GraphicsEnvironment.isHeadless())
+			return;
+		// Keep counting outside the renderer: the tree only supplies each visible node.
+		setCellRenderer(new TagCellRenderer(tagCategories, usageOf));
+		// The new renderer changes cell contents, so refresh already-visible rows immediately.
+		revalidate();
+		repaint();
 	}
 
 	@Override
