@@ -86,6 +86,7 @@ import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.map.mindmapmode.clipboard.MMapClipboardController;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.treetable.TreeTableCells;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
@@ -121,6 +122,8 @@ public class MMapController extends MapController {
 
     private static final OperationErrorHandler DEFAULT_OPERATION_ERROR_HANDLER =
             (description, nodes) -> UITools.errorMessage(description);
+
+    private final List<INodeOperationGuard> nodeOperationGuards = new ArrayList<INodeOperationGuard>();
 
     public MMapController(ModeController modeController) {
         super(modeController);
@@ -405,11 +408,38 @@ public class MMapController extends MapController {
         modeController.addAction(new OpenSelectionAsNewViewRootAction());
     }
 
+    public void addNodeOperationGuard(final INodeOperationGuard guard) {
+        nodeOperationGuards.add(guard);
+    }
+
+    public String refusalOfTextChange(final NodeModel node, final String newText) {
+        for (final INodeOperationGuard guard : nodeOperationGuards) {
+            final String refusal = guard.refusalOfTextChange(node, newText);
+            if (refusal != null)
+                return refusal;
+        }
+        return null;
+    }
+
+    private String refusalOfDeletion(final Collection<NodeModel> nodes) {
+        for (final INodeOperationGuard guard : nodeOperationGuards) {
+            final String refusal = guard.refusalOfDeletion(nodes);
+            if (refusal != null)
+                return refusal;
+        }
+        return null;
+    }
+
     public void deleteNode(NodeModel node) {
         deleteNodes(Arrays.asList(node));
     }
 
     public void deleteNodes(final List<NodeModel> nodes) {
+        final String refusal = refusalOfDeletion(nodes);
+        if (refusal != null) {
+            UITools.errorMessage(refusal);
+            return;
+        }
         final List<NodeModel> deletedNodesWithSummaryGroupIndicators = new SummaryGroupEdgeListAdder(nodes).addSummaryEdgeNodes();
         for(NodeModel node : deletedNodesWithSummaryGroupIndicators){
             deleteSingleNodeWithClones(node);
@@ -737,6 +767,17 @@ public class MMapController extends MapController {
     }
 
     public void moveNodes(final List<NodeModel> children, final NodeModel target, InsertionRelation insertionRelation) {
+    	final NodeModel blankCellContent = TreeTableCells.blankContentAt(target);
+    	if (blankCellContent != null && !children.contains(blankCellContent)) {
+    		moveNodesRelativeTo(children, blankCellContent, InsertionRelation.AS_SIBLING_BEFORE);
+    		if (blankCellContent.getParentNode() != null && blankCellContent.getParentNode().getChildCount() > 1)
+    			deleteNode(blankCellContent);
+    		return;
+    	}
+    	moveNodesRelativeTo(children, target, insertionRelation);
+    }
+
+    private void moveNodesRelativeTo(final List<NodeModel> children, final NodeModel target, InsertionRelation insertionRelation) {
     	if(insertionRelation == InsertionRelation.AS_CHILD) {
     		FreeNode r = Controller.getCurrentModeController().getExtension(FreeNode.class);
     		for(NodeModel node : children){

@@ -41,6 +41,8 @@ import org.freeplane.features.filter.Filter;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.ui.INodeViewVisitor;
+import org.freeplane.features.treetable.TreeTableCellModel;
+import org.freeplane.features.treetable.TreeTableCells;
 
 /**
  * This class represents a single Node of a Tree. It contains direct handles to
@@ -490,7 +492,7 @@ public class NodeModel{
 	}
 
 	public boolean hasVisibleContent(Filter filter) {
-		return ! isHiddenSummary() && satisfies(filter);
+		return ! isHiddenSummary() && ! TreeTableCells.isCell(this) && satisfies(filter);
 	}
 
 	private boolean satisfies(Filter filter) {
@@ -555,7 +557,7 @@ public class NodeModel{
 		boolean wasFoldingFlagSet = this.folded;
 		boolean wasFolded = isFolded();
 		if (wasFoldingFlagSet != folded && isAccessible()) {
-		    this.folded = (folded && ! AlwaysUnfoldedNode.isAlwaysUnfolded(this));
+		    this.folded = (folded && ! AlwaysUnfoldedNode.isAlwaysUnfolded(this) && ! TreeTableCellModel.isMarkedAsCell(this));
 		}
 		boolean isFoldedNow = isFolded();
 		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(wasFolded), Boolean.valueOf(isFoldedNow), false, false));
@@ -827,7 +829,7 @@ public class NodeModel{
 	}
 
     public boolean isFoldable() {
-        return ! isLeaf() && ! isRoot() && ! AlwaysUnfoldedNode.isAlwaysUnfolded(this);
+        return ! isLeaf() && ! isRoot() && ! AlwaysUnfoldedNode.isAlwaysUnfolded(this) && ! TreeTableCellModel.isMarkedAsCell(this);
     }
 
 }

@@ -91,6 +91,7 @@ import org.freeplane.features.styles.mindmapmode.ShowFormatPanelAction;
 import org.freeplane.features.styles.mindmapmode.styleeditorpanel.StyleEditorPanel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.features.treetable.TreeTableController;
 import org.freeplane.features.ui.ToggleToolbarAction;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.mindmapmode.MFileManager;
@@ -172,6 +173,7 @@ public class SModeControllerFactory {
 		final MLogicalStyleController logicalStyleController = new MLogicalStyleController(modeController);
 		logicalStyleController.initS();
 		LogicalStyleController.install(logicalStyleController);
+		TreeTableController.install(new TreeTableController());
 		AttributeController.install(new MAttributeController(modeController));
 		FormatController.install(new FormatController());
 		IconController.installConditionControllers();

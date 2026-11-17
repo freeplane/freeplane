@@ -23,6 +23,8 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 
+import org.freeplane.features.treetable.TreeTableModel;
+
 /**
  * @author Dimitry Polivaev
  */
@@ -41,6 +43,8 @@ public class NodeViewLayout implements INodeViewLayout{
  		if(view.getContent() != null){
 			final VerticalNodeViewLayoutStrategy layoutData = new VerticalNodeViewLayoutStrategy(view);
         	layoutData.calculateLayoutData();
+        	if (TreeTableModel.isTreeTableRoot(view.getNode()))
+        		TreeTableCellPlacement.place(view);
         }
     }
 
