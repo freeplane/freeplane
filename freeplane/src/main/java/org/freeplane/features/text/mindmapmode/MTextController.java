@@ -459,7 +459,7 @@ public class MTextController extends TextController {
 					final String encodedLinkString = HtmlUtils.unicodeToHTMLUnicodeEntity(linkString);
 					final String strText = "<html><img src=\"" + encodedLinkString + "\">";
 					((MLinkController) LinkController.getController()).setLink(node, (URI) null,
-					    LinkController.LINK_ABSOLUTE);
+					    LinkController.getLinkType());
 					setNodeText(node, strText);
 				}
 			}

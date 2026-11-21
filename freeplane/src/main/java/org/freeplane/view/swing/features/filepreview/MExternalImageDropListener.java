@@ -26,14 +26,17 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.io.File;
+import java.net.URI;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.clipboard.MindMapNodesSelection;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.view.swing.map.NodeView;
 
 public class MExternalImageDropListener implements DropTargetListener {
@@ -84,7 +87,12 @@ public class MExternalImageDropListener implements DropTargetListener {
 		    		final ViewerController vc = (Controller.getCurrentController().getModeController()
 		    			    .getExtension(ViewerController.class));
 		    		final NodeModel node = nodeView.getNode();
-					vc.paste(file.toURI(), node);
+		    		final MapModel map = node.getMap();
+		    		URI uri = file.toURI();
+		    		if (uri.getScheme().equals("file") && map.getFile() != null) {
+		    			uri = LinkController.toLinkTypeDependantURI(map.getFile(), file);
+		    		}
+		    		vc.paste(uri, node);
 	            }
 	            catch (Exception e) {
 	            	LogUtils.warn(e);
