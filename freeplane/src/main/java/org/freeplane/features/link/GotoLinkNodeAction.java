@@ -69,8 +69,6 @@ class GotoLinkNodeAction extends AFreeplaneAction {
     }
 
 	public void actionPerformed(final ActionEvent e) {
-		linkController.onDeselect(Controller.getCurrentModeController().getMapController().getSelectedNode());
-		Controller.getCurrentModeController().getMapController().select(target);
-		linkController.onSelect(target);
+		linkController.goToLinkedNode(target);
 	}
 }
