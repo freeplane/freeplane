@@ -1,7 +1,56 @@
-import groovy.io.FileType
 import org.apache.tools.ant.taskdefs.condition.Os
 
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
+
 String winapp_input_dir = 'BIN'
+
+def windowsSigningEnabled = {
+    Os.isFamily(Os.FAMILY_WINDOWS) && project(':freeplane').signJarProperties['signjar.cardpass']
+}
+def jsign = configurations.detachedConfiguration(dependencies.create('net.jsign:jsign:7.6'))
+jsign.transitive = false
+def signingPinVariable = 'FREEPLANE_SIGNING_PIN'
+def jsignCommand = {
+    def freeplane = project(':freeplane')
+    def signing = freeplane.signJarProperties
+    def required = ['signjar.cfg', 'signjar.certchain', 'signjar.owner', 'signjar.tsaurl']
+    def missing = required.findAll { !signing[it]?.trim() }
+    if (missing) {
+        throw new GradleException("Missing Windows signing settings in freeplane/signjar.properties: ${missing.join(', ')}")
+    }
+
+    [
+        new File(System.getProperty('java.home'), 'bin/java.exe').path, '-jar', jsign.singleFile.path,
+        '--storetype', 'PKCS11',
+        '--keystore', freeplane.file(signing['signjar.cfg']).path,
+        '--storepass', "env:${signingPinVariable}".toString(),
+        '--alias', signing['signjar.owner'],
+        '--certfile', freeplane.file(signing['signjar.certchain']).path,
+        '--alg', 'SHA-256', '--tsmode', 'RFC3161', '--tsaurl', signing['signjar.tsaurl'],
+        '--replace'
+    ]
+}
+
+def registerWindowsSigningTask = { String name, prerequisite, Closure executables ->
+    tasks.register(name, Exec) {
+        dependsOn prerequisite
+        onlyIf { windowsSigningEnabled() && !executables().isEmpty() }
+        doFirst {
+            def filesToSign = executables()
+            // jpackage creates its Windows launchers with the read-only attribute.
+            filesToSign.each { Files.setAttribute(it.toPath(), 'dos:readonly', false) }
+            environment signingPinVariable, project(':freeplane').signJarProperties['signjar.cardpass']
+            commandLine jsignCommand() + filesToSign.collect { it.absolutePath }
+        }
+    }
+}
+
+def publishWindowsInstaller = { File installer, String releaseName ->
+    def distDir = file(globalDist)
+    mkdir distDir
+    Files.move(installer.toPath(), new File(distDir, releaseName).toPath(), StandardCopyOption.REPLACE_EXISTING)
+}
 
 def defineWinDistTasks =  { javaRuntime, distName -> 
 
@@ -88,18 +137,29 @@ def defineWinDistTasks =  { javaRuntime, distName ->
     }
 
 
-    def windowsInstaller = tasks.create("windowsInstaller_${javaRuntime}", Exec) {
-        onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
+    def signWinapp = registerWindowsSigningTask("signWindowsLaunchers_${javaRuntime}", winapp_makeapp) {
+        ['freeplane.exe', 'freeplaneConsole.exe'].collect { new File(appImageDir, "Freeplane/${it}") }
+    }
 
-        ignoreExitValue = true
+    def installerBaseName = "Freeplane-Setup${distName}-${distVersion}"
+    def windowsInstaller = tasks.register("windowsInstaller_${javaRuntime}", Exec) {
         workingDir = rootDir.path + '/freeplane_framework/windows-installer'
+        dependsOn signWinapp
 
-        commandLine 'cmd.exe', '/c', "ISCC.exe /DAppImage=${appImageDir} /Q Freeplane.iss "
-        doLast {
-            new File(workingDir, 'Freeplane-Setup.exe').renameTo(new File(globalDist, "Freeplane-Setup${distName}-${distVersion}.exe"))
+        doFirst {
+            def compilerArgs = ["-DAppImage=${appImageDir}", "-O${temporaryDir}", "-F${installerBaseName}", '/Q']
+            if (windowsSigningEnabled()) {
+                // Inno Setup expands $q to a quote and $f to the quoted file name.
+                def signCommand = jsignCommand().collect { '$q' + it.replace('$', '$$') + '$q' }.join(' ')
+                compilerArgs += ['-DSignWithJsign', '-Sjsign=' + signCommand + ' $f']
+                environment signingPinVariable, project(':freeplane').signJarProperties['signjar.cardpass']
+            }
+            commandLine(['ISCC.exe'] + compilerArgs + ['Freeplane.iss'])
         }
-
-        dependsOn winapp_makeapp
+        doLast {
+            def installerName = "${installerBaseName}.exe"
+            publishWindowsInstaller(new File(temporaryDir, installerName), installerName)
+        }
     }
     
     dist {
@@ -114,7 +174,21 @@ if ( Os.isFamily(Os.FAMILY_WINDOWS)) {
 }
 
 
-def portableInstallerDir = new File(globalDist, 'FreeplanePortable').path
+def signBinLaunchers = registerWindowsSigningTask('signWindowsBinLaunchers', ':freeplane_framework:copyLauncherStuff') {
+    ['freeplane.exe', 'freeplaneConsole.exe'].collect { new File(globalBin, it) }.findAll { it.isFile() }
+}
+signBinLaunchers.configure {
+    mustRunAfter ':freeplane:build'
+}
+tasks.named('binZip') {
+    dependsOn signBinLaunchers
+}
+
+def portableBuildDir = layout.buildDirectory.dir('windows-portable').get().asFile
+def portableInstallerDir = new File(portableBuildDir, 'FreeplanePortable').path
+def portableSetups = fileTree(portableBuildDir) {
+    include 'FreeplanePortable_*.paf.exe'
+}
 
 task copyWindowsPortableInstallerBasicFiles(type: Copy) {
     onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
@@ -171,28 +245,49 @@ task copyWindowsPortableInstallerFiles(type: Copy) {
     for (p in subprojects) {
         dependsOn p.tasks.getByPath("build")
     }
+    dependsOn signBinLaunchers
     dependsOn copyWindowsPortableInstallerBasicFiles
     dependsOn copyWindowsPortableInstallerLicense
     dependsOn copyWindowsPortableInstallerIcon
 }
 
 
-task windowsPortableInstaller(type: Exec) {
-    onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
+def signPortableLauncher = registerWindowsSigningTask('signWindowsPortableLauncher', copyWindowsPortableInstallerFiles) {
+    [new File(portableInstallerDir, 'FreeplanePortable.exe')]
+}
 
-    // continue the build when running windows but PortableApps.comInstaller.exe is not installed?
+def buildWindowsPortableInstaller = tasks.register('buildWindowsPortableInstaller', Exec) {
+    onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
     ignoreExitValue = true
     workingDir = rootDir.path + '/freeplane_framework'
-
     commandLine 'cmd.exe', '/c', 'PortableApps.comInstaller.exe', portableInstallerDir
-
-    dependsOn copyWindowsPortableInstallerFiles
-
+    dependsOn signPortableLauncher
+    doFirst {
+        delete portableSetups
+    }
     doLast {
-         new File(portableInstallerDir).deleteDir() 
-         new File(globalDist).eachFileMatch(FileType.FILES, ~/FreeplanePortable_.*\.paf\.exe/) {
-			 f -> 
-			 f.renameTo(new File(globalDist, "FreeplanePortable-${distVersion}.paf.exe"))
-		 }
+        def result = executionResult.get()
+        if (result.exitValue == 9009) {
+            logger.lifecycle('Skipping the PortableApps installer because PortableApps.comInstaller.exe was not found.')
+        } else {
+            result.assertNormalExitValue()
+            // Require exactly one new installer before proceeding to signing.
+            portableSetups.singleFile
+        }
+    }
+}
+
+def signPortableInstaller = registerWindowsSigningTask('signWindowsPortableInstaller', buildWindowsPortableInstaller) {
+    portableSetups.files
+}
+
+task windowsPortableInstaller {
+    onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) }
+    dependsOn signPortableInstaller
+    doLast {
+        if (!portableSetups.isEmpty()) {
+            publishWindowsInstaller(portableSetups.singleFile, "FreeplanePortable-${distVersion}.paf.exe")
+        }
+        delete portableInstallerDir
     }
 }
