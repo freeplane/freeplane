@@ -19,16 +19,20 @@
   input { flex: 1 1 150px; min-width: 100px; width: 190px; max-width: 100%; }
   @media (max-width: 850px) { h1 { flex-basis: 140px; } input { width: 170px; } }
   #status { color: #586779; font-size: 12px; }
-  #canvas { display: block; flex: 1; min-height: 0; width: 100%; touch-action: none; cursor: grab; background: #d6e8e8ff; }
+  #canvas { display: block; flex: 1; min-height: 0; width: 100%; touch-action: none; cursor: grab; background: #d6e8e8ff; user-select: none; -webkit-user-select: none; }
   #canvas.dragging { cursor: grabbing; }
+  #canvas.select-mode, #canvas.select-mode * { user-select: text; -webkit-user-select: text; }
+  #canvas.ctrl-held { cursor: default; }
+  #canvas.ctrl-held .artwork, #canvas.ctrl-held .artwork * { cursor: text; }
   .edge { fill: none; stroke: #a2afc0; stroke-width: 1.5; }
   .summary-edge { fill: none; stroke: #62788b; stroke-width: 1.8; }
   .crosslink { fill: none; }
-  .artwork { pointer-events: none; }
+  .artwork { user-select: text; -webkit-user-select: text; }
   .node-link { cursor: pointer; }
+  .node-link:focus { outline: none; }
   .node-link:focus-visible .link-hitarea { stroke: #175cce; stroke-width: 3; }
   .node-highlight { fill: #ffcc0030; stroke: #d69000; stroke-width: 3; rx: 7; pointer-events: none; }
-  .toggle { cursor: pointer; outline: none; } .toggle circle { fill: white; stroke: #667c96; stroke-width: 1.5; }
+  .toggle { cursor: pointer; outline: none; user-select: none; -webkit-user-select: none; } .toggle circle { fill: white; stroke: #667c96; stroke-width: 1.5; }
   .toggle:focus circle { stroke: #175cce; stroke-width: 3; }
   .toggle text { font: 16px system-ui; text-anchor: middle; dominant-baseline: central; fill: #213047; pointer-events: none; }
 </style>
@@ -178,7 +182,7 @@
         if (target?.contentVisible) { event.preventDefault(); reveal(target); }
       });
       const title = el('title'); title.textContent = validHref;
-      anchor.append(title, nodeArtwork, el('rect', { class: 'link-hitarea', x: 0, y: 0, width: n.width, height: n.height, fill: 'transparent', 'pointer-events': 'all' }));
+      anchor.append(title, el('rect', { class: 'link-hitarea', x: 0, y: 0, width: n.width, height: n.height, fill: 'transparent', 'pointer-events': 'all' }), nodeArtwork);
       n.group.append(anchor);
     } else n.group.append(nodeArtwork);
     if (n.items.length && !n.alwaysUnfolded) {
@@ -318,11 +322,43 @@
   document.getElementById('fit').addEventListener('click', fit);
   document.getElementById('zoom-in').addEventListener('click', () => zoom(1.25)); document.getElementById('zoom-out').addEventListener('click', () => zoom(.8));
   searchInput.addEventListener('input', () => search(searchInput.value)); searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); nextMatch(); } }); document.getElementById('next').addEventListener('click', nextMatch);
-  canvas.addEventListener('wheel', e => { e.preventDefault(); const box = size(); zoom(Math.exp(-e.deltaY * .001), e.clientX - box.left, e.clientY - box.top); }, { passive: false });
-  let drag = null;
-  canvas.addEventListener('pointerdown', e => { if (e.button !== 0 || e.target.closest('.toggle, .node-link, a')) return; drag = { x: e.clientX, y: e.clientY, panX, panY }; canvas.setPointerCapture(e.pointerId); canvas.classList.add('dragging'); });
-  canvas.addEventListener('pointermove', e => { if (drag) { panX = drag.panX + e.clientX - drag.x; panY = drag.panY + e.clientY - drag.y; transform(); } });
-  const endDrag = () => { drag = null; canvas.classList.remove('dragging'); }; canvas.addEventListener('pointerup', endDrag); canvas.addEventListener('pointercancel', endDrag);
+  canvas.addEventListener('wheel', e => {
+    e.preventDefault();
+    // Normalize line/page deltas (Firefox) to pixels; Chromium already sends pixels.
+    const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? size().height : 1;
+    const dx = (e.deltaX || 0) * unit, dy = (e.deltaY || 0) * unit;
+    // trackpad pinch and Ctrl+wheel still zoom
+    if (e.ctrlKey) { const box = size(); zoom(Math.exp(-dy * .001), e.clientX - box.left, e.clientY - box.top); return; }
+    // Shift+wheel scrolls horizontally. Chromium on Linux often reports this as deltaX, so fall back to deltaY.
+    if (e.shiftKey) { panX -= (dx || dy) } else { panX -= dx; panY -= dy; }
+    transform();
+  }, { passive: false });
+  const onLink = t => t.closest('.toggle, .node-link');
+  let drag = null, dragMoved = false, suppressClick = false;
+  canvas.addEventListener('pointerdown', e => {
+    if (e.button !== 0 || e.target.closest('.toggle')) return;
+    suppressClick = false;
+    // Ctrl+press: text selection. The click that follows must not open a link.
+    if (e.ctrlKey) { suppressClick = true; canvas.classList.add('select-mode'); return; }
+    drag = { x: e.clientX, y: e.clientY, panX, panY }; dragMoved = false;
+  });
+  window.addEventListener('pointermove', e => {
+    if (!drag) return;
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (!dragMoved && Math.hypot(dx, dy) > 4) { dragMoved = true; suppressClick = true; canvas.classList.add('dragging'); }
+    if (dragMoved) { panX = drag.panX + dx; panY = drag.panY + dy; transform(); }
+  });
+  window.addEventListener('pointerup', () => { drag = null; dragMoved = false; canvas.classList.remove('dragging', 'select-mode'); });
+  // Stop the browser's native link drag and text selection from taking a plain left-drag.
+  canvas.addEventListener('mousedown', e => { if (e.button === 0 && !e.ctrlKey) e.preventDefault(); });
+  canvas.addEventListener('dragstart', e => { if (onLink(e.target)) e.preventDefault(); });
+  // Cancel the native link action when the click ended a pan or a Ctrl selection. Otherwise let the browser handle the click normally.
+  canvas.addEventListener('click', e => { if (suppressClick) { suppressClick = false; e.preventDefault(); } });
+  // Track Ctrl so the cursor can change while it's held.
+  const setCtrlClass = on => canvas.classList.toggle('ctrl-held', on);
+  window.addEventListener('keydown', e => { if (e.key === 'Control') setCtrlClass(true); });
+  window.addEventListener('keyup', e => { if (e.key === 'Control') setCtrlClass(false); });
+  window.addEventListener('blur', () => setCtrlClass(false));
 
   async function initialize() {
     await Promise.all(data.fontFaces.map(async face => {
