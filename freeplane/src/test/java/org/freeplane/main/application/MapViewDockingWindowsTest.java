@@ -5,24 +5,38 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import java.awt.Component;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Vector;
 import java.util.List;
+import java.util.Vector;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import org.freeplane.api.TextWritingDirection;
+import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.MapViewController;
 import org.freeplane.view.swing.ui.MapDisplayNameResolver;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import net.infonode.docking.DockingWindow;
 import net.infonode.docking.RootWindow;
 import net.infonode.docking.SplitWindow;
@@ -417,6 +431,174 @@ public class MapViewDockingWindowsTest extends MapViewDockingWindowsTestSupport 
             unknown.read(in);
             assertEquals(729, in.readInt());
         }
+    }
+
+    @Test
+    public void invalidSavedFocusRestoresLoadedMapViewsInOneTabBar() throws Exception {
+        MapViewController manager = useRealViewManager();
+        MapModel shared = savedMap("shared");
+        MapView first = openView(manager, shared, "shared");
+        MapView second = openView(manager, shared, "shared");
+        MapModel otherMap = savedMap("other");
+        MapView other = openView(manager, otherMap, "other");
+        TabWindow group = new TabWindow(new DockingWindow[]{owner(first), owner(second)});
+        windows.getRootWindow().setWindow(new TabWindow(new DockingWindow[]{group, owner(other)}));
+        rename(owner(first), "first & 日本語");
+        rename(owner(second), "second");
+        rename(group, "not an individual tab");
+        byte[] invalidLayout = saveWithInvalidFocus(manager, group);
+        Handler log = mock(Handler.class);
+        List<View> ownersAtFailure = new ArrayList<>();
+        doAnswer(call -> {
+            for (Component view : manager.getMapViews())
+                ownersAtFailure.add(owner((MapView) view));
+            return null;
+        }).when(log).publish(argThat(record -> record.getThrown() instanceof NullPointerException));
+        clearInvocations(mapController, resources);
+
+        loadLayoutWithLog(invalidLayout, log);
+
+        assertTrue(logRecords(log).stream().map(LogRecord::getThrown)
+                .anyMatch(thrown -> thrown instanceof NullPointerException && Arrays.stream(thrown.getStackTrace())
+                        .anyMatch(frame -> frame.getClassName().equals(DockingWindow.class.getName())
+                                && frame.getMethodName().equals("readLocations"))));
+        assertTrue(windows.getRootWindow().getWindow() instanceof TabWindow);
+        TabWindow tabs = (TabWindow) windows.getRootWindow().getWindow();
+        String[] titles = {"first & 日本語", "second", otherMap.getTitle()};
+        assertEquals(titles.length, tabs.getChildWindowCount());
+        assertEquals(titles.length, ownersAtFailure.size());
+        assertSame(MapViewDockingWindows.getContainedMapView((View) tabs.getSelectedWindow()),
+                manager.getMapViewComponent());
+        for (int i = 0; i < titles.length; i++) {
+            View tab = (View) tabs.getChildWindow(i);
+            assertSame(ownersAtFailure.get(i), tab);
+            assertEquals(titles[i], tabText(tab));
+            tabs.setSelectedTab(i);
+            assertSame(tab, tabs.getSelectedWindow());
+        }
+        List<String> menuEntries = menuActions(windows.getMapViewVector()).stream()
+                .map(AFreeplaneAction::getRawText).collect(Collectors.toList());
+        assertEquals(3, menuEntries.size());
+        assertTrue(menuEntries.containsAll(Arrays.asList(titles)));
+        verify(mapController, times(2)).openMap(shared.getURL());
+        verify(mapController).openMap(otherMap.getURL());
+        verify(mapController, times(3)).openMap(any(URL.class));
+        verify(resources, never()).setProperty(eq("openedNow_1.3.04"), anyString());
+    }
+
+    @Test
+    public void layoutFailureBeforeDockingStillRestoresLoadedMapViews() throws Exception {
+        MapViewController manager = useRealViewManager();
+        MapModel map = savedMap("one");
+        openView(manager, map, "one");
+        byte[] incompleteLayout = endAfterFirstSavedView(saveAndCloseViews(manager));
+        Handler log = mock(Handler.class);
+
+        loadLayoutWithLog(incompleteLayout, log);
+
+        assertTrue(logRecords(log).stream().anyMatch(record -> record.getThrown() instanceof EOFException));
+        assertTrue(windows.getRootWindow().getWindow() instanceof TabWindow);
+        TabWindow tabs = (TabWindow) windows.getRootWindow().getWindow();
+        assertEquals(1, tabs.getChildWindowCount());
+        MapView selected = (MapView) manager.getMapViewComponent();
+        assertSame(map, selected.getMap());
+        assertSame(owner(selected), tabs.getSelectedWindow());
+    }
+
+    @Test
+    public void mapThatDoesNotOpenIsNotReplacedWithThePreviouslySelectedMap() throws Exception {
+        MapViewController manager = useRealViewManager();
+        MapModel first = savedMap("one");
+        MapModel other = savedMap("other");
+        openView(manager, first, "one");
+        URL unopened = openView(manager, savedMap("unopened"), "unopened").getMap().getURL();
+        openView(manager, other, "other");
+        TabWindow savedTabs = (TabWindow) windows.getRootWindow().getWindow();
+        byte[] invalidLayout = saveWithInvalidFocus(manager, savedTabs);
+        doNothing().when(mapController).openMap(unopened);
+        Handler log = mock(Handler.class);
+
+        loadLayoutWithLog(invalidLayout, log);
+
+        assertTrue(windows.getRootWindow().getWindow() instanceof TabWindow);
+        TabWindow tabs = (TabWindow) windows.getRootWindow().getWindow();
+        assertEquals(2, tabs.getChildWindowCount());
+        assertEquals(first.getTitle(), tabText((View) tabs.getChildWindow(0)));
+        assertEquals(other.getTitle(), tabText((View) tabs.getChildWindow(1)));
+        assertEquals(2, manager.getMapViews().size());
+        assertTrue(logRecords(log).stream().anyMatch(record -> record.getLevel() == Level.WARNING
+                && record.getMessage().contains(unopened.toExternalForm())));
+    }
+
+    @Test
+    public void failedLayoutDoesNotReuseViewsFromAnEarlierRead() throws Exception {
+        MapViewController manager = useRealViewManager();
+        openView(manager, savedMap("earlier"), "earlier");
+        MapView restored = restoreFreshViews(manager).get(0);
+        View previousOwner = owner(restored);
+        manager.closeWithoutSaving(restored);
+
+        loadLayout(new byte[0]);
+
+        assertNull(windows.getRootWindow().getWindow());
+        assertNull(previousOwner.getWindowParent());
+        assertTrue(manager.getMapViews().isEmpty());
+    }
+
+    private byte[] saveWithInvalidFocus(MapViewController manager, TabWindow tabWindow) throws Exception {
+        RootWindow root = windows.getRootWindow();
+        assertNull(root.getMaximizedWindow());
+        List<DockingWindow> windowOrder = new ArrayList<>();
+        addWindowsInPreorder(root, windowOrder);
+        int tabWindowIndex = windowOrder.indexOf(tabWindow);
+        assertTrue(tabWindowIndex >= 0);
+        int savedIndex = tabWindow.getChildWindowIndex(tabWindow.getLastFocusedChildWindow());
+        int invalidIndex = tabWindow.getChildWindowCount();
+        byte[] layout = saveAndCloseViews(manager);
+        // With no maximized window, the version-4 stream ends with the focus indices and a -1 terminator.
+        ByteBuffer bytes = ByteBuffer.wrap(layout);
+        assertEquals(-1, bytes.getInt(layout.length - Integer.BYTES));
+        int focusOffset = layout.length - (windowOrder.size() + 1 - tabWindowIndex) * Integer.BYTES;
+        assertEquals(savedIndex, bytes.getInt(focusOffset));
+        bytes.putInt(focusOffset, invalidIndex);
+        return layout;
+    }
+
+    private void addWindowsInPreorder(DockingWindow window, List<DockingWindow> windows) {
+        windows.add(window);
+        for (int i = 0; i < window.getChildWindowCount(); i++)
+            addWindowsInPreorder(window.getChildWindow(i), windows);
+    }
+
+    private byte[] endAfterFirstSavedView(byte[] layout) throws Exception {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        try (ObjectInputStream original = new ObjectInputStream(new ByteArrayInputStream(layout));
+                ObjectOutputStream incomplete = new ObjectOutputStream(bytes)) {
+            incomplete.writeInt(original.readInt()); // InfoNode version
+            incomplete.writeBoolean(original.readBoolean()); // Properties included
+            incomplete.writeInt(original.readInt()); // Saved view count
+            byte[] entry = new byte[original.readInt()];
+            original.readFully(entry);
+            incomplete.writeInt(entry.length);
+            incomplete.write(entry);
+        }
+        return bytes.toByteArray();
+    }
+
+    private void loadLayoutWithLog(byte[] layout, Handler handler) {
+        Logger logger = LogUtils.getLogger();
+        logger.addHandler(handler);
+        try {
+            loadLayout(layout);
+        } finally {
+            logger.removeHandler(handler);
+        }
+    }
+
+    private List<LogRecord> logRecords(Handler log) {
+        ArgumentCaptor<LogRecord> records = ArgumentCaptor.forClass(LogRecord.class);
+        verify(log, atLeastOnce()).publish(records.capture());
+        return records.getAllValues();
     }
 
     @Test

@@ -2,6 +2,7 @@
 1.13.6
 ==============================
 Preserve custom tab names
+Keep loaded map views available as tabs when the saved docking layout cannot be restored
 Add Dynamic SVG (HTML) export
 
 ==============================

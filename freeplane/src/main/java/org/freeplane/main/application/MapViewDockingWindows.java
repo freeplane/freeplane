@@ -704,19 +704,24 @@ class MapViewDockingWindows implements IMapViewChangeListener, PropertyChangeLis
 		if(encodedBytes != null){
 			byte[] bytes = Base64.decodeBase64(encodedBytes);
 			ByteArrayInputStream byteStream = new ByteArrayInputStream(bytes);
-			try {
-				loadingLayoutFromObjectInputStream = true;
-				rootWindow.read(new ObjectInputStream(byteStream));
-			}
-			catch (Exception e) {
-				LogUtils.severe(e);
-				try {
-	                rootWindow.read(new ObjectInputStream(new ByteArrayInputStream(emptyConfigurations)));
+            loadingLayoutFromObjectInputStream = true;
+            try {
+                boolean layoutReadFailed = false;
+                List<View> restoredViews;
+                try (ObjectInputStream in = new ObjectInputStream(byteStream)) {
+                    rootWindow.read(in);
                 }
-                catch (IOException e1) {
+                catch (Exception e) {
+                    LogUtils.severe(e);
+                    layoutReadFailed = true;
                 }
-			}
-			finally{
+                finally {
+                    restoredViews = viewSerializer.takeRestoredViews();
+                }
+                if (layoutReadFailed)
+                    restoreMapViews(restoredViews);
+            }
+            finally {
                 try {
                     viewSerializer.removeDummyViews();
                     rootWindow.getRootWindowProperties().getDockingWindowProperties()
@@ -732,6 +737,23 @@ class MapViewDockingWindows implements IMapViewChangeListener, PropertyChangeLis
                 ((MapView) mapView).refreshTitle();
 		}
 	}
+
+    private void restoreMapViews(List<View> restoredViews) {
+        try (ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(emptyConfigurations))) {
+            rootWindow.read(in);
+        }
+        catch (IOException e) {
+            LogUtils.severe("Could not reset the map docking layout", e);
+            return;
+        }
+
+        if (!restoredViews.isEmpty()) {
+            TabWindow tabs = new TabWindow(restoredViews.toArray(new DockingWindow[0]));
+            rootWindow.setWindow(tabs);
+            Controller.getCurrentController().getMapViewManager()
+                    .changeToMapView(getContainedMapView(tabs.getSelectedWindow()));
+        }
+    }
 
     private void installTitleProviders(DockingWindow window) {
         window.getWindowProperties().setTitleProvider(new CustomTabTitleProvider());

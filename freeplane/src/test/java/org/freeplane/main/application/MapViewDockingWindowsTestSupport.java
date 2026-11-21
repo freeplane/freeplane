@@ -10,18 +10,29 @@ import java.awt.KeyboardFocusManager;
 import java.awt.dnd.DropTarget;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
+import org.apache.commons.codec.binary.Base64;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.MapViewController;
+import org.freeplane.view.swing.ui.UserInputListenerFactory;
 import org.freeplane.view.swing.map.MapViewTitleTestSupport;
 import org.junit.After;
 import org.junit.Before;
@@ -113,16 +124,19 @@ public class MapViewDockingWindowsTestSupport extends MapViewTitleTestSupport {
         return view;
     }
 
-    protected org.freeplane.core.ui.AFreeplaneAction menuAction(MapView view) throws Exception {
-        doReturn(Collections.singletonList(view)).when(display).getMapViewVector();
-        org.freeplane.view.swing.ui.UserInputListenerFactory factory =
-                new org.freeplane.view.swing.ui.UserInputListenerFactory(mode);
-        org.freeplane.core.ui.menubuilders.generic.Entry entry =
-                new org.freeplane.core.ui.menubuilders.generic.Entry();
-        Method create = factory.getClass().getDeclaredMethod("createMapActions", entry.getClass());
+    protected AFreeplaneAction menuAction(MapView view) throws Exception {
+        return menuActions(Collections.singletonList(view)).get(0);
+    }
+
+    protected List<AFreeplaneAction> menuActions(List<? extends Component> views) throws Exception {
+        doReturn(views).when(display).getMapViewVector();
+        UserInputListenerFactory factory = new UserInputListenerFactory(mode);
+        Entry entry = new Entry();
+        Method create = factory.getClass().getDeclaredMethod("createMapActions", Entry.class);
         create.setAccessible(true);
         create.invoke(factory, entry);
-        return new org.freeplane.core.ui.menubuilders.generic.EntryAccessor().getAction(entry.getChild(0));
+        EntryAccessor accessor = new EntryAccessor();
+        return entry.children().stream().map(accessor::getAction).collect(Collectors.toList());
     }
 
     protected JMenuItem menuItem(org.freeplane.core.ui.AFreeplaneAction action) {
@@ -130,45 +144,55 @@ public class MapViewDockingWindowsTestSupport extends MapViewTitleTestSupport {
                 new org.freeplane.core.ui.menubuilders.action.AcceleratebleActionProvider().acceleratableAction(action));
     }
 
-    protected List<MapView> restoreFreshViews(org.freeplane.view.swing.map.MapViewController manager)
-            throws Exception {
-        java.util.Map<java.net.URL, MapModel> maps = new java.util.LinkedHashMap<>();
-        List<MapView> originals = new ArrayList<>();
-        List<View> originalOwners = new ArrayList<>();
-        for (Component component : new ArrayList<Component>(manager.getMapViews())) {
-            MapView view = (MapView) component;
-            originals.add(view);
-            maps.put(view.getMap().getURL(), view.getMap());
-            View owner = (View) SwingUtilities.getAncestorOfClass(View.class, view);
-            originalOwners.add(owner);
-            owner.addNotify();
+    protected List<MapView> restoreFreshViews(MapViewController manager) throws Exception {
+        List<Component> originals = new ArrayList<>(manager.getMapViews());
+        List<View> originalOwners = originals.stream()
+                .map(view -> (View) SwingUtilities.getAncestorOfClass(View.class, view))
+                .collect(Collectors.toList());
+        loadLayout(saveAndCloseViews(manager));
+        List<MapView> restored = new ArrayList<>();
+        for (Component component : manager.getMapViews()) {
+            assertFalse(originals.contains(component));
+            assertFalse(originalOwners.contains(SwingUtilities.getAncestorOfClass(View.class, component)));
+            restored.add((MapView) component);
         }
-        java.util.concurrent.atomic.AtomicReference<String> saved = new java.util.concurrent.atomic.AtomicReference<>();
+        return restored;
+    }
+
+    protected byte[] saveAndCloseViews(MapViewController manager) throws Exception {
+        List<Component> originals = new ArrayList<>(manager.getMapViews());
+        Map<URL, MapModel> maps = new HashMap<>();
+        for (Component view : originals) {
+            MapModel map = ((MapView) view).getMap();
+            maps.put(map.getURL(), map);
+            SwingUtilities.getAncestorOfClass(View.class, view).addNotify();
+        }
+        AtomicReference<String> saved = new AtomicReference<>();
         doAnswer(call -> { saved.set(call.getArgument(1)); return null; })
                 .when(resources).setProperty(eq("openedNow_1.3.04"), anyString());
         windows.saveLayout();
         assertNotNull(saved.get());
-        for (MapView view : originals)
+        for (Component view : originals)
             manager.closeWithoutSaving(view);
-        when(resources.getProperty("openedNow_1.3.04", null)).thenAnswer(call -> saved.get());
         doAnswer(call -> {
-            java.net.URL url = call.getArgument(0);
-            if (!manager.tryToChangeToMapView(url))
-                openView(manager, maps.get(url), maps.get(url).getTitle());
+            URL url = call.getArgument(0);
+            if (!manager.tryToChangeToMapView(url)) {
+                MapModel map = maps.get(url);
+                openView(manager, map, map.getTitle());
+            }
             return null;
-        }).when(mapController).openMap(any(java.net.URL.class));
-        doAnswer(call -> { openView(manager, call.getArgument(0),
-                ((MapModel) call.getArgument(0)).getTitle()); return null; })
-                .when(mapController).createMapView(any(MapModel.class));
+        }).when(mapController).openMap(any(URL.class));
+        doAnswer(call -> {
+            MapModel map = call.getArgument(0);
+            openView(manager, map, map.getTitle());
+            return null;
+        }).when(mapController).createMapView(any(MapModel.class));
+        return Base64.decodeBase64(saved.get());
+    }
+
+    protected void loadLayout(byte[] bytes) {
+        when(resources.getProperty("openedNow_1.3.04", null)).thenReturn(Base64.encodeBase64String(bytes));
         windows.loadLayout();
-        List<MapView> restored = new ArrayList<>();
-        for (Component component : manager.getMapViews()) {
-            assertFalse(originals.contains(component));
-            MapView view = (MapView) component;
-            assertFalse(originalOwners.contains(SwingUtilities.getAncestorOfClass(View.class, view)));
-            restored.add(view);
-        }
-        return restored;
     }
 
     protected View dock(MapView view) {

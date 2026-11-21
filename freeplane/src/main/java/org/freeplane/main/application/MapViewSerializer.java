@@ -26,14 +26,17 @@ import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.swing.JPanel;
 
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.DocuMapAttribute;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.MapViewScrollPane;
 import org.freeplane.view.swing.map.overview.MapViewPane;
@@ -47,6 +50,7 @@ import net.infonode.docking.ViewSerializer;
  */
 class MapViewSerializer implements ViewSerializer {
     private Collection<View> viewsToBeRemoved = new ArrayList<View>();
+    private List<View> restoredViews = new ArrayList<>();
 
 	public void writeView(View view, ObjectOutputStream out) throws IOException {
     	if(view.isDisplayable()) {
@@ -66,33 +70,51 @@ class MapViewSerializer implements ViewSerializer {
     }
 
     public View readView(ObjectInputStream in) throws IOException {
-    	try {
-    		if (in.readBoolean()){
-    			String modeName = in.readUTF();
-    			URL mapUrl = (URL) in.readObject();
-    			if(mapUrl == null)
-    				return newViewToBeRemoved();
-    			Controller controller = Controller.getCurrentController();
-    			controller.selectMode(modeName);
-    			ModeController modeController = Controller.getCurrentModeController();
-    			MapController mapController = modeController.getMapController();
-    			mapController.openMap(mapUrl);
-    			MapView mapViewComponent = (MapView) controller.getMapViewManager().getMapViewComponent();
-    			final Component pNewMap;
-    			if(mapViewComponent.getParent() == null) {
-                    pNewMap = mapViewComponent;
-                }
-                else {
-                	mapController.createMapView(mapViewComponent.getMap());
-                	pNewMap = controller.getMapViewManager().getMapViewComponent();
-                }
-    			return newDockedView(pNewMap, pNewMap.getName());
-    		}
-            return newViewToBeRemoved();
+        URL mapUrl = null;
+        try {
+            if (!in.readBoolean())
+                return newViewToBeRemoved();
+            String modeName = in.readUTF();
+            mapUrl = (URL) in.readObject();
+            if (mapUrl == null)
+                return newViewToBeRemoved();
+
+            Controller controller = Controller.getCurrentController();
+            controller.selectMode(modeName);
+            ModeController modeController = Controller.getCurrentModeController();
+            MapController mapController = modeController.getMapController();
+            mapController.openMap(mapUrl);
+            IMapViewManager viewManager = controller.getMapViewManager();
+            if (!viewManager.tryToChangeToMapView(mapUrl))
+                return newViewToBeRemoved(mapUrl, null);
+
+            MapView mapView = (MapView) viewManager.getMapViewComponent();
+            if (mapView.getParent() != null) {
+                mapController.createMapView(mapView.getMap());
+                mapView = (MapView) viewManager.getMapViewComponent();
+            }
+            View restoredView = newDockedView(mapView, mapView.getName());
+            if (restoredView == null)
+                return newViewToBeRemoved(mapUrl, null);
+
+            restoredViews.add(restoredView);
+            return restoredView;
         }
         catch (Exception e) {
-        	return newViewToBeRemoved();
+            return newViewToBeRemoved(mapUrl, e);
         }
+    }
+
+    List<View> takeRestoredViews() {
+        List<View> views = restoredViews;
+        restoredViews = new ArrayList<>();
+        return views;
+    }
+
+    private View newViewToBeRemoved(URL mapUrl, Exception cause) {
+        if (mapUrl != null)
+            LogUtils.warn("Could not restore the map view for " + mapUrl, cause);
+        return newViewToBeRemoved();
     }
 
 	private View newViewToBeRemoved() {
