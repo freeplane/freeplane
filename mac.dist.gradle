@@ -151,6 +151,14 @@ def defineMacBuildTasks =  { architecture ->
     dependsOn macosapp_makeapp
 }
 
+  def signJna= tasks.create ("signJna_${architecture}", Exec) {
+        onlyIf { Os.isFamily(Os.FAMILY_MAC) && macAppProperties['macapp.codesign.identity'] != null}
+    commandLine 'bash', 'codesign/sign-jars-on-mac.sh',
+                "build/macosapp/app-image-${architecture}/Freeplane.app/Contents/app/core/org.freeplane.core/lib/jna-[0-9]*.jar",
+                macAppProperties['macapp.codesign.identity']
+    dependsOn macosapp_makeapp
+}
+
   def signVappearances= tasks.create ("signVappearances_${architecture}", Exec) {
         onlyIf { Os.isFamily(Os.FAMILY_MAC) && macAppProperties['macapp.codesign.identity'] != null}
     commandLine 'bash', 'codesign/sign-jars-on-mac.sh',
@@ -175,7 +183,7 @@ def defineMacBuildTasks =  { architecture ->
      '--app-image', "build/macosapp/app-image-${architecture}/Freeplane.app",
      '--mac-sign',
      '--mac-signing-key-user-name', macAppProperties['macapp.codesign.identity']
-        dependsOn macosapp_makeapp, signFlatlaf, signJline, signJnr, signVappearances, signVaqua
+        dependsOn macosapp_makeapp, signFlatlaf, signJline, signJnr, signJna, signVappearances, signVaqua
     }
 
   def dmg4mac = tasks.create ("dmg4mac_${architecture}", Exec) {
