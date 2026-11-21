@@ -20,6 +20,9 @@
 #define ConfigurationDirectory 'Freeplane\1.12.x'
 
 [Setup]
+#ifdef SignWithJsign
+SignTool=jsign
+#endif
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
