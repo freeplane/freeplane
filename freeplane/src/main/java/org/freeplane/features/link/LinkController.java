@@ -212,6 +212,12 @@ public class LinkController extends SelectionController implements IExtension {
 		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(listener);
 	}
 
+	public void goToLinkedNode(final NodeModel target) {
+		onDeselect(Controller.getCurrentModeController().getMapController().getSelectedNode());
+		Controller.getCurrentModeController().getMapController().select(target);
+		onSelect(target);
+	}
+
 	private JButton addLinks(final JComponent arrowLinkPopup, final NodeModel source) {
 		GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(this, source);
 		gotoLinkNodeAction.configureText("follow_graphical_link", source);
