@@ -219,7 +219,7 @@ public class MNodeDropListener implements DropTargetListener {
 				handleClipboardContentDrop(dtde, context);
 			}
 
-			adjustFoldingOnDrop(context.targetNodeView, context.dragOverRelation);
+			adjustFoldingOnDrop(context);
 		}
 		catch (final Exception e) {
 			LogUtils.severe("Drop exception:", e);
@@ -234,6 +234,7 @@ public class MNodeDropListener implements DropTargetListener {
 		final NodeView targetNodeView;
 		final MapView mapView;
 		final NodeModel targetNode;
+		final NodeModel targetParentNode;
 		final Controller controller;
 		final ModeController modeController;
 		final MMapController mapController;
@@ -250,6 +251,7 @@ public class MNodeDropListener implements DropTargetListener {
 			this.targetNodeView = mainView.getNodeView();
 			this.mapView = targetNodeView.getMap();
 			this.targetNode = targetNodeView.getNode();
+			this.targetParentNode = targetNode.getParentNode();
 			this.controller = Controller.getCurrentController();
 			this.modeController = controller.getModeController();
 			this.mapController = (MMapController) modeController.getMapController();
@@ -321,12 +323,12 @@ public class MNodeDropListener implements DropTargetListener {
 	}
 
 	private void handleExternalDrop(final DropTargetDropEvent dtde, DropContext context) throws Exception {
-		adjustFoldingOnDrop(context.targetNodeView, context.dragOverRelation);
+		adjustFoldingOnDrop(context);
 		dtde.acceptDrop(DnDConstants.ACTION_COPY);
 		NodeDropUtils.handleMoveOrCopyAction(context.transferable, context.targetNode,
 			context.dropAction, false, context.insertionRelation, context.side);
 		MouseEventActor.INSTANCE.withMouseEvent(() ->
-		context.controller.getSelection().selectAsTheOnlyOneSelected(context.targetNode));
+		context.controller.getSelection().selectAsTheOnlyOneSelected(liveTargetNode(context)));
 	}
 
 	private void handleLinkAction(final DropTargetDropEvent dtde, DropContext context) throws Exception {
@@ -362,19 +364,31 @@ public class MNodeDropListener implements DropTargetListener {
 		((MMapClipboardController) MapClipboardController.getController())
 			.paste(context.transferable, context.targetNode, context.side, context.dropAction);
 		MouseEventActor.INSTANCE.withMouseEvent(() ->
-			context.controller.getSelection().selectAsTheOnlyOneSelected(context.targetNode));
+			context.controller.getSelection().selectAsTheOnlyOneSelected(liveTargetNode(context)));
+	}
+
+	private NodeModel liveTargetNode(final DropContext context) {
+		if (context.targetNode.getParentNode() != null || context.targetParentNode == null)
+			return context.targetNode;
+		return context.targetParentNode.getChildCount() > 0 ? context.targetParentNode.getChildAt(0) : context.targetParentNode;
 	}
 
 
-	private void adjustFoldingOnDrop(final NodeView targetNodeView, DragOverRelation dragOverRelation) {
+	private void adjustFoldingOnDrop(final DropContext context) {
+		final NodeView targetNodeView = context.targetNodeView;
+		final DragOverRelation dragOverRelation = context.dragOverRelation;
 		boolean unfoldsTarget = ResourceController.getResourceController().getBooleanProperty(PROPERTY_UNFOLD_ON_PASTE);
 		Set<NodeView> nodesKeptUnfold;
 		if(unfoldsTarget) {
-			if (dragOverRelation.isChild()) {
+			final boolean targetWasReplaced = context.targetNode.getParentNode() == null && context.targetParentNode != null;
+			if (targetWasReplaced) {
+				final NodeView parentNodeView = context.mapView.getNodeView(context.targetParentNode);
+				nodesKeptUnfold = parentNodeView != null ? Collections.singleton(parentNodeView) : Collections.<NodeView>emptySet();
+			} else if (dragOverRelation.isChild()) {
 				nodesKeptUnfold = Collections.singleton(targetNodeView);
 			} else {
 				NodeView parentNodeView = targetNodeView.getAncestorWithVisibleContent();
-				nodesKeptUnfold = Collections.singleton(parentNodeView);
+				nodesKeptUnfold = parentNodeView != null ? Collections.singleton(parentNodeView) : Collections.<NodeView>emptySet();
 			}
 		} else {
 			nodesKeptUnfold = Collections.emptySet();

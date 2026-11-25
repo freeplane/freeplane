@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import javax.swing.JOptionPane;
@@ -891,6 +892,28 @@ public class MLogicalStyleController extends LogicalStyleController {
 			Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, styleSourceNode, newNode);
 			Controller.getCurrentModeController().copyExtensions(Keys.ICONS, styleSourceNode, newNode);
 		}
+		insertUserStyleNode(map, newNode);
+		mapController.select(newNode);
+		return newStyle;
+	}
+
+	public IStyle addUserStyleIfAbsent(final MapModel map, final String styleName,
+			final Consumer<NodeModel> styleNodeInitializer) {
+		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
+		final IStyle style = StyleFactory.create(styleName);
+		if (null == styleModel.getStyleNode(style)) {
+			final NodeModel newNode = new NodeModel(styleModel.getStyleMap());
+			newNode.setUserObject(style);
+			styleNodeInitializer.accept(newNode);
+			insertUserStyleNode(map, newNode);
+		}
+		return style;
+	}
+
+	private void insertUserStyleNode(final MapModel map, final NodeModel newNode) {
+		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
+		final MapModel styleMap = styleModel.getStyleMap();
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		NodeModel userStyleParentNode = styleModel.getStyleNodeGroup(styleMap, MapStyleModel.STYLES_USER_DEFINED);
 		if (userStyleParentNode == null) {
 			userStyleParentNode = new NodeModel(styleMap);
@@ -900,7 +923,6 @@ public class MLogicalStyleController extends LogicalStyleController {
 
 		}
 		mapController.insertNode(newNode, userStyleParentNode, userStyleParentNode.getChildCount());
-		mapController.select(newNode);
 		final IActor actor = new IActor() {
 			public void undo() {
 				styleModel.removeStyleNode(newNode);
@@ -917,7 +939,6 @@ public class MLogicalStyleController extends LogicalStyleController {
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, styleMap);
-		return newStyle;
 	}
 
 

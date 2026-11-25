@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.stream.Stream;
@@ -63,6 +64,7 @@ public class NodeViewFolder {
         	unfoldNodeViews.removeAll(Arrays.asList(toFold));
 
         unfoldNodeViews.stream()
+        .filter(Objects::nonNull)
         .forEach(nodeView -> {
             boolean hasUnfoldView = false;
             if (nodeView.isFolded()) {
